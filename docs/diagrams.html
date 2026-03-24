@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diagrams | AXP MVP Survey Guide</title>
+  <title>Visual Guide | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
         <span class="brand-eyebrow">AXP survey</span>
-        <strong>AXP Survey Guide</strong>
-        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
       </a>
       <div class="header-side">
         <div class="app-links">
@@ -22,10 +22,10 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="questionnaire-edits.html">Questionnaire Edits</a>
-          <a href="value-lifecycle.html">Value Lifecycle</a>
-          <a href="data-examples.html">Data Examples</a>
-          <a href="diagrams.html">Diagrams</a>
+          <a href="value-lifecycle.html">App Access</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">OSF Downloads</a>
+          <a href="diagrams.html">Visual Guide</a>
         </nav>
       </div>
     </div>
@@ -33,56 +33,53 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">Mermaid Gallery</div>
-      <h1>Diagram-first orientation.</h1>
-      <p>These diagrams are written to be readable by a newcomer who needs the workflow shape before they need implementation detail. Each source file is plain Mermaid, and each diagram now also opens in an interactive viewer with zoom, fullscreen, and source navigation.</p>
+      <div class="kicker">Visual Guide</div>
+      <h1>Use the diagrams for quick orientation.</h1>
+      <p>These diagrams are optional shortcuts when you want to see how Google Sheets changes, live app verification, feedback, and OSF downloads fit together before reading the detailed pages.</p>
     </section>
 
     <section class="diagram-grid">
       <article class="diagram-card">
         <h3>Questionnaire adaptation flow</h3>
-        <p>How a collaborator moves from a planned change to a promoted questionnaire version.</p>
+        <p>Best for sheet editors preparing a change and handing it to an app user for live verification.</p>
         <div class="figure-shell">
           <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
         </div>
         <div class="figure-actions">
           <a class="button-link primary" href="diagrams/viewer.html#questionnaire-adaptation-flow">Open viewer</a>
-          <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
-          <a class="button-link" href="questionnaire-edits.html">Read context</a>
+          <a class="button-link" href="questionnaire-edits.html">Google Sheets page</a>
         </div>
       </article>
 
       <article class="diagram-card">
         <h3>Change impact map</h3>
-        <p>Decision support for determining when a questionnaire change stays within the same analytical identity.</p>
+        <p>Best for deciding whether a change is a light edit or something that needs a new version and a live app check.</p>
         <div class="figure-shell">
           <pre data-mermaid-source="diagrams/change-impact-map.mmd"></pre>
         </div>
         <div class="figure-actions">
           <a class="button-link primary" href="diagrams/viewer.html#change-impact-map">Open viewer</a>
-          <a class="button-link" href="diagrams/change-impact-map.mmd">Open source</a>
-          <a class="button-link" href="questionnaire-edits.html">Read context</a>
+          <a class="button-link" href="questionnaire-edits.html">Google Sheets page</a>
         </div>
       </article>
 
       <article class="diagram-card">
         <h3>Value lifecycle</h3>
-        <p>How values move from questionnaire definition to ASC scoring, MariaDB persistence, cache-backed peer selection, and public/private export.</p>
+        <p>Best for understanding how live app results connect to later OSF downloads and feedback comparisons.</p>
         <div class="figure-shell">
           <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
         </div>
         <div class="figure-actions">
           <a class="button-link primary" href="diagrams/viewer.html#value-lifecycle">Open viewer</a>
-          <a class="button-link" href="data-examples.html">Open mock files</a>
-          <a class="button-link" href="diagrams/value-lifecycle.mmd">Open source</a>
-          <a class="button-link" href="value-lifecycle.html">Read context</a>
+          <a class="button-link" href="value-lifecycle.html">App access page</a>
+          <a class="button-link" href="data-examples.html">OSF downloads page</a>
         </div>
       </article>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Mermaid source files live in <code>docs/diagrams/</code> and are rendered client-side for the public guide.</div>
+    <div class="footer-inner">Visual orientation for app, Google Sheets, and OSF workflows.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>

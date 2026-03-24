@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AXP MVP Survey Guide</title>
+  <title>AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="home-page">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
         <span class="brand-eyebrow">AXP survey</span>
-        <strong>AXP Survey Guide</strong>
-        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
       </a>
       <div class="header-side">
         <div class="app-links">
@@ -22,10 +22,10 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="questionnaire-edits.html">Questionnaire Edits</a>
-          <a href="value-lifecycle.html">Value Lifecycle</a>
-          <a href="data-examples.html">Data Examples</a>
-          <a href="diagrams.html">Diagrams</a>
+          <a href="value-lifecycle.html">App Access</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">OSF Downloads</a>
+          <a href="diagrams.html">Visual Guide</a>
         </nav>
       </div>
     </div>
@@ -33,86 +33,97 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">Public Partner Repo</div>
-      <h1>Learn the workflow without shipping the app code or data.</h1>
-      <p>This site is for a new collaborator who needs to understand how questionnaire revisions are made through Google Sheets, how factor values are computed, and how survey values move through storage, feedback, and export.</p>
+      <div class="kicker">Access Guide</div>
+      <h1>Start with the access you already have.</h1>
+      <p>Some collaborators can open the live AXP app. Others only have Google Sheets and OSF download access. This guide shows what each group can do now and when someone with app-level access needs to take over.</p>
       <div class="hero-actions">
-        <a class="quick-link" href="questionnaire-edits.html">
-          <h2>Edit the questionnaire</h2>
-          <p>Start here if you need to change wording, add a language, adjust required fields, or understand when a new dated version tab is needed.</p>
-        </a>
         <a class="quick-link" href="value-lifecycle.html">
-          <h2>Follow the value lifecycle</h2>
-          <p>See how questionnaire rows become runtime state, scored values, database rows, feedback inputs, and public or private exports.</p>
+          <h2>Use the live app</h2>
+          <p>Open the running questionnaire, submit a response, check the feedback view, and verify how a change behaves in the app.</p>
+        </a>
+        <a class="quick-link" href="questionnaire-edits.html">
+          <h2>Work in Google Sheets</h2>
+          <p>Review wording, translations, options, and version tabs in the shared questionnaire sheet.</p>
         </a>
         <a class="quick-link" href="data-examples.html">
-          <h2>Open the mock files</h2>
-          <p>Inspect public-safe example CSV and JSON files for each stage, from questionnaire definition through peer plotting and export.</p>
+          <h2>Use OSF downloads</h2>
+          <p>Find the latest files, understand which download you need, and use codebooks and changelogs without app access.</p>
         </a>
         <a class="quick-link" href="diagrams.html">
-          <h2>Browse the Mermaid maps</h2>
-          <p>Use the diagram gallery as the fastest route to the system shape before diving into step-by-step text.</p>
+          <h2>Use the visual guide</h2>
+          <p>Open the diagrams when you want a fast picture of how sheet edits, app checks, and downloads fit together.</p>
         </a>
       </div>
     </section>
 
     <section class="two-col section">
       <article class="panel">
-        <h2 class="section-title">What this guide covers</h2>
+        <h2 class="section-title">Access types</h2>
         <ul class="plain-list">
-          <li>The questionnaire lives as one multi-language table per version.</li>
-          <li>Stable <code>item_id</code> values are the analytical backbone.</li>
-          <li>English rows define structure; translation rows mainly define wording.</li>
-          <li>Scorable items carry factor mapping through <code>scale_id</code>.</li>
-          <li>Numeric responses are scored, stored, reused for feedback, and later widened during export.</li>
-          <li>Public exports remove free text and anonymize submission identity.</li>
+          <li><strong>App access:</strong> open the live questionnaire, submit a response, use the feedback chart, and verify the running experience.</li>
+          <li><strong>Google Sheets access:</strong> review or edit questionnaire content in the shared sheet, including wording, translations, options, and version tabs.</li>
+          <li><strong>OSF access:</strong> download the latest public or private files, plus codebooks and changelogs.</li>
+          <li>Some collaborators have all three. Others only have Google Sheets and OSF access.</li>
         </ul>
       </article>
 
       <aside class="note-card">
-        <h3>Public boundary</h3>
-        <p>This repo explains workflow and contracts. It does not include application source code, participant-level data, export files, or deployment secrets.</p>
+        <h3>App access required</h3>
+        <p>Use someone with app-level access whenever the task depends on the live questionnaire, a real submit flow, the feedback screen, or a runtime check after a sheet change.</p>
       </aside>
     </section>
 
     <section class="section">
-      <h2 class="section-title">New collaborator path</h2>
+      <h2 class="section-title">Common tasks</h2>
       <div class="card-grid">
         <article class="step-card">
-          <h3>1. Understand what counts as a version change</h3>
-          <p>Not every wording edit creates a new analytical instrument. Some changes keep the same <code>item_id</code>; others require a new dated sheet tab and careful factor review.</p>
+          <h3>I need to test the live flow</h3>
+          <p>App access is required. Use the live app page for the verification checklist.</p>
         </article>
         <article class="step-card">
-          <h3>2. Learn the Google Sheets workflow</h3>
-          <p>The live questionnaire is maintained as a Google Sheet tab, but the real structure is a single stacked table with one language block per language.</p>
+          <h3>I need to change wording or translations</h3>
+          <p>Google Sheets access is usually enough for the edit itself. Ask an app user to confirm the final live result if behavior or presentation matters.</p>
         </article>
         <article class="step-card">
-          <h3>3. Learn the value path</h3>
-          <p>The same survey values move through normalization, scoring, MariaDB persistence, feedback generation, and export bundles. This guide shows that contract stage by stage.</p>
+          <h3>I need the latest files</h3>
+          <p>OSF access is enough. Download the current bundle, then use the codebook and changelog to interpret it.</p>
+        </article>
+        <article class="step-card">
+          <h3>I only have Sheets and OSF access</h3>
+          <p>You can still edit the questionnaire and use the downloads. Hand off any live runtime check to someone who can open the app.</p>
         </article>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <div class="kicker">Preview Diagram</div>
-        <h2 class="section-title">Questionnaire adaptation flow</h2>
-        <p>The diagram below summarizes the public-safe mental model for making questionnaire changes.</p>
-        <div class="figure-shell">
-          <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
-        </div>
+        <div class="kicker">Fastest Path</div>
+        <h2 class="section-title">Use the site in this order</h2>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Identify your access level.</strong><p>Decide whether you can open the app, only edit the sheet, only download from OSF, or some combination of those.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Open the matching page.</strong><p>Use App Access for live checks, Google Sheets for questionnaire changes, and OSF Downloads for data files and supporting documentation.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Hand off app-only checks when needed.</strong><p>If your task depends on the running app and you cannot open it yourself, pass that step to someone with app-level access.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <div class="kicker">Visual Summary</div>
+        <h2 class="section-title">Need the big picture first?</h2>
+        <p>Open the visual guide if you want a quick map of how sheet edits, live app checks, and OSF downloads connect.</p>
         <div class="figure-actions">
-          <a class="button-link primary" href="questionnaire-edits.html">Read the editing guide</a>
-          <a class="button-link" href="data-examples.html">Open mock files</a>
-          <a class="button-link" href="diagrams/viewer.html#questionnaire-adaptation-flow">Open viewer</a>
-          <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
+          <a class="button-link primary" href="diagrams.html">Open visual guide</a>
+          <a class="button-link" href="value-lifecycle.html">App access</a>
+          <a class="button-link" href="questionnaire-edits.html">Google Sheets</a>
+          <a class="button-link" href="data-examples.html">OSF downloads</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Docs-only companion to the main AXP MVP Survey repository. Built for public onboarding and diagram-first orientation.</div>
+    <div class="footer-inner">AXP collaborator onboarding by access level.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>

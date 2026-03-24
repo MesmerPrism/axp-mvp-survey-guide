@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Value Lifecycle | AXP MVP Survey Guide</title>
+  <title>App Access | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
         <span class="brand-eyebrow">AXP survey</span>
-        <strong>AXP Survey Guide</strong>
-        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
       </a>
       <div class="header-side">
         <div class="app-links">
@@ -22,10 +22,10 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="questionnaire-edits.html">Questionnaire Edits</a>
-          <a href="value-lifecycle.html">Value Lifecycle</a>
-          <a href="data-examples.html">Data Examples</a>
-          <a href="diagrams.html">Diagrams</a>
+          <a href="value-lifecycle.html">App Access</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">OSF Downloads</a>
+          <a href="diagrams.html">Visual Guide</a>
         </nav>
       </div>
     </div>
@@ -33,62 +33,86 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">Values Through Stages</div>
-      <h1>How values are computed and saved.</h1>
-      <p>The important split happens after submission: one path keeps the current participant’s ASC factor scores in memory for immediate feedback, another writes durable MariaDB rows, and a later export path widens those stored rows into public and private bundles.</p>
+      <div class="kicker">App Access</div>
+      <h1>Use the live app and verify the running experience.</h1>
+      <p>This page is for collaborators who can open the AXP app itself. Use app access whenever the task depends on the live questionnaire, a real submit flow, the feedback screen, or the running comparison controls.</p>
       <div class="jump-links">
-        <a href="diagrams/viewer.html#value-lifecycle">Open interactive lifecycle</a>
-        <a href="data-examples.html">Open mock files</a>
+        <a href="questionnaire-edits.html">Google Sheets workflow</a>
+        <a href="data-examples.html">OSF downloads</a>
+        <a href="diagrams.html">Visual guide</a>
+      </div>
+    </section>
+
+    <section class="two-col section">
+      <article class="panel">
+        <h2 class="section-title">What app access lets you do</h2>
+        <ul class="plain-list">
+          <li>Open the current live questionnaire.</li>
+          <li>Choose a language and walk the actual running flow.</li>
+          <li>Submit a response and reach the feedback view.</li>
+          <li>Check how wording, options, and required behavior appear in the app.</li>
+          <li>Use the feedback comparison controls after submission.</li>
+          <li>Reload the running questionnaire when a sheet-backed version needs to be rechecked.</li>
+        </ul>
+      </article>
+
+      <aside class="callout">
+        <strong>App-only work</strong>
+        <p>If a collaborator cannot open the live app, they cannot confirm the real questionnaire flow, the final submit path, or the feedback screen. Those checks stay with app users.</p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Live app workflow</h2>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Open the app URL you were given.</strong><p>Start in the running survey rather than a local or static copy.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Choose your language.</strong><p>Check the live wording in the language that matters for the current task.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Complete one experience path.</strong><p>Move through the questionnaire as a real user would.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Submit at the final reveal step.</strong><p>Do not stop before submit if the task depends on feedback or downstream behavior.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Review the feedback screen.</strong><p>Check the chart, comparison controls, and any other live result behavior that matters for the task.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Report the result back to other collaborators.</strong><p>Confirm what worked, what still needs adjustment, and whether another reload or sheet edit is required.</p></div></li>
+        </ol>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Stage overview</h2>
+        <h2 class="section-title">Common app-only checks</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Stage</th>
-                <th>Main datatype</th>
-                <th>Why it matters</th>
+                <th>Task</th>
+                <th>Why app access is required</th>
+                <th>What to confirm</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Definition load</td>
-                <td>CSV / Google Sheet table, then R <code>data.frame</code></td>
-                <td>The system computes a definition hash from the loaded table and then filters by language.</td>
+                <td>Live wording and translation check</td>
+                <td>The running questionnaire is the real user experience.</td>
+                <td>The text, ordering, and language selection look correct in the live app.</td>
               </tr>
               <tr>
-                <td>Runtime questionnaire state</td>
-                <td>R runtime metadata plus selected-language <code>data.frame</code></td>
-                <td>The running survey knows which instrument version and language were actually loaded.</td>
+                <td>Required-step and navigation check</td>
+                <td>Only the app shows the actual live step flow and validation behavior.</td>
+                <td>The user can move through the intended path and cannot skip required inputs accidentally.</td>
               </tr>
               <tr>
-                <td>Submission assembly</td>
-                <td>R <code>responses_df</code> long table</td>
-                <td>All responses are gathered before scoring and persistence.</td>
+                <td>Submit and feedback check</td>
+                <td>The feedback view only appears after a live submit flow.</td>
+                <td>The chart loads, the response completes, and the result view behaves as expected.</td>
               </tr>
               <tr>
-                <td>ASC scoring</td>
-                <td>R factor-score rows keyed by canonical <code>scale_id</code></td>
-                <td>Numeric values are mapped to the 11 ASC factors using the questionnaire’s embedded factor mapping.</td>
+                <td>Comparison control check</td>
+                <td>The comparison controls live on the feedback screen.</td>
+                <td>The controls appear, use recognized comparison buckets, and respond correctly after submit.</td>
               </tr>
               <tr>
-                <td>Persistence</td>
-                <td>MariaDB tables</td>
-                <td>Raw collection is stored in normalized database tables.</td>
-              </tr>
-              <tr>
-                <td>Feedback and peer plotting</td>
-                <td>In-memory self scores, cached peer context rows, and selected peer score query rows</td>
-                <td>The participant sees a self polygon immediately, then optionally overlays peers chosen through canonical induction and dose filters.</td>
-              </tr>
-              <tr>
-                <td>Export</td>
-                <td>Wide CSV bundles plus codebooks</td>
-                <td>Public output removes free text and anonymizes identities; private output retains full detail.</td>
+                <td>Questionnaire reload after a sheet change</td>
+                <td>The reload action exists in the running app.</td>
+                <td>The updated questionnaire version appears in the live app after reload.</td>
               </tr>
             </tbody>
           </table>
@@ -96,112 +120,33 @@
       </div>
     </section>
 
-    <section class="section two-col">
-      <article class="panel">
-        <h2 class="section-title">Storage model</h2>
-        <ul class="plain-list">
-          <li><code>submission</code> stores one survey session row with instrument, language, consent, hash, and duration metadata.</li>
-          <li><code>response_numeric</code> stores one row per numeric item answer keyed by <code>item_id</code>.</li>
-          <li><code>response_text</code> stores one row per text or context field; q0/q1 context persists even when full text storage is reduced.</li>
-          <li><code>score</code> stores one row per canonical ASC factor score with <code>scale_id</code> and <code>score_value</code>.</li>
-          <li><code>peer_plot_submission_cache</code> stores one row per submission with raw plus canonical induction/dose context and completeness flags.</li>
-        </ul>
-      </article>
-
-      <aside class="callout">
-        <strong>Important distinction</strong>
-        <p>The raw database is the source of truth for collection. The export bundles are the source of truth for distribution. The examples page shows both shapes side by side with mock files.</p>
-      </aside>
-    </section>
-
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">How the comparison selector and plot work</h2>
-        <p>The immediate results view uses the current submission’s ASC factor score rows already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
-        <ul class="plain-list">
-          <li>The participant’s own 11 ASC factor scores become the purple self polygon and points.</li>
-          <li>At submit time, <code>db_sync_peer_plot_submission_cache()</code> builds one cache row per submission from <code>submission</code>, the q0/q1 context stored in <code>response_text</code>, and the number of ASC factor rows written to <code>score</code>.</li>
-          <li>The comparison controls only show the recognized canonical bucket catalog back to the user: induction <code>cannabis</code>, <code>psilocybin</code>, <code>alcohol</code>, <code>mdma</code>; dose <code>low</code>, <code>medium</code>, <code>high</code>.</li>
-          <li>The active selection defaults to the current submission’s own induction and dose answers after those answers are canonicalized into peer tokens.</li>
-          <li>Once the participant chooses a pair such as <code>psilocybin + medium</code>, the app reads eligible submissions from <code>peer_plot_submission_cache</code>, joins to <code>score</code> on <code>submission_id</code>, filters to the selected canonical pair, and excludes the current submission.</li>
-          <li>Each returned peer factor score becomes an axis-aligned peer ring or density mark on the matching ASC axis, and the matching peers also contribute a median comparison polygon.</li>
-          <li>If too few peers exist in the selected bucket, the system omits the peer layer rather than fabricating comparison data.</li>
+        <h2 class="section-title">What app users hand back to other collaborators</h2>
+        <ul class="check-list">
+          <li>Whether the live wording and ordering matched the sheet change.</li>
+          <li>Whether the flow completed and submitted successfully.</li>
+          <li>Whether the feedback screen behaved correctly after submit.</li>
+          <li>Whether another sheet edit or another reload is needed.</li>
         </ul>
-        <div class="figure-actions">
-          <a class="button-link primary" href="data-examples.html#peer-selection">Open peer selection examples</a>
-          <a class="button-link" href="file-viewer.html#peer-selection">Open peer selection viewer</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="diagram-grid">
-        <article class="diagram-card">
-          <h3>Value lifecycle</h3>
-          <p>From questionnaire source to runtime, ASC factor score rows, durable MariaDB tables, cache-backed peer selection, and export bundles.</p>
-          <div class="figure-shell">
-            <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
-          </div>
-          <div class="figure-actions">
-            <a class="button-link primary" href="diagrams/viewer.html#value-lifecycle">Open viewer</a>
-            <a class="button-link" href="data-examples.html">Open mock files</a>
-            <a class="button-link" href="diagrams/value-lifecycle.mmd">Open source</a>
-          </div>
-        </article>
-        <article class="diagram-card">
-          <h3>What happens after submit</h3>
-          <p>The clearest public distinction is between transient in-memory objects, normalized MariaDB tables, and the later public/private export files.</p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>After submit</th>
-                  <th>Immediate outcome</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Validation passes</td>
-                  <td>Responses are assembled into <code>responses_df</code>, then split into numeric and text/context rows.</td>
-                </tr>
-                <tr>
-                  <td>ASC scoring runs</td>
-                  <td>Canonical factor score rows become available for the current participant and later feed the self polygon.</td>
-                </tr>
-                <tr>
-                  <td>DB write succeeds</td>
-                  <td><code>submission</code>, <code>response_numeric</code>, <code>response_text</code>, and <code>score</code> become durable, then <code>peer_plot_submission_cache</code> is rebuilt from the new submission context.</td>
-                </tr>
-                <tr>
-                  <td>Feedback peer query runs</td>
-                  <td>The app uses the selected canonical induction/dose pair to load only the matching peer score rows and render the peer overlay.</td>
-                </tr>
-                <tr>
-                  <td>Later export</td>
-                  <td>Normalized rows are widened and split into public or private CSV bundles plus codebooks.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Mock files for every stage</h2>
-        <p>The lifecycle diagram now links into a companion examples page with public-safe CSV and JSON files for each stage. Use it when you need the exact column names and datatypes instead of the abstract flow.</p>
+        <h2 class="section-title">Need the big picture?</h2>
+        <p>Open the visual guide when you want to connect live app checks to upstream Google Sheets edits and downstream OSF downloads.</p>
         <div class="figure-actions">
-          <a class="button-link primary" href="data-examples.html">Open data examples</a>
-          <a class="button-link" href="file-viewer.html#definition-source">Open file viewer</a>
-          <a class="button-link" href="diagrams/viewer.html#value-lifecycle">Open clickable diagram</a>
+          <a class="button-link primary" href="diagrams.html">Open visual guide</a>
+          <a class="button-link" href="questionnaire-edits.html">Google Sheets</a>
+          <a class="button-link" href="data-examples.html">OSF downloads</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">This guide summarizes contracts and stages, not the full implementation.</div>
+    <div class="footer-inner">Live app usage and app-only verification.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>

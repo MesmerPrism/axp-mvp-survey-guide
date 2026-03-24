@@ -1,27 +1,26 @@
-# AXP MVP Survey Guide
+# AXP Access Guide
 
-Public-facing onboarding guide for the AXP MVP Survey project.
+Public-facing collaborator guide for using AXP based on the access level a
+person has been given.
 
-This partner repo is intentionally docs-only:
+This repo publishes the GitHub Pages guide for:
 
-- no Shiny app code
-- no private research data
-- no export bundles
-- no secrets or runtime config
+- collaborators with live app access
+- collaborators with Google Sheets access
+- collaborators with OSF download access
 
-It exists to help a new collaborator understand:
+The site explains:
 
-- how questionnaire changes are made through Google Sheets
-- which changes are analytically safe versus version-breaking
-- how values move from questionnaire definition to scoring, storage, feedback, and export
-- how the main Mermaid diagrams fit together
+- when app-level access is required
+- how to use the live app
+- how to update the questionnaire in Google Sheets
+- how to use OSF downloads, codebooks, and changelogs
+- how the access handoff works between sheet editors, app users, and
+  download-only users
 
 ## Site
 
-The GitHub Pages site is designed to publish directly from the `docs/` folder
-through the included workflow.
-
-Planned public URL after first push:
+Planned public URL:
 
 - `https://zivilkannibale.github.io/axp-mvp-survey-guide/`
 
@@ -39,14 +38,9 @@ Then open:
 
 ## Structure
 
-- `docs/index.html` overview and newcomer path
-- `docs/questionnaire-edits.html` Google Sheets adaptation workflow
-- `docs/value-lifecycle.html` value computation, storage, and export stages
-- `docs/diagrams.html` Mermaid diagram gallery
-- `docs/diagrams/*.mmd` diagram sources
-
-## Public boundary
-
-This repo explains the workflow and data contracts at a conceptual and schema
-level. It does not publish implementation code, questionnaire response data, or
-private infrastructure details.
+- `docs/index.html` overview of access types and common tasks
+- `docs/value-lifecycle.html` live app usage and app-only checks
+- `docs/questionnaire-edits.html` Google Sheets workflow and handoff rules
+- `docs/data-examples.html` OSF downloads and file usage
+- `docs/diagrams.html` visual guide pages
+- `docs/diagrams/*.mmd` Mermaid sources

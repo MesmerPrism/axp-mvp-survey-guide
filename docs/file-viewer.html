@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>File Viewer | AXP MVP Survey Guide</title>
+  <title>Reference Viewer | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page viewer-page">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
         <span class="brand-eyebrow">AXP survey</span>
-        <strong>AXP Survey Guide</strong>
-        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
       </a>
       <div class="header-side">
         <div class="app-links">
@@ -22,10 +22,10 @@
         </div>
         <nav class="top-nav" aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="questionnaire-edits.html">Questionnaire Edits</a>
-          <a href="value-lifecycle.html">Value Lifecycle</a>
-          <a class="active" href="data-examples.html">Data Examples</a>
-          <a href="diagrams.html">Diagrams</a>
+          <a href="value-lifecycle.html">App Access</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">OSF Downloads</a>
+          <a class="active" href="diagrams.html">Visual Guide</a>
         </nav>
       </div>
     </div>
@@ -34,15 +34,15 @@
   <main class="page-shell viewer-page">
     <section class="viewer-shell">
       <div class="panel viewer-intro">
-        <h1>Mock data file viewer</h1>
-        <p class="viewer-description">Use this viewer for wide CSVs and long JSON examples when the inline preview on the examples page is too small. The raw mock files stay public-safe and viewable directly in the browser.</p>
+        <h1>Reference file viewer</h1>
+        <p class="viewer-description">Use this page when a linked reference file is too wide for an inline preview. It keeps the browser view readable without changing the underlying file layout.</p>
       </div>
 
       <div class="viewer-layout">
         <aside class="viewer-nav">
           <header>
             <h2>Files</h2>
-            <p class="viewer-description">Choose a mock file, then use wrap or fullscreen without leaving the browser.</p>
+            <p class="viewer-description">Choose a bundled reference file, then use wrap or fullscreen if you need more room.</p>
           </header>
           <div id="file-nav-list" class="nav-list"></div>
         </aside>
@@ -74,7 +74,7 @@
           <p id="file-description" class="viewer-description"></p>
 
           <div class="viewer-actions">
-            <a id="link-file-related" class="button-link" href="data-examples.html">Open examples section</a>
+            <a id="link-file-related" class="button-link" href="index.html">Open related page</a>
             <a id="link-file-raw" class="button-link" href="mock-data/">Open raw file</a>
           </div>
 
@@ -91,14 +91,14 @@
             </div>
           </div>
 
-          <p class="file-viewer-note">Inline previews on the examples page are bounded. This page preserves the raw file layout and can expand to fullscreen for wide exports.</p>
+          <p class="file-viewer-note">Use this viewer only when you need more space than the linked page gives you.</p>
         </section>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">This viewer renders plain text mock files directly in the browser. No downloads are required for inspection.</div>
+    <div class="footer-inner">Reference file viewing for the AXP access guide.</div>
   </footer>
 
   <script type="module" src="assets/file-viewer.js"></script>

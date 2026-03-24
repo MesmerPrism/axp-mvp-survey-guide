@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Questionnaire Edits | AXP MVP Survey Guide</title>
+  <title>Google Sheets Access | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
         <span class="brand-eyebrow">AXP survey</span>
-        <strong>AXP Survey Guide</strong>
-        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
       </a>
       <div class="header-side">
         <div class="app-links">
@@ -22,10 +22,10 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="questionnaire-edits.html">Questionnaire Edits</a>
-          <a href="value-lifecycle.html">Value Lifecycle</a>
-          <a href="data-examples.html">Data Examples</a>
-          <a href="diagrams.html">Diagrams</a>
+          <a href="value-lifecycle.html">App Access</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">OSF Downloads</a>
+          <a href="diagrams.html">Visual Guide</a>
         </nav>
       </div>
     </div>
@@ -33,66 +33,65 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">Google Sheets Workflow</div>
-      <h1>How to adapt the questionnaire safely.</h1>
-      <p>The questionnaire is managed as one stacked, multi-language table per version. The main discipline is keeping analytical identity stable where it should stay stable, and creating a new dated version when the questionnaire definition truly changes.</p>
+      <div class="kicker">Google Sheets Access</div>
+      <h1>Review and update the questionnaire in the shared sheet.</h1>
+      <p>Use this page if your main access is the shared questionnaire sheet. You can review wording, translations, options, and version tabs here. Anything that must be checked in the running survey still needs app access.</p>
     </section>
 
     <section class="two-col section">
       <article class="panel">
-        <h2 class="section-title">Mental model</h2>
+        <h2 class="section-title">What you can do in Google Sheets</h2>
         <ul class="plain-list">
-          <li>One questionnaire version lives in one table.</li>
-          <li>Each language gets one block in the same columns.</li>
-          <li>Blank separator rows are formatting only and are removed by the loader.</li>
-          <li><code>item_id</code> is the stable key used for runtime, scoring, and storage.</li>
-          <li>English rows define structure such as type, required status, order, and factor mapping.</li>
-          <li>Translation rows can stay structurally sparse when the English row already defines the contract.</li>
+          <li>Review and update wording in the current questionnaire version.</li>
+          <li>Add or adjust translations in the shared table.</li>
+          <li>Update answer options and context choices.</li>
+          <li>Create a new dated version tab when a change should be tracked separately.</li>
+          <li>Prepare a clear handoff for someone who will verify the live app.</li>
         </ul>
       </article>
       <aside class="callout">
-        <strong>Rule of thumb</strong>
-        <p>Keep <code>item_id</code> stable when the question is still the same analytical construct. Create a new dated version tab when the questionnaire definition or interpretation materially changes.</p>
+        <strong>App access still required</strong>
+        <p>Ask an app user to verify anything that depends on the running questionnaire, the submit flow, the feedback page, or the live comparison controls.</p>
       </aside>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Common change types</h2>
+        <h2 class="section-title">Change types and who needs to verify them</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Change type</th>
-                <th>Usually safe to keep the same <code>item_id</code>?</th>
-                <th>Needs factor review?</th>
-                <th>Typical action</th>
+                <th>Can start in Google Sheets?</th>
+                <th>Needs app-level verification?</th>
+                <th>Typical next step</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Translation or wording cleanup</td>
+                <td>Wording or translation cleanup</td>
                 <td>Yes</td>
-                <td>No</td>
-                <td>Update the row text, then validate locally.</td>
+                <td>Usually yes</td>
+                <td>Edit the sheet, then ask an app user to confirm the live wording if the result matters in the running survey.</td>
               </tr>
               <tr>
                 <td>Required or active toggle</td>
-                <td>Usually</td>
-                <td>Sometimes</td>
-                <td>Check navigation and submission behavior.</td>
-              </tr>
-              <tr>
-                <td>New substance or dose logic</td>
-                <td>Usually</td>
-                <td>No, unless scoring items changed too</td>
-                <td>Review the override pairs and local walkthrough.</td>
-              </tr>
-              <tr>
-                <td>New scorable item or changed factor assignment</td>
-                <td>Not automatically</td>
                 <td>Yes</td>
-                <td>Review <code>scale_id</code>, create a new dated version, and re-check downstream outputs.</td>
+                <td>Yes</td>
+                <td>Check the live navigation and completion flow in the app.</td>
+              </tr>
+              <tr>
+                <td>Substance or dose option changes</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Verify the live option set and the feedback-side comparison behavior in the app.</td>
+              </tr>
+              <tr>
+                <td>New scorable item or factor remapping</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Create or update the dated version, then use app access to verify the live questionnaire and feedback path.</td>
               </tr>
             </tbody>
           </table>
@@ -102,27 +101,26 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Step-by-step adaptation path</h2>
+        <h2 class="section-title">Google Sheets workflow</h2>
         <ol class="step-list">
-          <li><span class="step-num">1</span><div><strong>Classify the change.</strong><p>Decide whether you are changing wording, response logic, or the analytical meaning of the instrument.</p></div></li>
-          <li><span class="step-num">2</span><div><strong>Edit the stacked questionnaire table.</strong><p>Keep one row per <code>item_id</code> per language, and keep all languages in the same tab.</p></div></li>
-          <li><span class="step-num">3</span><div><strong>Check the structural columns.</strong><p>Make sure the authoritative English rows still carry the structural fields and any scorable rows still carry the right <code>scale_id</code>.</p></div></li>
-          <li><span class="step-num">4</span><div><strong>Create or update a dated version tab.</strong><p>Use a new dated tab when the questionnaire definition changes in a way you may want to track separately.</p></div></li>
-          <li><span class="step-num">5</span><div><strong>Validate locally.</strong><p>Walk the questionnaire, switch languages, test the substance and dose logic, and confirm the results view still completes.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Promote and reload.</strong><p>Once the version is ready, reload the running survey so it resolves the updated Google Sheets version and computes a fresh definition hash.</p></div></li>
+          <li><span class="step-num">1</span><div><strong>Open the current shared questionnaire tab.</strong><p>Confirm you are working in the intended version before changing anything.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Make the content change.</strong><p>Update the wording, translation, options, or structural rows that need to change.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable rows mapped through the intended <code>scale_id</code>.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Hand off live verification.</strong><p>Ask someone with app access to reload the running questionnaire and confirm the change in the app.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
         </ol>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">What the collaborator should preserve</h2>
+        <h2 class="section-title">When to ask for app-level help</h2>
         <ul class="check-list">
-          <li>Keep one language block per language in the same table.</li>
-          <li>Keep structural truth on the English rows.</li>
-          <li>Keep <code>item_id</code> values stable unless there is a real analytical reason to change them.</li>
-          <li>Keep scorable rows mapped to the intended factor through <code>scale_id</code>.</li>
-          <li>Keep Google Sheets versioning at the tab level, not as ad hoc row metadata.</li>
+          <li>When the change must be checked in the live questionnaire UI.</li>
+          <li>When the submit flow or required-step behavior might change.</li>
+          <li>When the feedback chart or comparison controls need verification.</li>
+          <li>When someone needs to reload the running questionnaire after a version update.</li>
         </ul>
       </div>
     </section>
@@ -131,24 +129,24 @@
       <div class="diagram-grid">
         <article class="diagram-card">
           <h3>Questionnaire adaptation flow</h3>
-          <p>From classifying a change through Google Sheets promotion and runtime reload.</p>
+          <p>Use this when a sheet change needs a clean handoff into live app verification.</p>
           <div class="figure-shell">
             <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
           </div>
           <div class="figure-actions">
             <a class="button-link primary" href="diagrams/viewer.html#questionnaire-adaptation-flow">Open viewer</a>
-            <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
+            <a class="button-link" href="diagrams.html">Open visual guide</a>
           </div>
         </article>
         <article class="diagram-card">
           <h3>Change impact map</h3>
-          <p>A quick way to decide whether a change is mostly cosmetic, structural, or analytically meaningful.</p>
+          <p>Use this when you need to decide whether the edit is a light wording change or a real version change.</p>
           <div class="figure-shell">
             <pre data-mermaid-source="diagrams/change-impact-map.mmd"></pre>
           </div>
           <div class="figure-actions">
             <a class="button-link primary" href="diagrams/viewer.html#change-impact-map">Open viewer</a>
-            <a class="button-link" href="diagrams/change-impact-map.mmd">Open source</a>
+            <a class="button-link" href="diagrams.html">Open visual guide</a>
           </div>
         </article>
       </div>
@@ -156,7 +154,7 @@
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Public guide only. For implementation details, the main repo remains the source of truth.</div>
+    <div class="footer-inner">Google Sheets editing and app-verification handoff.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>
