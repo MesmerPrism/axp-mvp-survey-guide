@@ -14,7 +14,7 @@ The site explains:
 - when app-level access is required
 - how to use the live app
 - how to update the questionnaire in Google Sheets
-- how to use OSF downloads, codebooks, and changelogs
+- how to use OSF downloads, codebooks, changelogs, and data examples
 - how the access handoff works between sheet editors, app users, and
   download-only users
 
@@ -41,6 +41,6 @@ Then open:
 - `docs/index.html` overview of access types and common tasks
 - `docs/value-lifecycle.html` live app usage and app-only checks
 - `docs/questionnaire-edits.html` Google Sheets workflow and handoff rules
-- `docs/data-examples.html` OSF downloads and file usage
-- `docs/diagrams.html` visual guide pages
+- `docs/data-examples.html` data type, file structure, and export examples
+- `docs/diagrams.html` diagram pages with deep links into the examples
 - `docs/diagrams/*.mmd` Mermaid sources

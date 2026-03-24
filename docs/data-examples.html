@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OSF Downloads | AXP Access Guide</title>
+  <title>Data Examples | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page">
@@ -24,8 +24,8 @@
           <a href="index.html">Overview</a>
           <a href="value-lifecycle.html">App Access</a>
           <a href="questionnaire-edits.html">Google Sheets</a>
-          <a href="data-examples.html">OSF Downloads</a>
-          <a href="diagrams.html">Visual Guide</a>
+          <a href="data-examples.html">Data Examples</a>
+          <a href="diagrams.html">Diagrams</a>
         </nav>
       </div>
     </div>
@@ -33,119 +33,314 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">OSF Downloads</div>
-      <h1>Use the available files without app access.</h1>
-      <p>This page is for collaborators who have OSF download access and may or may not also have Google Sheets access. Use OSF when you need current export files, factor-score files, codebooks, or changelogs.</p>
+      <div class="kicker">Data Examples</div>
+      <h1>Inspect the file shapes behind each workflow stage.</h1>
+      <p>These CSV and JSON examples are synthetic, but they preserve the column names, table boundaries, and export shapes used across the AXP workflow. The value-lifecycle diagram links directly into the sections below, so a collaborator can click a node and land on the matching file structure without needing app access.</p>
       <div class="jump-links">
-        <a href="#file-types">Which files to open</a>
-        <a href="#download-workflow">Download workflow</a>
-        <a href="#app-required">When app access is still required</a>
+        <a href="#definition-source">Definition</a>
+        <a href="#responses-memory">In-memory rows</a>
+        <a href="#submission-table">MariaDB tables</a>
+        <a href="#peer-cache">Peer plotting</a>
+        <a href="#public-export">Distribution</a>
+        <a href="file-viewer.html#definition-source">Open file viewer</a>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">What you can do with OSF access</h2>
+        <h2 class="section-title">How to read these examples</h2>
         <div class="detail-grid">
           <div class="detail-card">
-            <strong>Download the latest bundles.</strong>
-            <p>Use OSF to get the current public or private files you have permission to open.</p>
+            <strong>Datatype labels are explicit.</strong>
+            <p>Each example calls out whether the shape is a CSV source file, an in-memory R <code>data.frame</code>, a MariaDB table export, or a wide distribution CSV.</p>
           </div>
           <div class="detail-card">
-            <strong>Use codebooks and changelogs.</strong>
-            <p>Open the supporting files to interpret columns and confirm when the bundle was refreshed.</p>
+            <strong>The values are mock.</strong>
+            <p>No participant data was copied into this repo. These files exist only to explain shape, naming, and the public/private split that collaborators see in the workflow and OSF bundles.</p>
           </div>
           <div class="detail-card">
-            <strong>Work without app access.</strong>
-            <p>You do not need the live app just to retrieve files or read supporting documentation.</p>
+            <strong>Use the viewer for wide files.</strong>
+            <p>Each section links to a dedicated full-screen viewer so the raw layout stays readable when an inline preview is too small.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="panel" id="file-types">
-        <h2 class="section-title">Which files to open</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>File type</th>
-                <th>Use it for</th>
-                <th>App access required?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Public latest export</td>
-                <td>The current public wide dataset.</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td>Public factor-score export</td>
-                <td>The current public long factor-score file.</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td>Private full export</td>
-                <td>The restricted wide dataset for users who have private-file access.</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td>Codebook</td>
-                <td>Column meanings and field descriptions.</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td>Changelog</td>
-                <td>When the bundle changed and what the refresh contained.</td>
-                <td>No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="panel" id="download-workflow">
-        <h2 class="section-title">Typical OSF download workflow</h2>
-        <ol class="step-list">
-          <li><span class="step-num">1</span><div><strong>Open the OSF location you were given.</strong><p>Use the public or private area that matches your permission level.</p></div></li>
-          <li><span class="step-num">2</span><div><strong>Download the latest file set you need.</strong><p>Choose the wide export, factor-score file, codebook, or changelog based on the task in front of you.</p></div></li>
-          <li><span class="step-num">3</span><div><strong>Use the codebook to interpret columns.</strong><p>Do not guess field meanings when the codebook is already available with the bundle.</p></div></li>
-          <li><span class="step-num">4</span><div><strong>Use the changelog to confirm freshness.</strong><p>Check when the bundle was last refreshed before treating it as current.</p></div></li>
-          <li><span class="step-num">5</span><div><strong>Hand off live checks if needed.</strong><p>If the task turns into a runtime verification question, pass it to someone with app access.</p></div></li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="panel" id="app-required">
-        <h2 class="section-title">When OSF access is not enough</h2>
-        <ul class="check-list">
-          <li>When you need to test the live questionnaire itself.</li>
-          <li>When you need to submit a response and reach the feedback screen.</li>
-          <li>When you need to verify how a Google Sheets change appears in the running app.</li>
-          <li>When you need to confirm live comparison controls or feedback behavior.</li>
-        </ul>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Related pages</h2>
-        <div class="figure-actions">
-          <a class="button-link primary" href="value-lifecycle.html">App access</a>
-          <a class="button-link" href="questionnaire-edits.html">Google Sheets</a>
-          <a class="button-link" href="diagrams.html">Visual guide</a>
+        <h2 class="section-title">1. Definition and runtime</h2>
+        <p>The questionnaire starts as a stacked multi-language table. After loading, the runtime keeps both the full multilingual table and a selected-language view, plus metadata such as instrument version and definition hash.</p>
+        <div class="file-stack">
+          <article class="file-card" id="definition-source">
+            <h3><code>mock-data/questionnaire_definition.csv</code></h3>
+            <p>Mock source table excerpt for the Google Sheet / CSV definition. English rows carry structure and ASC factor mapping through <code>scale_id</code>.</p>
+            <p class="file-meta"><strong>Datatype:</strong> CSV source file. <strong>Shape:</strong> one row per questionnaire item per language.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/questionnaire_definition.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#definition-source">Open viewer</a>
+              <a class="button-link" href="mock-data/questionnaire_definition.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="runtime-state">
+            <h3><code>mock-data/runtime_state.json</code></h3>
+            <p>Mock runtime metadata showing the loaded questionnaire shapes and the currently selected language view.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON example of runtime state. <strong>Shape:</strong> metadata object with row and column counts plus instrument identifiers.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/runtime_state.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#runtime-state">Open viewer</a>
+              <a class="button-link" href="mock-data/runtime_state.json">Open raw file</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">2. Submission assembly and ASC scoring in memory</h2>
+        <p>At submit time the app assembles a common long table, splits it into numeric and text/context rows, and computes canonical ASC factor scores from the numeric rows.</p>
+        <div class="file-stack">
+          <article class="file-card" id="responses-memory">
+            <h3><code>mock-data/responses_df.csv</code></h3>
+            <p>The shared in-memory response table before numeric and text/context rows are split apart.</p>
+            <p class="file-meta"><strong>Datatype:</strong> R <code>data.frame</code> represented as CSV. <strong>Shape:</strong> one row per answered item with <code>item_id</code>, <code>type</code>, and raw <code>value</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/responses_df.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#responses-memory">Open viewer</a>
+              <a class="button-link" href="mock-data/responses_df.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="numeric-memory">
+            <h3><code>mock-data/response_numeric_memory.csv</code></h3>
+            <p>The numeric subset that gets scored and then written to <code>response_numeric</code>.</p>
+            <p class="file-meta"><strong>Datatype:</strong> R <code>data.frame</code> represented as CSV. <strong>Shape:</strong> one row per numeric answer with <code>item_id</code>, <code>value</code>, and <code>created_at</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/response_numeric_memory.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#numeric-memory">Open viewer</a>
+              <a class="button-link" href="mock-data/response_numeric_memory.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="text-memory">
+            <h3><code>mock-data/response_text_memory.csv</code></h3>
+            <p>The text/context subset. q0 and q1 drive peer comparison filters; free-text fields such as <code>q_context</code> may or may not persist depending on server configuration.</p>
+            <p class="file-meta"><strong>Datatype:</strong> R <code>data.frame</code> represented as CSV. <strong>Shape:</strong> one row per text or context field with <code>field_id</code> and <code>text</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/response_text_memory.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#text-memory">Open viewer</a>
+              <a class="button-link" href="mock-data/response_text_memory.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="factor-scores">
+            <h3><code>mock-data/asc_factor_scores.csv</code></h3>
+            <p>The canonical ASC factor score rows. This is the same row shape that powers immediate self-feedback and is later written to the <code>score</code> table.</p>
+            <p class="file-meta"><strong>Datatype:</strong> R <code>data.frame</code> represented as CSV. <strong>Shape:</strong> one row per canonical ASC <code>scale_id</code> with <code>score_value</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/asc_factor_scores.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#factor-scores">Open viewer</a>
+              <a class="button-link" href="mock-data/asc_factor_scores.csv">Open raw file</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">3. Durable MariaDB tables</h2>
+        <p>Once the write succeeds, the session is represented as normalized MariaDB tables. These examples show the same shapes as CSV excerpts so the columns stay easy to inspect on the website.</p>
+        <div class="file-stack">
+          <article class="file-card" id="submission-table">
+            <h3><code>mock-data/submission_table.csv</code></h3>
+            <p>Submission-level metadata written once per survey session.</p>
+            <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per <code>submission_id</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/submission_table.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#submission-table">Open viewer</a>
+              <a class="button-link" href="mock-data/submission_table.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="response-numeric-table">
+            <h3><code>mock-data/response_numeric_table.csv</code></h3>
+            <p>The durable numeric answer rows keyed by submission and item id.</p>
+            <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per numeric answer.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/response_numeric_table.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#response-numeric-table">Open viewer</a>
+              <a class="button-link" href="mock-data/response_numeric_table.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="response-text-table">
+            <h3><code>mock-data/response_text_table.csv</code></h3>
+            <p>The durable text/context rows. Public export never includes these raw text values.</p>
+            <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per text or context field.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/response_text_table.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#response-text-table">Open viewer</a>
+              <a class="button-link" href="mock-data/response_text_table.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="score-table">
+            <h3><code>mock-data/score_table.csv</code></h3>
+            <p>The durable ASC factor score rows written after scoring succeeds.</p>
+            <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per canonical ASC factor per submission.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/score_table.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#score-table">Open viewer</a>
+              <a class="button-link" href="mock-data/score_table.csv">Open raw file</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">4. Peer comparison selection and plotted values</h2>
+        <p>The peer plot does not draw raw text rows directly. It first builds one cache row per submission from durable tables, resolves the participant&rsquo;s selected canonical comparison pair, then queries matching ASC factor score rows and renders those rows as peer rings and a peer median overlay.</p>
+        <ul class="plain-list">
+          <li>The raw source for the comparison context is <code>submission</code> plus the q0/q1 context rows in <code>response_text</code> plus ASC factor completeness from <code>score</code>.</li>
+          <li><code>peer_plot_submission_cache</code> stores both the raw labels and the canonical induction/dose tokens used for comparison.</li>
+          <li>The controls only expose canonical buckets back to the participant, even if raw free text or translated labels were stored.</li>
+          <li>The selected canonical pair then drives a filtered join from <code>peer_plot_submission_cache</code> to <code>score</code>, excluding the current submission and incomplete peer rows.</li>
+        </ul>
+        <div class="file-stack">
+          <article class="file-card" id="peer-cache-build">
+            <h3><code>mock-data/peer_plot_cache_build.json</code></h3>
+            <p>This build recipe shows how one <code>peer_plot_submission_cache</code> row is assembled from <code>submission</code>, the stored q0/q1 context rows in <code>response_text</code>, and the ASC factor row count in <code>score</code>.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON cache-build example. <strong>Shape:</strong> one object showing source tables, canonicalization, and the written cache row.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_cache_build.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-cache-build">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_cache_build.json">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="peer-selection">
+            <h3><code>mock-data/peer_plot_selection_state.json</code></h3>
+            <p>This selection-state example makes the UI path explicit: the current submission provides the default pair, the controls show only canonical buckets, and the selected pair becomes the query filter for peer rows.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON UI-state example. <strong>Shape:</strong> one object showing current defaults, canonical control catalog, and the selected query filters.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_selection_state.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-selection">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_selection_state.json">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="peer-cache">
+            <h3><code>mock-data/peer_plot_submission_cache.csv</code></h3>
+            <p>The one-row-per-submission cache that keeps raw and canonical context plus completeness flags. In this mock file, one row uses translated raw labels that canonicalize to the selected bucket, one row is incomplete, and one row belongs to a different bucket.</p>
+            <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per submission with raw plus canonical induction/dose values.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_submission_cache.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-cache">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_submission_cache.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="peer-query">
+            <h3><code>mock-data/peer_plot_scores_query.csv</code></h3>
+            <p>The score rows returned for one canonical bucket such as <code>psilocybin + medium</code>. Each row becomes one plotted peer value on one ASC axis, even when the stored raw labels were translated or phrased differently before canonicalization.</p>
+            <p class="file-meta"><strong>Datatype:</strong> Query result represented as CSV. <strong>Shape:</strong> one row per <code>peer_id</code> and <code>scale_id</code>.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_scores_query.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-query">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_scores_query.csv">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="peer-render">
+            <h3><code>mock-data/peer_plot_render_payload.json</code></h3>
+            <p>This mock payload makes the rendered outcome explicit: it records the selected canonical pair, names which cache rows were excluded, and shows how matching peer score rows become peer rings or a density layer plus the peer median polygon.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON render-state example. <strong>Shape:</strong> one object describing filters and rendered layers.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_render_payload.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-render">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_render_payload.json">Open raw file</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">5. Distribution outputs</h2>
+        <p>The distribution stage widens the normalized rows into publication-ready CSV files. Public output anonymizes identity and drops free text. Private output keeps the raw submission id, timestamp, and text columns. These are the shapes collaborators see again in OSF bundles.</p>
+        <div class="file-stack">
+          <article class="file-card" id="public-export">
+            <h3><code>mock-data/public_export.csv</code> and <code>mock-data/public_factor_scores.csv</code></h3>
+            <p>The public wide bundle plus the public factor-only long export. These are the publishable shapes.</p>
+            <p class="file-meta"><strong>Datatype:</strong> Wide and long CSV export files. <strong>Shape:</strong> one wide row per anonymized session plus one long row per public factor score.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/public_export.csv"></pre>
+            </div>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/public_factor_scores.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#public-export">Open wide viewer</a>
+              <a class="button-link" href="file-viewer.html#public-factor-export">Open factor viewer</a>
+              <a class="button-link" href="mock-data/public_export.csv">Open wide export</a>
+              <a class="button-link" href="mock-data/public_factor_scores.csv">Open factor export</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="private-export">
+            <h3><code>mock-data/private_full_export.csv</code></h3>
+            <p>The private wide bundle. It retains raw submission identity, full timestamps, and text columns alongside numeric answers and ASC factor scores.</p>
+            <p class="file-meta"><strong>Datatype:</strong> Wide CSV export file. <strong>Shape:</strong> one row per raw submission with numeric, text, and score columns.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/private_full_export.csv"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#private-export">Open viewer</a>
+              <a class="button-link" href="mock-data/private_full_export.csv">Open raw file</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">OSF download guidance for public and private file users.</div>
+    <div class="footer-inner">Synthetic reference files for AXP workflow stages and export shapes.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>
