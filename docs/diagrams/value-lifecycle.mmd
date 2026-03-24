@@ -1,22 +1,28 @@
 flowchart TD
-  subgraph Definition["1. Definition<br/>and runtime"]
+  subgraph Definition[""]
     direction TB
+    DefinitionTitle["1. Definition and runtime"]
+    DefinitionTitle ~~~ A
     A["Questionnaire definition source<br/>Google Sheet or CSV file"] --> B["Loaded questionnaire_all_df<br/>R data.frame, long rows, all languages"]
     B --> C["Runtime questionnaire_df plus metadata<br/>R state with instrument_id, instrument_version,<br/>language, definition_hash"]
     C --> D["Participant answers current version"]
     D --> E["responses_df<br/>R data.frame with item_id, type, value"]
   end
 
-  subgraph Derived["2. In-memory split<br/>and ASC scoring"]
+  subgraph Derived[""]
     direction TB
+    DerivedTitle["2. In-memory split and ASC scoring"]
+    DerivedTitle ~~~ E
     E --> F["Numeric answer rows<br/>R data.frame with item_id, value, created_at"]
     E --> G["Text and context rows<br/>R data.frame with field_id, text, created_at"]
     F --> H["ASC factor score rows<br/>R data.frame with canonical scale_id, score_value"]
     H --> I["Current self-score set<br/>11 canonical ASC factors in memory"]
   end
 
-  subgraph Store["3. Durable<br/>MariaDB storage"]
+  subgraph Store[""]
     direction LR
+    StoreTitle["3. Durable MariaDB storage"]
+    StoreTitle ~~~ K
     K["submission<br/>MariaDB table<br/>1 row per submission"]
     L["response_numeric<br/>MariaDB table<br/>1 row per numeric item"]
     M["response_text<br/>MariaDB table<br/>1 row per text or context field"]
@@ -37,8 +43,10 @@ flowchart TD
     N --> X
   end
 
-  subgraph Peer["4. Peer selection<br/>query and layers"]
+  subgraph Peer[""]
     direction TB
+    PeerTitle["4. Peer selection, query and layers"]
+    PeerTitle ~~~ P0
     P0["Current submission defaults<br/>selected_drug + selected_dose<br/>canonicalized to peer tokens"]
     P1["Comparison controls<br/>UI only shows canonical buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
     P2["Selected canonical pair<br/>example: psilocybin + medium"]
@@ -56,8 +64,10 @@ flowchart TD
     I --> J
   end
 
-  subgraph Export["5. Distribution<br/>outputs"]
+  subgraph Export[""]
     direction TB
+    ExportTitle["5. Distribution outputs"]
+    ExportTitle ~~~ S
     S["Public export builder<br/>wide CSV plus factor-only CSV"]
     T["Private export builder<br/>wide CSV with text columns"]
     U["Public anonymized bundle<br/>session_anon, created_date,<br/>item_* and scale_* columns"]
@@ -66,6 +76,9 @@ flowchart TD
     X --> S --> U
     X --> T --> V
   end
+
+  classDef stageTitle fill:#FFFFFF,stroke:#262632,stroke-width:1.8px,color:#262632,font-size:16px,font-weight:800;
+  class DefinitionTitle,DerivedTitle,StoreTitle,PeerTitle,ExportTitle stageTitle;
 
   click A href "__GUIDE_ROOT__/data-examples.html#definition-source" "Open definition source example"
   click B href "__GUIDE_ROOT__/data-examples.html#definition-source" "Open loaded questionnaire example"
