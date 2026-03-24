@@ -35,7 +35,7 @@
     <section class="hero">
       <div class="kicker">Google Sheets Access</div>
       <h1>Review and update the questionnaire in the shared sheet.</h1>
-      <p>Use this page if your main access is the shared questionnaire sheet. You can review wording, translations, options, and version tabs here. Anything that must be checked in the running survey still needs app access.</p>
+      <p>Use this page if your main access is the shared questionnaire sheet. The sheet is the editable questionnaire source. Valid edits there are what the app reads. App access is still needed when someone must confirm the running survey behavior or refresh an already open app session.</p>
     </section>
 
     <section class="two-col section">
@@ -50,21 +50,21 @@
         </ul>
       </article>
       <aside class="callout">
-        <strong>App access still required</strong>
-        <p>Ask an app user to verify anything that depends on the running questionnaire, the submit flow, the feedback page, or the live comparison controls.</p>
+        <strong>What app access is for</strong>
+        <p>App access is for live verification, not for making a valid sheet edit count. New or reopened app sessions read the sheet directly. Ask an app user only when someone needs to check the running questionnaire, the submit flow, the feedback page, or an already open session after a sheet change.</p>
       </aside>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Change types and who needs to verify them</h2>
+        <h2 class="section-title">Change types and when a live app check is helpful</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Change type</th>
                 <th>Can start in Google Sheets?</th>
-                <th>Needs app-level verification?</th>
+                <th>Needs a live app check?</th>
                 <th>Typical next step</th>
               </tr>
             </thead>
@@ -72,26 +72,26 @@
               <tr>
                 <td>Wording or translation cleanup</td>
                 <td>Yes</td>
-                <td>Usually yes</td>
-                <td>Edit the sheet, then ask an app user to confirm the live wording if the result matters in the running survey.</td>
+                <td>Sometimes</td>
+                <td>Edit the sheet. New app loads pick it up. Ask an app user only if someone needs to confirm how the live wording actually renders in the survey.</td>
               </tr>
               <tr>
                 <td>Required or active toggle</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Check the live navigation and completion flow in the app.</td>
+                <td>Edit the sheet, then use app access to confirm the live navigation and completion flow.</td>
               </tr>
               <tr>
                 <td>Substance or dose option changes</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Verify the live option set and the feedback-side comparison behavior in the app.</td>
+                <td>Edit the sheet, then use app access to verify the live option set and the feedback-side comparison behavior.</td>
               </tr>
               <tr>
                 <td>New scorable item or factor remapping</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Create or update the dated version, then use app access to verify the live questionnaire and feedback path.</td>
+                <td>Create or update the dated version in the sheet, then use app access to verify the live questionnaire and feedback path.</td>
               </tr>
             </tbody>
           </table>
@@ -106,10 +106,24 @@
           <li><span class="step-num">1</span><div><strong>Open the current shared questionnaire tab.</strong><p>Confirm you are working in the intended version before changing anything.</p></div></li>
           <li><span class="step-num">2</span><div><strong>Make the content change.</strong><p>Update the wording, translation, options, or structural rows that need to change.</p></div></li>
           <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable rows mapped through the intended <code>scale_id</code>.</p></div></li>
-          <li><span class="step-num">4</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
-          <li><span class="step-num">5</span><div><strong>Hand off live verification.</strong><p>Ask someone with app access to reload the running questionnaire and confirm the change in the app.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Let the sheet enforcer sync the tab.</strong><p>If the Google Sheets Apps Script is installed, it will auto-sort language blocks, keep the expected header shape, and apply the row formatting the questionnaire uses.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Use app access only when a live check is needed.</strong><p>New or reopened app sessions already read the updated sheet. Use the app reload control only if someone needs to refresh an already open session or test a different sheet tab override.</p></div></li>
+          <li><span class="step-num">7</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
         </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">What the Google Sheets enforcer does</h2>
+        <ul class="plain-list">
+          <li>If installed, the Apps Script runs on edit and is also available from the <code>AXP Sheet</code> menu as <code>Sync questionnaire sheet</code>.</li>
+          <li>It keeps the questionnaire tab in the expected header order and auto-sorts each language block by the English row order.</li>
+          <li>It colors and formats rows from the English structural metadata, including <code>active</code> state and <code>scale_id</code>.</li>
+          <li>It checks that explicit <code>induction_method_N</code> and <code>dose_options_N</code> header pairs are complete before syncing.</li>
+          <li>It helps keep the sheet structurally valid and readable, but it is not a separate publish step. The app still reads the questionnaire from the sheet itself.</li>
+        </ul>
       </div>
     </section>
 
@@ -120,7 +134,7 @@
           <li>When the change must be checked in the live questionnaire UI.</li>
           <li>When the submit flow or required-step behavior might change.</li>
           <li>When the feedback chart or comparison controls need verification.</li>
-          <li>When someone needs to reload the running questionnaire after a version update.</li>
+          <li>When someone already has the app open and needs that existing session refreshed after a sheet change.</li>
         </ul>
       </div>
     </section>

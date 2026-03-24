@@ -5,7 +5,7 @@
       "title": "Questionnaire Adaptation Flow",
       "source": "questionnaire-adaptation-flow.mmd",
       "category": "editing",
-      "description": "How a Google Sheets change moves into live app verification.",
+      "description": "How a Google Sheets change becomes the current questionnaire source and then gets checked in the live app.",
       "relatedDocs": [
         "../questionnaire-edits.html",
         "../index.html"
