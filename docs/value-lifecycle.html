@@ -76,6 +76,19 @@
 
     <section class="section">
       <div class="panel">
+        <h2 class="section-title">What reload does</h2>
+        <ul class="plain-list">
+          <li>Opening or refreshing the survey page in the browser starts a new survey session from the beginning.</li>
+          <li>The app does not currently restore in-progress answers after a full browser refresh.</li>
+          <li>The in-app questionnaire reload does not restart the whole page, but it also is not a full draft-restore feature.</li>
+          <li>If item ids and question structure stay the same, some current in-session values may still remain visible after an in-app questionnaire reload.</li>
+          <li>If the questionnaire structure changes, affected fields can re-render or reset, so questionnaire reload is safest before someone starts answering.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
         <h2 class="section-title">Need the big picture?</h2>
         <p>Open the diagrams when you want to connect the running survey to upstream Google Sheets edits and downstream data examples and exports.</p>
         <div class="figure-actions">
