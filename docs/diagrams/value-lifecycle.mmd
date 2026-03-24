@@ -1,43 +1,51 @@
-flowchart LR
-  A[Google Sheets or fallback questionnaire source] --> B[Normalized questionnaire table]
-  B --> C[Runtime questionnaire state]
-  C --> D[Participant completes the survey]
-  D --> E[In-memory response assembly]
-
-  E --> F[Numeric answers by item_id]
-  E --> G[Text and context answers]
-  F --> H[Factor computation]
-  H --> I[Current self-scores in memory]
-  I --> J[Immediate feedback]
-
-  subgraph Store[Durable storage]
-    K[submission metadata]
-    L[response_numeric]
-    M[response_text when enabled]
-    N[score rows]
-    O[peer comparison cache]
+flowchart TD
+  subgraph Definition["1. Definition and runtime"]
+    A["Google Sheets or fallback source"] --> B["Loaded and normalized<br/>questionnaire table"]
+    B --> C["Runtime questionnaire state<br/>instrument + version<br/>language + definition hash"]
+    C --> D["Participant completes the survey"]
+    D --> E["responses_df in memory"]
   end
 
-  E --> K
-  F --> L
-  G --> M
-  H --> N
-  K --> O
-  M --> O
-  N --> O
-
-  O --> P[Peer comparison inputs]
-  P --> J
-
-  subgraph Export[Distribution outputs]
-    Q[Public anonymized bundle]
-    R[Private full bundle]
+  subgraph Derived["2. Derived in memory"]
+    E --> F["Numeric answers by item_id"]
+    E --> G["Text and context answers"]
+    F --> H["Scores from scale_id"]
+    H --> I["Current self-scores<br/>in memory"]
+    I --> J["Immediate feedback"]
   end
 
-  K --> Q
-  L --> Q
-  N --> Q
-  K --> R
-  L --> R
-  M --> R
-  N --> R
+  subgraph Store["3. Durable storage"]
+    K["submission"]
+    L["response_numeric"]
+    M["response_text or<br/>context-only rows"]
+    N["score"]
+    O["peer_plot_submission_cache"]
+
+    D --> K
+    F --> L
+    G --> M
+    H --> N
+    K --> O
+    M --> O
+    N --> O
+  end
+
+  subgraph Peer["4. Peer comparison"]
+    P["Canonical induction<br/>and dose buckets"]
+    Q["Peer comparison inputs"]
+
+    O --> P --> Q --> J
+  end
+
+  subgraph Export["5. Distribution outputs"]
+    R["Export scripts<br/>widen and split stored rows"]
+    S["Public anonymized bundle"]
+    T["Private full bundle"]
+
+    K --> R
+    L --> R
+    M --> R
+    N --> R
+    R --> S
+    R --> T
+  end

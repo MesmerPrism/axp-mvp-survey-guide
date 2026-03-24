@@ -26,7 +26,7 @@
     <section class="hero">
       <div class="kicker">Values Through Stages</div>
       <h1>How values are computed and saved.</h1>
-      <p>The same survey definition and response values move through a predictable sequence: load, normalize, render, submit, score, persist, compare, and export. This page explains the public-safe contract at each stage.</p>
+      <p>The important split happens after submission: one path keeps the current participant’s scores in memory for immediate feedback, another writes durable rows to storage, and a later export path widens those stored rows into public and private bundles.</p>
     </section>
 
     <section class="section">
@@ -107,7 +107,7 @@
         <p>The immediate results view uses the current submission’s computed scores already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
         <ul class="plain-list">
           <li>Self-scores do not require rereading the just-written submission rows.</li>
-          <li>Peer comparison uses canonical induction and dose buckets rather than raw free text.</li>
+          <li>Peer comparison starts from <code>peer_plot_submission_cache</code> and uses canonical induction and dose buckets rather than raw free text.</li>
           <li>If too few peers exist in the selected bucket, the system omits peer dots rather than fabricating comparison data.</li>
         </ul>
       </div>
