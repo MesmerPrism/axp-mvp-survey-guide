@@ -1,0 +1,42 @@
+{
+  "builder": "db_sync_peer_plot_submission_cache()",
+  "submission_id": "6f9d0e2c-1234-4ad9-acde-8b9df7301f00",
+  "source_tables": {
+    "submission": {
+      "instrument_id": "axp_core_survey",
+      "instrument_version": "questionnaire_09_03_26"
+    },
+    "response_text_context_rows": [
+      {
+        "field_id": "q0",
+        "text": "Psilocybin"
+      },
+      {
+        "field_id": "q1",
+        "text": "Medium"
+      }
+    ],
+    "score_summary": {
+      "canonical_scale_ids_expected": 11,
+      "distinct_scale_rows_found": 11
+    }
+  },
+  "transform": {
+    "induction_fields_used": ["substance_select", "q0"],
+    "dose_fields_used": ["dose_select", "q1"],
+    "induction_method_canon": "psilocybin",
+    "dose_label_canon": "medium",
+    "has_complete_scales": 1
+  },
+  "written_cache_row": {
+    "submission_id": "6f9d0e2c-1234-4ad9-acde-8b9df7301f00",
+    "instrument_id": "axp_core_survey",
+    "instrument_version": "questionnaire_09_03_26",
+    "induction_method_raw": "Psilocybin",
+    "induction_method_canon": "psilocybin",
+    "dose_label_raw": "Medium",
+    "dose_label_canon": "medium",
+    "scale_count": 11,
+    "has_complete_scales": 1
+  }
+}

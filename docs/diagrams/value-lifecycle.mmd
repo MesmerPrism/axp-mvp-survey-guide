@@ -21,7 +21,7 @@ flowchart TD
     L["response_numeric<br/>MariaDB table<br/>1 row per numeric item"]
     M["response_text<br/>MariaDB table<br/>1 row per text or context field"]
     N["score<br/>MariaDB table<br/>1 row per ASC factor"]
-    O["peer_plot_submission_cache<br/>MariaDB table<br/>1 row per submission context"]
+    O["peer_plot_submission_cache<br/>MariaDB table<br/>built from submission + q0/q1 context + score completeness<br/>1 row per submission"]
     X["Export-ready normalized rows<br/>submission plus numeric plus text plus score"]
 
     D --> K
@@ -37,14 +37,22 @@ flowchart TD
     N --> X
   end
 
-  subgraph Peer["4. Peer query<br/>and plotted layers"]
+  subgraph Peer["4. Peer selection<br/>query and layers"]
     direction TB
-    P["Canonical peer filter buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
-    Q["Peer score query result<br/>R data.frame with peer_id, scale_id, value"]
-    R["Peer render layers<br/>peer rings or density marks plus median polygon"]
+    P0["Current submission defaults<br/>selected_drug + selected_dose<br/>canonicalized to peer tokens"]
+    P1["Comparison controls<br/>UI only shows canonical buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
+    P2["Selected canonical pair<br/>example: psilocybin + medium"]
+    P3["Eligible peer context<br/>peer_plot_submission_cache rows<br/>keep has_complete_scales = 1"]
+    Q["Selected peer score query<br/>score JOIN cache by submission_id<br/>filter by selected canonical pair<br/>exclude current submission"]
+    R["Peer render layers<br/>peer rings or density marks<br/>plus peer median polygon"]
     J["Feedback plot<br/>self polygon plus peer overlay"]
 
-    O --> P --> Q --> R --> J
+    G --> P0 --> P2
+    P1 --> P2
+    O --> P3 --> Q
+    P2 --> Q
+    N --> Q
+    Q --> R --> J
     I --> J
   end
 
@@ -71,8 +79,11 @@ flowchart TD
   click L href "__GUIDE_ROOT__/data-examples.html#response-numeric-table" "Open response_numeric example"
   click M href "__GUIDE_ROOT__/data-examples.html#response-text-table" "Open response_text example"
   click N href "__GUIDE_ROOT__/data-examples.html#score-table" "Open score table example"
-  click O href "__GUIDE_ROOT__/data-examples.html#peer-cache" "Open peer cache example"
-  click P href "__GUIDE_ROOT__/data-examples.html#peer-cache" "Open canonical peer bucket example"
+  click O href "__GUIDE_ROOT__/data-examples.html#peer-cache-build" "Open peer cache build example"
+  click P0 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"
+  click P1 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"
+  click P2 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"
+  click P3 href "__GUIDE_ROOT__/data-examples.html#peer-cache" "Open peer cache example"
   click Q href "__GUIDE_ROOT__/data-examples.html#peer-query" "Open peer score query example"
   click R href "__GUIDE_ROOT__/data-examples.html#peer-render" "Open plotted peer layer example"
   click J href "__GUIDE_ROOT__/data-examples.html#peer-render" "Open feedback render example"

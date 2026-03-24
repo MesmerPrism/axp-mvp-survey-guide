@@ -1,4 +1,7 @@
 submission_id,instrument_id,instrument_version,induction_method_raw,induction_method_canon,dose_label_raw,dose_label_canon,scale_count,has_complete_scales,updated_at
 6f9d0e2c-1234-4ad9-acde-8b9df7301f00,axp_core_survey,questionnaire_09_03_26,Psilocybin,psilocybin,Medium,medium,11,1,2026-03-24 09:18:46
 peer-a-2026-03-18,axp_core_survey,questionnaire_09_03_26,Psilocybin,psilocybin,Medium,medium,11,1,2026-03-24 09:18:46
-peer-b-2026-03-21,axp_core_survey,questionnaire_09_03_26,Psilocybin,psilocybin,Medium,medium,11,1,2026-03-24 09:18:46
+peer-b-2026-03-21,axp_core_survey,questionnaire_09_03_26,Psilocibina,psilocybin,dosis media,medium,11,1,2026-03-24 09:18:46
+peer-c-2026-03-22,axp_core_survey,questionnaire_09_03_26,Psilocybin,psilocybin,Balanced dose,medium,11,1,2026-03-24 09:18:46
+peer-d-2026-03-23,axp_core_survey,questionnaire_09_03_26,Psilocybin,psilocybin,Medium,medium,8,0,2026-03-24 09:18:46
+peer-e-2026-03-19,axp_core_survey,questionnaire_09_03_26,Alcohol,alcohol,High,high,11,1,2026-03-24 09:18:46

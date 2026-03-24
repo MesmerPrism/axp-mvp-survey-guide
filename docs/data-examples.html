@@ -222,12 +222,44 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">4. Peer plotting context and plotted values</h2>
-        <p>The peer plot does not draw raw text rows directly. It first uses cached canonical induction/dose buckets to identify eligible submissions, then queries matching ASC factor score rows, then renders those rows as peer rings and a peer median overlay.</p>
+        <h2 class="section-title">4. Peer comparison selection and plotted values</h2>
+        <p>The peer plot does not draw raw text rows directly. It first builds one cache row per submission from durable tables, resolves the participant&rsquo;s selected canonical comparison pair, then queries matching ASC factor score rows and renders those rows as peer rings and a peer median overlay.</p>
+        <ul class="plain-list">
+          <li>The raw source for the comparison context is <code>submission</code> plus the q0/q1 context rows in <code>response_text</code> plus ASC factor completeness from <code>score</code>.</li>
+          <li><code>peer_plot_submission_cache</code> stores both the raw labels and the canonical induction/dose tokens used for comparison.</li>
+          <li>The controls only expose canonical buckets back to the participant, even if raw free text or translated labels were stored.</li>
+          <li>The selected canonical pair then drives a filtered join from <code>peer_plot_submission_cache</code> to <code>score</code>, excluding the current submission and incomplete peer rows.</li>
+        </ul>
         <div class="file-stack">
+          <article class="file-card" id="peer-cache-build">
+            <h3><code>mock-data/peer_plot_cache_build.json</code></h3>
+            <p>This build recipe shows how one <code>peer_plot_submission_cache</code> row is assembled from <code>submission</code>, the stored q0/q1 context rows in <code>response_text</code>, and the ASC factor row count in <code>score</code>.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON cache-build example. <strong>Shape:</strong> one object showing source tables, canonicalization, and the written cache row.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_cache_build.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-cache-build">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_cache_build.json">Open raw file</a>
+            </div>
+          </article>
+
+          <article class="file-card" id="peer-selection">
+            <h3><code>mock-data/peer_plot_selection_state.json</code></h3>
+            <p>This selection-state example makes the UI path explicit: the current submission provides the default pair, the controls show only canonical buckets, and the selected pair becomes the query filter for peer rows.</p>
+            <p class="file-meta"><strong>Datatype:</strong> JSON UI-state example. <strong>Shape:</strong> one object showing current defaults, canonical control catalog, and the selected query filters.</p>
+            <div class="figure-shell">
+              <pre data-file-source="mock-data/peer_plot_selection_state.json"></pre>
+            </div>
+            <div class="figure-actions">
+              <a class="button-link primary" href="file-viewer.html#peer-selection">Open viewer</a>
+              <a class="button-link" href="mock-data/peer_plot_selection_state.json">Open raw file</a>
+            </div>
+          </article>
+
           <article class="file-card" id="peer-cache">
             <h3><code>mock-data/peer_plot_submission_cache.csv</code></h3>
-            <p>The one-row-per-submission cache that keeps raw and canonical context plus completeness flags.</p>
+            <p>The one-row-per-submission cache that keeps raw and canonical context plus completeness flags. In this mock file, one row uses translated raw labels that canonicalize to the selected bucket, one row is incomplete, and one row belongs to a different bucket.</p>
             <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per submission with raw plus canonical induction/dose values.</p>
             <div class="figure-shell">
               <pre data-file-source="mock-data/peer_plot_submission_cache.csv"></pre>
@@ -240,7 +272,7 @@
 
           <article class="file-card" id="peer-query">
             <h3><code>mock-data/peer_plot_scores_query.csv</code></h3>
-            <p>The score rows returned for one canonical bucket such as <code>psilocybin + medium</code>. Each row becomes one plotted peer value on one ASC axis.</p>
+            <p>The score rows returned for one canonical bucket such as <code>psilocybin + medium</code>. Each row becomes one plotted peer value on one ASC axis, even when the stored raw labels were translated or phrased differently before canonicalization.</p>
             <p class="file-meta"><strong>Datatype:</strong> Query result represented as CSV. <strong>Shape:</strong> one row per <code>peer_id</code> and <code>scale_id</code>.</p>
             <div class="figure-shell">
               <pre data-file-source="mock-data/peer_plot_scores_query.csv"></pre>
@@ -253,7 +285,7 @@
 
           <article class="file-card" id="peer-render">
             <h3><code>mock-data/peer_plot_render_payload.json</code></h3>
-            <p>This mock payload makes the rendered outcome explicit: self scores become the self polygon, matching peer score rows become peer rings or a density layer, and peer medians become the comparison polygon.</p>
+            <p>This mock payload makes the rendered outcome explicit: it records the selected canonical pair, names which cache rows were excluded, and shows how matching peer score rows become peer rings or a density layer plus the peer median polygon.</p>
             <p class="file-meta"><strong>Datatype:</strong> JSON render-state example. <strong>Shape:</strong> one object describing filters and rendered layers.</p>
             <div class="figure-shell">
               <pre data-file-source="mock-data/peer_plot_render_payload.json"></pre>

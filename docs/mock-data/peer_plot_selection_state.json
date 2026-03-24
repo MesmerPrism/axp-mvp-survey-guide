@@ -1,0 +1,32 @@
+{
+  "feedback_step": 10,
+  "current_submission_defaults": {
+    "selected_drug_raw": "Psilocybin",
+    "selected_drug_canon": "psilocybin",
+    "selected_dose_raw": "Medium",
+    "selected_dose_canon": "medium"
+  },
+  "comparison_controls": {
+    "plot_induction_filter_catalog": ["cannabis", "psilocybin", "alcohol", "mdma"],
+    "plot_dose_filter_catalog": ["low", "medium", "high"],
+    "selected_pair": {
+      "induction_method_canon": "psilocybin",
+      "dose_label_canon": "medium"
+    }
+  },
+  "peer_context_lookup": {
+    "table": "peer_plot_submission_cache",
+    "required_filter": "has_complete_scales = 1",
+    "note": "Raw labels remain in the cache for traceability, but the controls only expose canonical buckets."
+  },
+  "selected_pair_query": {
+    "from": "score INNER JOIN peer_plot_submission_cache ON submission_id",
+    "filters": {
+      "induction_method_canon": "psilocybin",
+      "dose_label_canon": "medium",
+      "scale_id_scope": "11 canonical ASC factor ids",
+      "exclude_current_submission": "6f9d0e2c-1234-4ad9-acde-8b9df7301f00"
+    },
+    "output_file": "peer_plot_scores_query.csv"
+  }
+}

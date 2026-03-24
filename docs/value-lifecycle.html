@@ -82,8 +82,8 @@
               </tr>
               <tr>
                 <td>Feedback and peer plotting</td>
-                <td>In-memory self scores plus queried peer score rows</td>
-                <td>The participant sees a self polygon, optional peer rings, and a peer median overlay without waiting for export.</td>
+                <td>In-memory self scores, cached peer context rows, and selected peer score query rows</td>
+                <td>The participant sees a self polygon immediately, then optionally overlays peers chosen through canonical induction and dose filters.</td>
               </tr>
               <tr>
                 <td>Export</td>
@@ -116,14 +116,21 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">What the feedback plot actually draws</h2>
+        <h2 class="section-title">How the comparison selector and plot work</h2>
         <p>The immediate results view uses the current submission’s ASC factor score rows already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
         <ul class="plain-list">
           <li>The participant’s own 11 ASC factor scores become the purple self polygon and points.</li>
-          <li>Peer comparison starts from <code>peer_plot_submission_cache</code>, then queries <code>score</code> rows only for the selected canonical induction and dose bucket.</li>
+          <li>At submit time, <code>db_sync_peer_plot_submission_cache()</code> builds one cache row per submission from <code>submission</code>, the q0/q1 context stored in <code>response_text</code>, and the number of ASC factor rows written to <code>score</code>.</li>
+          <li>The comparison controls only show the recognized canonical bucket catalog back to the user: induction <code>cannabis</code>, <code>psilocybin</code>, <code>alcohol</code>, <code>mdma</code>; dose <code>low</code>, <code>medium</code>, <code>high</code>.</li>
+          <li>The active selection defaults to the current submission’s own induction and dose answers after those answers are canonicalized into peer tokens.</li>
+          <li>Once the participant chooses a pair such as <code>psilocybin + medium</code>, the app reads eligible submissions from <code>peer_plot_submission_cache</code>, joins to <code>score</code> on <code>submission_id</code>, filters to the selected canonical pair, and excludes the current submission.</li>
           <li>Each returned peer factor score becomes an axis-aligned peer ring or density mark on the matching ASC axis, and the matching peers also contribute a median comparison polygon.</li>
           <li>If too few peers exist in the selected bucket, the system omits the peer layer rather than fabricating comparison data.</li>
         </ul>
+        <div class="figure-actions">
+          <a class="button-link primary" href="data-examples.html#peer-selection">Open peer selection examples</a>
+          <a class="button-link" href="file-viewer.html#peer-selection">Open peer selection viewer</a>
+        </div>
       </div>
     </section>
 
@@ -131,7 +138,7 @@
       <div class="diagram-grid">
         <article class="diagram-card">
           <h3>Value lifecycle</h3>
-          <p>From questionnaire source to runtime, ASC factor score rows, durable MariaDB tables, peer plotting inputs, and export bundles.</p>
+          <p>From questionnaire source to runtime, ASC factor score rows, durable MariaDB tables, cache-backed peer selection, and export bundles.</p>
           <div class="figure-shell">
             <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
           </div>
@@ -163,11 +170,11 @@
                 </tr>
                 <tr>
                   <td>DB write succeeds</td>
-                  <td><code>submission</code>, <code>response_numeric</code>, <code>response_text</code>, <code>score</code>, and cache rows become durable.</td>
+                  <td><code>submission</code>, <code>response_numeric</code>, <code>response_text</code>, and <code>score</code> become durable, then <code>peer_plot_submission_cache</code> is rebuilt from the new submission context.</td>
                 </tr>
                 <tr>
                   <td>Feedback peer query runs</td>
-                  <td>The app loads only the matching peer score rows for the chosen canonical induction/dose bucket.</td>
+                  <td>The app uses the selected canonical induction/dose pair to load only the matching peer score rows and render the peer overlay.</td>
                 </tr>
                 <tr>
                   <td>Later export</td>

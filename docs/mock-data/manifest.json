@@ -91,6 +91,24 @@
       "relatedDoc": "../data-examples.html#score-table"
     },
     {
+      "id": "peer-cache-build",
+      "title": "Peer Cache Build",
+      "source": "peer_plot_cache_build.json",
+      "category": "peer",
+      "dataType": "JSON cache-build example",
+      "description": "Shows how one peer_plot_submission_cache row is assembled from submission, response_text context, and score completeness.",
+      "relatedDoc": "../data-examples.html#peer-cache-build"
+    },
+    {
+      "id": "peer-selection",
+      "title": "Peer Selection State",
+      "source": "peer_plot_selection_state.json",
+      "category": "peer",
+      "dataType": "JSON UI-state example",
+      "description": "Shows the canonical control catalog, the current submission defaults, and the selected canonical pair used for the peer query.",
+      "relatedDoc": "../data-examples.html#peer-selection"
+    },
+    {
       "id": "peer-cache",
       "title": "peer_plot_submission_cache",
       "source": "peer_plot_submission_cache.csv",

@@ -3,25 +3,38 @@
     "induction_method_canon": "psilocybin",
     "dose_label_canon": "medium"
   },
+  "selection_source": {
+    "current_submission_defaults": "Current participant q0/q1 answers canonicalized into selected_drug and selected_dose tokens",
+    "control_catalog": {
+      "induction": ["cannabis", "psilocybin", "alcohol", "mdma"],
+      "dose": ["low", "medium", "high"]
+    }
+  },
+  "peer_context_source": "peer_plot_submission_cache rows where has_complete_scales = 1 and canonical pair = psilocybin + medium",
   "self_polygon_source": "ASC factor scores from the current submission kept in memory",
   "peer_overlay_source": "score rows returned for matching peers from peer_plot_scores_query.csv",
+  "excluded_rows": [
+    "6f9d0e2c-1234-4ad9-acde-8b9df7301f00 because the current submission is excluded from peer comparison",
+    "peer-d-2026-03-23 because has_complete_scales = 0",
+    "peer-e-2026-03-19 because its canonical pair is alcohol + high"
+  ],
   "rendered_layers": [
     "purple self polygon and self points",
     "peer rings or density layer positioned on each ASC axis",
     "peer median polygon and peer median points"
   ],
-  "matching_peer_count": 2,
+  "matching_peer_count": 3,
   "peer_median_scores": {
-    "Experience of Unity": 80,
-    "Spiritual Experience": 74,
-    "Blissful State": 69,
-    "Insightfulness": 67,
-    "Disembodiment": 27.5,
-    "Impaired Control and Cognition": 36.5,
-    "Anxiety": 16.5,
+    "Experience of Unity": 79,
+    "Spiritual Experience": 73,
+    "Blissful State": 68,
+    "Insightfulness": 66,
+    "Disembodiment": 29,
+    "Impaired Control and Cognition": 37,
+    "Anxiety": 17,
     "Complex Imagery": 65,
-    "Elementary Imagery": 61.5,
-    "Audio-Visual Synesthesia": 17,
-    "Changed Meaning of Percepts": 53.5
+    "Elementary Imagery": 61,
+    "Audio-Visual Synesthesia": 19,
+    "Changed Meaning of Percepts": 54
   }
 }
