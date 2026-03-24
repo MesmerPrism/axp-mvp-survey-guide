@@ -1,5 +1,5 @@
 flowchart TD
-  subgraph Definition["1. Definition and runtime"]
+  subgraph Definition["1. Definition<br/>and runtime"]
     direction TB
     A["Questionnaire definition source<br/>Google Sheet or CSV file"] --> B["Loaded questionnaire_all_df<br/>R data.frame, long rows, all languages"]
     B --> C["Runtime questionnaire_df plus metadata<br/>R state with instrument_id, instrument_version,<br/>language, definition_hash"]
@@ -7,7 +7,7 @@ flowchart TD
     D --> E["responses_df<br/>R data.frame with item_id, type, value"]
   end
 
-  subgraph Derived["2. Split and ASC score rows in memory"]
+  subgraph Derived["2. In-memory split<br/>and ASC scoring"]
     direction TB
     E --> F["Numeric answer rows<br/>R data.frame with item_id, value, created_at"]
     E --> G["Text and context rows<br/>R data.frame with field_id, text, created_at"]
@@ -15,7 +15,7 @@ flowchart TD
     H --> I["Current self-score set<br/>11 canonical ASC factors in memory"]
   end
 
-  subgraph Store["3. Durable MariaDB storage"]
+  subgraph Store["3. Durable<br/>MariaDB storage"]
     direction LR
     K["submission<br/>MariaDB table<br/>1 row per submission"]
     L["response_numeric<br/>MariaDB table<br/>1 row per numeric item"]
@@ -37,7 +37,7 @@ flowchart TD
     N --> X
   end
 
-  subgraph Peer["4. Peer comparison query and plotted layers"]
+  subgraph Peer["4. Peer query<br/>and plotted layers"]
     direction TB
     P["Canonical peer filter buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
     Q["Peer score query result<br/>R data.frame with peer_id, scale_id, value"]
@@ -48,7 +48,7 @@ flowchart TD
     I --> J
   end
 
-  subgraph Export["5. Distribution outputs"]
+  subgraph Export["5. Distribution<br/>outputs"]
     direction TB
     S["Public export builder<br/>wide CSV plus factor-only CSV"]
     T["Private export builder<br/>wide CSV with text columns"]

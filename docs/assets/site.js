@@ -38,7 +38,7 @@ const fallbackMermaidConfig = {
     textColor: '#262632',
     titleColor: '#262632'
   },
-  themeCSS: '.node rect,.node circle,.node ellipse,.node polygon,.node path,.label-container{rx:14px!important;ry:14px!important;} .cluster rect{rx:18px!important;ry:18px!important;} .cluster text,.nodeLabel,.edgeLabel{font-weight:700;} .edgeLabel rect,.labelBkg{fill:#ffffff!important;stroke:#d9d9e4!important;stroke-width:1px!important;} .flowchart-link,.edgePath path{stroke:#666a7c!important;stroke-width:1.8px!important;} .marker path{fill:#666a7c!important;stroke:#666a7c!important;} .cluster span,.nodeLabel p{line-height:1.3!important;}',
+  themeCSS: '.node rect,.node circle,.node ellipse,.node polygon,.node path,.label-container{rx:14px!important;ry:14px!important;} .cluster rect{rx:18px!important;ry:18px!important;} .cluster text,.nodeLabel,.edgeLabel{font-weight:700;} .cluster-label .background{fill:#ffffff!important;stroke:#d9d9e4!important;stroke-width:1.2px!important;rx:12px!important;ry:12px!important;} .cluster-label text,.cluster-label span{font-weight:800!important;fill:#262632!important;color:#262632!important;} .cluster-label .text-outer-tspan{font-size:13px!important;} .edgeLabel rect,.labelBkg{fill:#ffffff!important;stroke:#d9d9e4!important;stroke-width:1px!important;} .flowchart-link,.edgePath path{stroke:#666a7c!important;stroke-width:1.8px!important;} .marker path{fill:#666a7c!important;stroke:#666a7c!important;} .cluster span,.nodeLabel p{line-height:1.3!important;}',
   flowchart: {
     useMaxWidth: true,
     htmlLabels: false,
