@@ -34,8 +34,8 @@
   <main class="page-shell">
     <section class="hero">
       <div class="kicker">Live Survey Access</div>
-      <h1>Open the running survey and verify the live experience.</h1>
-      <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access. Use it whenever the task depends on the live questionnaire, a real submit flow, the feedback screen, or the running comparison controls.</p>
+      <h1>Open the running survey and use the live experience.</h1>
+      <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access.</p>
       <div class="jump-links">
         <a href="questionnaire-edits.html">Google Sheets workflow</a>
         <a href="data-examples.html">Data examples</a>
@@ -52,13 +52,12 @@
           <li>Submit a response and reach the feedback view.</li>
           <li>Check how wording, options, and required behavior appear in the running survey.</li>
           <li>Use the feedback comparison controls after submission.</li>
-          <li>Reload the running questionnaire when a sheet-backed version needs to be rechecked.</li>
         </ul>
       </article>
 
       <aside class="callout">
-        <strong>Live-survey-only work</strong>
-        <p>If a collaborator cannot open the running survey page, they cannot confirm the real questionnaire flow, the final submit path, or the feedback screen. Those checks stay with people who can open the live survey.</p>
+        <strong>Scope of this page</strong>
+        <p>This page is only about the running survey page and feedback view. Sheet structure and data-file shape are covered on the Google Sheets and Data Examples pages.</p>
       </aside>
     </section>
 
@@ -71,71 +70,14 @@
           <li><span class="step-num">3</span><div><strong>Complete one experience path.</strong><p>Move through the questionnaire as a real user would.</p></div></li>
           <li><span class="step-num">4</span><div><strong>Submit at the final reveal step.</strong><p>Do not stop before submit if the task depends on feedback or downstream behavior.</p></div></li>
           <li><span class="step-num">5</span><div><strong>Review the feedback screen.</strong><p>Check the chart, comparison controls, and any other live result behavior that matters for the task.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Report the result back to other collaborators.</strong><p>Confirm what worked, what still needs adjustment, and whether another reload or sheet edit is required.</p></div></li>
         </ol>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Common live-survey-only checks</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Why live survey access is required</th>
-                <th>What to confirm</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Live wording and translation check</td>
-                <td>The running questionnaire is the real user experience.</td>
-                <td>The text, ordering, and language selection look correct in the running survey.</td>
-              </tr>
-              <tr>
-                <td>Required-step and navigation check</td>
-                <td>Only the running survey shows the actual live step flow and validation behavior.</td>
-                <td>The user can move through the intended path and cannot skip required inputs accidentally.</td>
-              </tr>
-              <tr>
-                <td>Submit and feedback check</td>
-                <td>The feedback view only appears after a live submit flow.</td>
-                <td>The chart loads, the response completes, and the result view behaves as expected.</td>
-              </tr>
-              <tr>
-                <td>Comparison control check</td>
-                <td>The comparison controls live on the feedback screen.</td>
-                <td>The controls appear, use recognized comparison buckets, and respond correctly after submit.</td>
-              </tr>
-              <tr>
-                <td>Questionnaire reload after a sheet change</td>
-                <td>The reload action refreshes an already open survey session or lets a live survey checker test a different sheet tab override.</td>
-                <td>The already open survey session shows the updated questionnaire, or the requested override tab is loaded for checking.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="panel">
-        <h2 class="section-title">What live survey checkers hand back to other collaborators</h2>
-        <ul class="check-list">
-          <li>Whether the live wording and ordering matched the sheet change.</li>
-          <li>Whether the flow completed and submitted successfully.</li>
-          <li>Whether the feedback screen behaved correctly after submit.</li>
-          <li>Whether another sheet edit or another reload is needed.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="panel">
         <h2 class="section-title">Need the big picture?</h2>
-        <p>Open the diagrams when you want to connect live survey checks to upstream Google Sheets edits and downstream data examples and exports.</p>
+        <p>Open the diagrams when you want to connect the running survey to upstream Google Sheets edits and downstream data examples and exports.</p>
         <div class="figure-actions">
           <a class="button-link primary" href="diagrams.html">Open diagrams</a>
           <a class="button-link" href="questionnaire-edits.html">Google Sheets</a>
@@ -146,7 +88,7 @@
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Live survey usage and live-only verification.</div>
+    <div class="footer-inner">Using the running survey and feedback view.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>
