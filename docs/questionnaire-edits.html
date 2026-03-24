@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionnaire Edits | AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <strong>AXP MVP Survey Guide</strong>
+        <span>Public onboarding for questionnaire editing and value lifecycle</span>
+      </a>
+      <nav class="top-nav" data-nav aria-label="Primary">
+        <a href="index.html">Overview</a>
+        <a href="questionnaire-edits.html">Questionnaire Edits</a>
+        <a href="value-lifecycle.html">Value Lifecycle</a>
+        <a href="diagrams.html">Diagrams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="kicker">Google Sheets Workflow</div>
+      <h1>How to adapt the questionnaire safely.</h1>
+      <p>The questionnaire is managed as one stacked, multi-language table per version. The main discipline is keeping analytical identity stable where it should stay stable, and creating a new dated version when the questionnaire definition truly changes.</p>
+    </section>
+
+    <section class="two-col section">
+      <article class="panel">
+        <h2 class="section-title">Mental model</h2>
+        <ul class="plain-list">
+          <li>One questionnaire version lives in one table.</li>
+          <li>Each language gets one block in the same columns.</li>
+          <li>Blank separator rows are formatting only and are removed by the loader.</li>
+          <li><code>item_id</code> is the stable key used for runtime, scoring, and storage.</li>
+          <li>English rows define structure such as type, required status, order, and factor mapping.</li>
+          <li>Translation rows can stay structurally sparse when the English row already defines the contract.</li>
+        </ul>
+      </article>
+      <aside class="callout">
+        <strong>Rule of thumb</strong>
+        <p>Keep <code>item_id</code> stable when the question is still the same analytical construct. Create a new dated version tab when the questionnaire definition or interpretation materially changes.</p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Common change types</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Change type</th>
+                <th>Usually safe to keep the same <code>item_id</code>?</th>
+                <th>Needs factor review?</th>
+                <th>Typical action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Translation or wording cleanup</td>
+                <td>Yes</td>
+                <td>No</td>
+                <td>Update the row text, then validate locally.</td>
+              </tr>
+              <tr>
+                <td>Required or active toggle</td>
+                <td>Usually</td>
+                <td>Sometimes</td>
+                <td>Check navigation and submission behavior.</td>
+              </tr>
+              <tr>
+                <td>New substance or dose logic</td>
+                <td>Usually</td>
+                <td>No, unless scoring items changed too</td>
+                <td>Review the override pairs and local walkthrough.</td>
+              </tr>
+              <tr>
+                <td>New scorable item or changed factor assignment</td>
+                <td>Not automatically</td>
+                <td>Yes</td>
+                <td>Review <code>scale_id</code>, create a new dated version, and re-check downstream outputs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Step-by-step adaptation path</h2>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Classify the change.</strong><p>Decide whether you are changing wording, response logic, or the analytical meaning of the instrument.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Edit the stacked questionnaire table.</strong><p>Keep one row per <code>item_id</code> per language, and keep all languages in the same tab.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Check the structural columns.</strong><p>Make sure the authoritative English rows still carry the structural fields and any scorable rows still carry the right <code>scale_id</code>.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Create or update a dated version tab.</strong><p>Use a new dated tab when the questionnaire definition changes in a way you may want to track separately.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Validate locally.</strong><p>Walk the questionnaire, switch languages, test the substance and dose logic, and confirm the results view still completes.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Promote and reload.</strong><p>Once the version is ready, reload the running survey so it resolves the updated Google Sheets version and computes a fresh definition hash.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">What the collaborator should preserve</h2>
+        <ul class="check-list">
+          <li>Keep one language block per language in the same table.</li>
+          <li>Keep structural truth on the English rows.</li>
+          <li>Keep <code>item_id</code> values stable unless there is a real analytical reason to change them.</li>
+          <li>Keep scorable rows mapped to the intended factor through <code>scale_id</code>.</li>
+          <li>Keep Google Sheets versioning at the tab level, not as ad hoc row metadata.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="diagram-grid">
+        <article class="diagram-card">
+          <h3>Questionnaire adaptation flow</h3>
+          <p>From classifying a change through Google Sheets promotion and runtime reload.</p>
+          <div class="figure-shell">
+            <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
+          </div>
+          <div class="figure-actions">
+            <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
+          </div>
+        </article>
+        <article class="diagram-card">
+          <h3>Change impact map</h3>
+          <p>A quick way to decide whether a change is mostly cosmetic, structural, or analytically meaningful.</p>
+          <div class="figure-shell">
+            <pre data-mermaid-source="diagrams/change-impact-map.mmd"></pre>
+          </div>
+          <div class="figure-actions">
+            <a class="button-link" href="diagrams/change-impact-map.mmd">Open source</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Public guide only. For implementation details, the main repo remains the source of truth.</div>
+  </footer>
+
+  <script type="module" src="assets/site.js"></script>
+</body>
+</html>

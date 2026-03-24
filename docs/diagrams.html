@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagrams | AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <strong>AXP MVP Survey Guide</strong>
+        <span>Public onboarding for questionnaire editing and value lifecycle</span>
+      </a>
+      <nav class="top-nav" data-nav aria-label="Primary">
+        <a href="index.html">Overview</a>
+        <a href="questionnaire-edits.html">Questionnaire Edits</a>
+        <a href="value-lifecycle.html">Value Lifecycle</a>
+        <a href="diagrams.html">Diagrams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="kicker">Mermaid Gallery</div>
+      <h1>Diagram-first orientation.</h1>
+      <p>These diagrams are written to be readable by a newcomer who needs the workflow shape before they need implementation detail. Each source file is plain Mermaid and can be adapted independently.</p>
+    </section>
+
+    <section class="diagram-grid">
+      <article class="diagram-card">
+        <h3>Questionnaire adaptation flow</h3>
+        <p>How a collaborator moves from a planned change to a promoted questionnaire version.</p>
+        <div class="figure-shell">
+          <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
+          <a class="button-link" href="questionnaire-edits.html">Read context</a>
+        </div>
+      </article>
+
+      <article class="diagram-card">
+        <h3>Change impact map</h3>
+        <p>Decision support for determining when a questionnaire change stays within the same analytical identity.</p>
+        <div class="figure-shell">
+          <pre data-mermaid-source="diagrams/change-impact-map.mmd"></pre>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link" href="diagrams/change-impact-map.mmd">Open source</a>
+          <a class="button-link" href="questionnaire-edits.html">Read context</a>
+        </div>
+      </article>
+
+      <article class="diagram-card">
+        <h3>Value lifecycle</h3>
+        <p>How values move from questionnaire definition to scoring, persistence, feedback, and export.</p>
+        <div class="figure-shell">
+          <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link" href="diagrams/value-lifecycle.mmd">Open source</a>
+          <a class="button-link" href="value-lifecycle.html">Read context</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Mermaid source files live in <code>docs/diagrams/</code> and are rendered client-side for the public guide.</div>
+  </footer>
+
+  <script type="module" src="assets/site.js"></script>
+</body>
+</html>

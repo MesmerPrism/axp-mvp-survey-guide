@@ -1,0 +1,43 @@
+flowchart LR
+  A[Google Sheets or fallback questionnaire source] --> B[Normalized questionnaire table]
+  B --> C[Runtime questionnaire state]
+  C --> D[Participant completes the survey]
+  D --> E[In-memory response assembly]
+
+  E --> F[Numeric answers by item_id]
+  E --> G[Text and context answers]
+  F --> H[Factor computation]
+  H --> I[Current self-scores in memory]
+  I --> J[Immediate feedback]
+
+  subgraph Store[Durable storage]
+    K[submission metadata]
+    L[response_numeric]
+    M[response_text when enabled]
+    N[score rows]
+    O[peer comparison cache]
+  end
+
+  E --> K
+  F --> L
+  G --> M
+  H --> N
+  K --> O
+  M --> O
+  N --> O
+
+  O --> P[Peer comparison inputs]
+  P --> J
+
+  subgraph Export[Distribution outputs]
+    Q[Public anonymized bundle]
+    R[Private full bundle]
+  end
+
+  K --> Q
+  L --> Q
+  N --> Q
+  K --> R
+  L --> R
+  M --> R
+  N --> R

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Value Lifecycle | AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <strong>AXP MVP Survey Guide</strong>
+        <span>Public onboarding for questionnaire editing and value lifecycle</span>
+      </a>
+      <nav class="top-nav" data-nav aria-label="Primary">
+        <a href="index.html">Overview</a>
+        <a href="questionnaire-edits.html">Questionnaire Edits</a>
+        <a href="value-lifecycle.html">Value Lifecycle</a>
+        <a href="diagrams.html">Diagrams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="kicker">Values Through Stages</div>
+      <h1>How values are computed and saved.</h1>
+      <p>The same survey definition and response values move through a predictable sequence: load, normalize, render, submit, score, persist, compare, and export. This page explains the public-safe contract at each stage.</p>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Stage overview</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Main format</th>
+                <th>Why it matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Definition load</td>
+                <td>One normalized questionnaire table</td>
+                <td>The system computes a definition hash from the loaded table and then filters by language.</td>
+              </tr>
+              <tr>
+                <td>Runtime questionnaire state</td>
+                <td>All languages plus selected-language view</td>
+                <td>The running survey knows which instrument version and language were actually loaded.</td>
+              </tr>
+              <tr>
+                <td>Submission assembly</td>
+                <td>In-memory response table</td>
+                <td>All responses are gathered before scoring and persistence.</td>
+              </tr>
+              <tr>
+                <td>Scoring</td>
+                <td>Per-factor score rows</td>
+                <td>Numeric values are mapped to factors using the questionnaire’s factor mapping.</td>
+              </tr>
+              <tr>
+                <td>Persistence</td>
+                <td>Submission, numeric, text, and score tables</td>
+                <td>Raw collection is stored in normalized database tables.</td>
+              </tr>
+              <tr>
+                <td>Feedback</td>
+                <td>Current self-scores plus optional peer comparison inputs</td>
+                <td>The participant sees immediate results without waiting for export.</td>
+              </tr>
+              <tr>
+                <td>Export</td>
+                <td>Public or private bundles</td>
+                <td>Public output removes free text and anonymizes identities; private output retains full detail.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section two-col">
+      <article class="panel">
+        <h2 class="section-title">Storage model</h2>
+        <ul class="plain-list">
+          <li><code>submission</code> stores one survey session row with version and timing metadata.</li>
+          <li><code>response_numeric</code> stores numeric answers keyed by <code>item_id</code>.</li>
+          <li><code>response_text</code> stores free text and context text when that storage path is enabled.</li>
+          <li><code>score</code> stores computed factor values.</li>
+          <li><code>peer_plot_submission_cache</code> stores one context row per submission for peer comparison filtering.</li>
+        </ul>
+      </article>
+
+      <aside class="callout">
+        <strong>Important distinction</strong>
+        <p>The raw database is the source of truth for collection. The export bundles are the source of truth for distribution.</p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">What feedback uses</h2>
+        <p>The immediate results view uses the current submission’s computed scores already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
+        <ul class="plain-list">
+          <li>Self-scores do not require rereading the just-written submission rows.</li>
+          <li>Peer comparison uses canonical induction and dose buckets rather than raw free text.</li>
+          <li>If too few peers exist in the selected bucket, the system omits peer dots rather than fabricating comparison data.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="diagram-grid">
+        <article class="diagram-card">
+          <h3>Value lifecycle</h3>
+          <p>From questionnaire source to runtime, score rows, peer comparison, and export bundles.</p>
+          <div class="figure-shell">
+            <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
+          </div>
+          <div class="figure-actions">
+            <a class="button-link" href="diagrams/value-lifecycle.mmd">Open source</a>
+          </div>
+        </article>
+        <article class="diagram-card">
+          <h3>What happens after submit</h3>
+          <p>The most useful public distinction is between immediate feedback, durable persistence, and later publication outputs.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>After submit</th>
+                  <th>Immediate outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Validation passes</td>
+                  <td>Responses are assembled into a common in-memory shape.</td>
+                </tr>
+                <tr>
+                  <td>Scoring runs</td>
+                  <td>Per-factor values become available for the current participant.</td>
+                </tr>
+                <tr>
+                  <td>DB write succeeds</td>
+                  <td>Submission, response, score, and cache rows become durable.</td>
+                </tr>
+                <tr>
+                  <td>Later export</td>
+                  <td>Rows are widened and split into public or private bundles.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">This guide summarizes contracts and stages, not the full implementation.</div>
+  </footer>
+
+  <script type="module" src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+flowchart TD
+  A[Questionnaire change] --> B{Does the analytical meaning change?}
+  B -->|No| C[Keep item_id stable]
+  B -->|Maybe| D{Does scoring or factor mapping change?}
+  B -->|Yes| E[Create a new dated version and review downstream impact]
+
+  D -->|No| F[Validate navigation and response logic]
+  D -->|Yes| E
+
+  C --> G{Is the change only translation or wording?}
+  G -->|Yes| H[Usually no factor review]
+  G -->|No| I[Check options, required status, and display order]
+
+  F --> J[Walk through the survey locally]
+  H --> J
+  I --> J
+  E --> J
+
+  J --> K[Reload the live questionnaire source only after validation]

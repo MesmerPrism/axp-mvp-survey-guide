@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <strong>AXP MVP Survey Guide</strong>
+        <span>Public onboarding for questionnaire editing and value lifecycle</span>
+      </a>
+      <nav class="top-nav" data-nav aria-label="Primary">
+        <a href="index.html">Overview</a>
+        <a href="questionnaire-edits.html">Questionnaire Edits</a>
+        <a href="value-lifecycle.html">Value Lifecycle</a>
+        <a href="diagrams.html">Diagrams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="kicker">Public Partner Repo</div>
+      <h1>Learn the workflow without shipping the app code or data.</h1>
+      <p>This site is for a new collaborator who needs to understand how questionnaire revisions are made through Google Sheets, how factor values are computed, and how survey values move through storage, feedback, and export.</p>
+      <div class="hero-actions">
+        <a class="quick-link" href="questionnaire-edits.html">
+          <h2>Edit the questionnaire</h2>
+          <p>Start here if you need to change wording, add a language, adjust required fields, or understand when a new dated version tab is needed.</p>
+        </a>
+        <a class="quick-link" href="value-lifecycle.html">
+          <h2>Follow the value lifecycle</h2>
+          <p>See how questionnaire rows become runtime state, scored values, database rows, feedback inputs, and public or private exports.</p>
+        </a>
+        <a class="quick-link" href="diagrams.html">
+          <h2>Browse the Mermaid maps</h2>
+          <p>Use the diagram gallery as the fastest route to the system shape before diving into step-by-step text.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="two-col section">
+      <article class="panel">
+        <h2 class="section-title">What this guide covers</h2>
+        <ul class="plain-list">
+          <li>The questionnaire lives as one multi-language table per version.</li>
+          <li>Stable <code>item_id</code> values are the analytical backbone.</li>
+          <li>English rows define structure; translation rows mainly define wording.</li>
+          <li>Scorable items carry factor mapping through <code>scale_id</code>.</li>
+          <li>Numeric responses are scored, stored, reused for feedback, and later widened during export.</li>
+          <li>Public exports remove free text and anonymize submission identity.</li>
+        </ul>
+      </article>
+
+      <aside class="note-card">
+        <h3>Public boundary</h3>
+        <p>This repo explains workflow and contracts. It does not include application source code, participant-level data, export files, or deployment secrets.</p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">New collaborator path</h2>
+      <div class="card-grid">
+        <article class="step-card">
+          <h3>1. Understand what counts as a version change</h3>
+          <p>Not every wording edit creates a new analytical instrument. Some changes keep the same <code>item_id</code>; others require a new dated sheet tab and careful factor review.</p>
+        </article>
+        <article class="step-card">
+          <h3>2. Learn the Google Sheets workflow</h3>
+          <p>The live questionnaire is maintained as a Google Sheet tab, but the real structure is a single stacked table with one language block per language.</p>
+        </article>
+        <article class="step-card">
+          <h3>3. Learn the value path</h3>
+          <p>The same survey values move through normalization, scoring, MariaDB persistence, feedback generation, and export bundles. This guide shows that contract stage by stage.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <div class="kicker">Preview Diagram</div>
+        <h2 class="section-title">Questionnaire adaptation flow</h2>
+        <p>The diagram below summarizes the public-safe mental model for making questionnaire changes.</p>
+        <div class="figure-shell">
+          <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link primary" href="questionnaire-edits.html">Read the editing guide</a>
+          <a class="button-link" href="diagrams/questionnaire-adaptation-flow.mmd">Open source</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Docs-only companion to the main AXP MVP Survey repository. Built for public onboarding and diagram-first orientation.</div>
+  </footer>
+
+  <script type="module" src="assets/site.js"></script>
+</body>
+</html>
