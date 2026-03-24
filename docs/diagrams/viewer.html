@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagram Viewer | AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="../assets/site.css" />
+</head>
+<body class="viewer-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">
+        <strong>AXP MVP Survey Guide</strong>
+        <span>Public onboarding for questionnaire editing and value lifecycle</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="../index.html">Overview</a>
+        <a href="../questionnaire-edits.html">Questionnaire Edits</a>
+        <a href="../value-lifecycle.html">Value Lifecycle</a>
+        <a class="active" href="../diagrams.html">Diagrams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell viewer-shell">
+    <section class="panel viewer-intro">
+      <div class="kicker">Interactive Mermaid Viewer</div>
+      <h1 class="section-title">Fullscreen, zoom, source, and deep links.</h1>
+      <p class="caption">This viewer uses the same manifest-driven navigation pattern as the Polar pages while keeping the visual language aligned with the main survey app.</p>
+    </section>
+
+    <section class="viewer-layout">
+      <aside class="viewer-nav">
+        <header>
+          <h2>Diagrams</h2>
+          <p class="caption">Choose a diagram, then use fullscreen or source mode without leaving the page.</p>
+        </header>
+        <div id="nav-list" class="nav-list"></div>
+      </aside>
+
+      <section class="viewer-main">
+        <div class="viewer-toolbar">
+          <h2 id="title">Select a diagram</h2>
+        </div>
+        <div id="viewer-meta" class="viewer-meta" hidden>
+          <div class="viewer-meta-item">
+            <span class="meta-key">Brief</span>
+            <p id="viewer-description" class="viewer-description"></p>
+          </div>
+          <div class="viewer-meta-item">
+            <span class="meta-key">Category</span>
+            <strong id="viewer-category"></strong>
+          </div>
+          <div class="viewer-meta-item">
+            <span class="meta-key">Source</span>
+            <code id="viewer-source"></code>
+          </div>
+        </div>
+
+        <div id="viewer-actions" class="viewer-actions" hidden>
+          <button id="btn-copy-link" class="button" type="button">Copy link</button>
+          <a id="link-svg" class="button" href="#" target="_blank" rel="noreferrer">Open SVG</a>
+          <a id="link-source-file" class="button" href="#" target="_blank" rel="noreferrer">Open source</a>
+          <a id="link-related-doc" class="button" href="#" hidden>Open related doc</a>
+        </div>
+
+        <p id="viewer-related-note" class="viewer-related-note" hidden></p>
+
+        <div id="viewer-canvas-shell" class="viewer-canvas-shell">
+          <div class="viewer-overlay">
+            <span id="viewer-zoom" class="viewer-zoom">100%</span>
+            <div class="viewer-controls">
+              <button id="btn-zoom-out" class="button" type="button" disabled>-</button>
+              <button id="btn-fit" class="button" type="button" disabled>Fit</button>
+              <button id="btn-zoom-in" class="button" type="button" disabled>+</button>
+              <button id="btn-source" class="button" type="button">Source</button>
+              <button id="btn-fullscreen" class="button" type="button">Fullscreen</button>
+            </div>
+          </div>
+
+          <div id="viewer" class="viewer-stage">
+            <div class="empty-state"><p>Choose a diagram from the navigation.</p></div>
+          </div>
+          <div id="source-panel" class="source-stage" hidden>
+            <pre id="source-code"></pre>
+          </div>
+        </div>
+
+        <p class="viewer-hint">Drag to pan. Use the mouse wheel or pinch to move around the diagram, and use Ctrl or Cmd with the wheel when you want to zoom from the current viewport.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Viewer navigation is driven by <code>docs/diagrams/manifest.json</code> and rendered client-side from public Mermaid sources.</div>
+  </footer>
+
+  <script type="module" src="../assets/diagram-viewer.js"></script>
+</body>
+</html>

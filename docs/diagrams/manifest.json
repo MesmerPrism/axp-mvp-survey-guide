@@ -1,0 +1,36 @@
+{
+  "diagrams": [
+    {
+      "id": "questionnaire-adaptation-flow",
+      "title": "Questionnaire Adaptation Flow",
+      "source": "questionnaire-adaptation-flow.mmd",
+      "category": "editing",
+      "description": "From change classification through Google Sheets promotion and runtime reload.",
+      "relatedDocs": [
+        "../questionnaire-edits.html",
+        "../index.html"
+      ]
+    },
+    {
+      "id": "change-impact-map",
+      "title": "Change Impact Map",
+      "source": "change-impact-map.mmd",
+      "category": "editing",
+      "description": "Decision support for whether a change stays within the same analytical identity.",
+      "relatedDocs": [
+        "../questionnaire-edits.html"
+      ]
+    },
+    {
+      "id": "value-lifecycle",
+      "title": "Value Lifecycle",
+      "source": "value-lifecycle.mmd",
+      "category": "data-flow",
+      "description": "How questionnaire values move from definition through scoring, storage, feedback, and export.",
+      "relatedDocs": [
+        "../value-lifecycle.html",
+        "../index.html"
+      ]
+    }
+  ]
+}

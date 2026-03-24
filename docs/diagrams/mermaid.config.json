@@ -1,0 +1,41 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "fontSize": "14px",
+    "fontFamily": "Nunito, Segoe UI, sans-serif",
+    "background": "#FFFFFF",
+    "primaryColor": "#FFFFFF",
+    "primaryTextColor": "#262632",
+    "primaryBorderColor": "#6B3DF0",
+    "secondaryColor": "#F0ECFF",
+    "secondaryTextColor": "#262632",
+    "secondaryBorderColor": "#8F74EF",
+    "tertiaryColor": "#DFFAF8",
+    "tertiaryTextColor": "#262632",
+    "tertiaryBorderColor": "#44E1D8",
+    "mainBkg": "#FFFFFF",
+    "nodeBorder": "#6B3DF0",
+    "clusterBkg": "#F9F9FB",
+    "clusterBorder": "#44E1D8",
+    "lineColor": "#666A7C",
+    "edgeLabelBackground": "#FFFFFF",
+    "labelBackground": "#FFFFFF",
+    "textColor": "#262632",
+    "titleColor": "#262632",
+    "signalColor": "#44E1D8",
+    "errorBkgColor": "#F0ECFF",
+    "errorTextColor": "#262632"
+  },
+  "themeCSS": ".node rect,.node circle,.node ellipse,.node polygon,.node path,.label-container{rx:14px!important;ry:14px!important;} .cluster rect{rx:18px!important;ry:18px!important;} .cluster text,.nodeLabel,.edgeLabel{font-weight:700;} .edgeLabel rect,.labelBkg{fill:#FFFFFF!important;stroke:#D9D9E4!important;stroke-width:1px!important;} .flowchart-link,.edgePath path{stroke:#666A7C!important;stroke-width:1.8px!important;} .marker path{fill:#666A7C!important;stroke:#666A7C!important;} .cluster span,.nodeLabel p{line-height:1.3!important;}",
+  "flowchart": {
+    "useMaxWidth": false,
+    "htmlLabels": false,
+    "curve": "linear",
+    "nodeSpacing": 36,
+    "rankSpacing": 56,
+    "padding": 18
+  },
+  "sequence": {
+    "useMaxWidth": false
+  }
+}

@@ -9,33 +9,66 @@ for (const link of document.querySelectorAll('[data-nav] a')) {
   }
 }
 
-const mermaidConfig = {
+const mermaidConfigPath = new URL('./../diagrams/mermaid.config.json', import.meta.url);
+
+const fallbackMermaidConfig = {
   startOnLoad: false,
   securityLevel: 'strict',
   theme: 'base',
   themeVariables: {
-    fontFamily: 'Bahnschrift, Segoe UI, Arial, sans-serif',
+    fontFamily: 'Nunito, Segoe UI, sans-serif',
     fontSize: '14px',
-    background: '#fffdf9',
-    primaryColor: '#fffdf9',
-    primaryTextColor: '#1f2328',
-    primaryBorderColor: '#847a69',
-    lineColor: '#6d7680',
-    edgeLabelBackground: '#fffdf9',
-    secondaryColor: '#eef3f7',
-    tertiaryColor: '#f1e6d3',
-    clusterBkg: '#fbf7f0',
-    clusterBorder: '#b9b09e'
+    background: '#ffffff',
+    primaryColor: '#ffffff',
+    primaryTextColor: '#262632',
+    primaryBorderColor: '#6b3df0',
+    secondaryColor: '#f0ecff',
+    secondaryTextColor: '#262632',
+    secondaryBorderColor: '#8f74ef',
+    tertiaryColor: '#dffaf8',
+    tertiaryTextColor: '#262632',
+    tertiaryBorderColor: '#44e1d8',
+    mainBkg: '#ffffff',
+    nodeBorder: '#6b3df0',
+    clusterBkg: '#f9f9fb',
+    clusterBorder: '#44e1d8',
+    lineColor: '#666a7c',
+    edgeLabelBackground: '#ffffff',
+    labelBackground: '#ffffff',
+    textColor: '#262632',
+    titleColor: '#262632'
   },
+  themeCSS: '.node rect,.node circle,.node ellipse,.node polygon,.node path,.label-container{rx:14px!important;ry:14px!important;} .cluster rect{rx:18px!important;ry:18px!important;} .cluster text,.nodeLabel,.edgeLabel{font-weight:700;} .edgeLabel rect,.labelBkg{fill:#ffffff!important;stroke:#d9d9e4!important;stroke-width:1px!important;} .flowchart-link,.edgePath path{stroke:#666a7c!important;stroke-width:1.8px!important;} .marker path{fill:#666a7c!important;stroke:#666a7c!important;} .cluster span,.nodeLabel p{line-height:1.3!important;}',
   flowchart: {
     useMaxWidth: true,
-    htmlLabels: true,
+    htmlLabels: false,
     curve: 'linear',
-    nodeSpacing: 35,
-    rankSpacing: 50,
-    padding: 12
+    nodeSpacing: 36,
+    rankSpacing: 56,
+    padding: 16
+  },
+  sequence: {
+    useMaxWidth: true
   }
 };
+
+async function getMermaidConfig() {
+  try {
+    const response = await fetch(mermaidConfigPath);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return {
+      startOnLoad: false,
+      securityLevel: 'strict',
+      ...(await response.json())
+    };
+  } catch (error) {
+    console.error(error);
+    return fallbackMermaidConfig;
+  }
+}
 
 async function loadDiagrams() {
   const targets = [...document.querySelectorAll('[data-mermaid-source]')];
@@ -43,7 +76,7 @@ async function loadDiagrams() {
     return;
   }
 
-  mermaid.initialize(mermaidConfig);
+  mermaid.initialize(await getMermaidConfig());
 
   for (const target of targets) {
     const sourcePath = target.getAttribute('data-mermaid-source');
