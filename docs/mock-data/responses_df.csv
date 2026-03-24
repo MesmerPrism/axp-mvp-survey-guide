@@ -1,0 +1,19 @@
+item_id,type,value
+q0,selectInput,Psilocybin
+q1,radioButtons,Medium
+q_context,textAreaInput,Therapeutic retreat with two guides
+q2,sliderInput,30
+q3,sliderInput,76
+q4,sliderInput,68
+q6,sliderInput,78
+q7,sliderInput,18
+q10,sliderInput,26
+q11,sliderInput,36
+q12,sliderInput,56
+q13,sliderInput,60
+q14,sliderInput,12
+q15,sliderInput,65
+q17,sliderInput,44
+q18,sliderInput,71
+q19,sliderInput,86
+q25,sliderInput,74

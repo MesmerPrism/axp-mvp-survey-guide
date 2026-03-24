@@ -26,9 +26,10 @@
       "title": "Value Lifecycle",
       "source": "value-lifecycle.mmd",
       "category": "data-flow",
-      "description": "How questionnaire values move from definition through scoring, storage, feedback, and export.",
+      "description": "How questionnaire values move from definition through ASC scoring, storage, peer plotting, and export.",
       "relatedDocs": [
         "../value-lifecycle.html",
+        "../data-examples.html",
         "../index.html"
       ]
     }

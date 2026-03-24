@@ -24,6 +24,7 @@
           <a href="index.html">Overview</a>
           <a href="questionnaire-edits.html">Questionnaire Edits</a>
           <a href="value-lifecycle.html">Value Lifecycle</a>
+          <a href="data-examples.html">Data Examples</a>
           <a href="diagrams.html">Diagrams</a>
         </nav>
       </div>
@@ -34,7 +35,11 @@
     <section class="hero">
       <div class="kicker">Values Through Stages</div>
       <h1>How values are computed and saved.</h1>
-      <p>The important split happens after submission: one path keeps the current participant’s scores in memory for immediate feedback, another writes durable rows to storage, and a later export path widens those stored rows into public and private bundles.</p>
+      <p>The important split happens after submission: one path keeps the current participant’s ASC factor scores in memory for immediate feedback, another writes durable MariaDB rows, and a later export path widens those stored rows into public and private bundles.</p>
+      <div class="jump-links">
+        <a href="diagrams/viewer.html#value-lifecycle">Open interactive lifecycle</a>
+        <a href="data-examples.html">Open mock files</a>
+      </div>
     </section>
 
     <section class="section">
@@ -45,44 +50,44 @@
             <thead>
               <tr>
                 <th>Stage</th>
-                <th>Main format</th>
+                <th>Main datatype</th>
                 <th>Why it matters</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Definition load</td>
-                <td>One normalized questionnaire table</td>
+                <td>CSV / Google Sheet table, then R <code>data.frame</code></td>
                 <td>The system computes a definition hash from the loaded table and then filters by language.</td>
               </tr>
               <tr>
                 <td>Runtime questionnaire state</td>
-                <td>All languages plus selected-language view</td>
+                <td>R runtime metadata plus selected-language <code>data.frame</code></td>
                 <td>The running survey knows which instrument version and language were actually loaded.</td>
               </tr>
               <tr>
                 <td>Submission assembly</td>
-                <td>In-memory response table</td>
+                <td>R <code>responses_df</code> long table</td>
                 <td>All responses are gathered before scoring and persistence.</td>
               </tr>
               <tr>
-                <td>Scoring</td>
-                <td>Per-factor score rows</td>
-                <td>Numeric values are mapped to factors using the questionnaire’s factor mapping.</td>
+                <td>ASC scoring</td>
+                <td>R factor-score rows keyed by canonical <code>scale_id</code></td>
+                <td>Numeric values are mapped to the 11 ASC factors using the questionnaire’s embedded factor mapping.</td>
               </tr>
               <tr>
                 <td>Persistence</td>
-                <td>Submission, numeric, text, and score tables</td>
+                <td>MariaDB tables</td>
                 <td>Raw collection is stored in normalized database tables.</td>
               </tr>
               <tr>
-                <td>Feedback</td>
-                <td>Current self-scores plus optional peer comparison inputs</td>
-                <td>The participant sees immediate results without waiting for export.</td>
+                <td>Feedback and peer plotting</td>
+                <td>In-memory self scores plus queried peer score rows</td>
+                <td>The participant sees a self polygon, optional peer rings, and a peer median overlay without waiting for export.</td>
               </tr>
               <tr>
                 <td>Export</td>
-                <td>Public or private bundles</td>
+                <td>Wide CSV bundles plus codebooks</td>
                 <td>Public output removes free text and anonymizes identities; private output retains full detail.</td>
               </tr>
             </tbody>
@@ -95,28 +100,29 @@
       <article class="panel">
         <h2 class="section-title">Storage model</h2>
         <ul class="plain-list">
-          <li><code>submission</code> stores one survey session row with version and timing metadata.</li>
-          <li><code>response_numeric</code> stores numeric answers keyed by <code>item_id</code>.</li>
-          <li><code>response_text</code> stores free text and context text when that storage path is enabled.</li>
-          <li><code>score</code> stores computed factor values.</li>
-          <li><code>peer_plot_submission_cache</code> stores one context row per submission for peer comparison filtering.</li>
+          <li><code>submission</code> stores one survey session row with instrument, language, consent, hash, and duration metadata.</li>
+          <li><code>response_numeric</code> stores one row per numeric item answer keyed by <code>item_id</code>.</li>
+          <li><code>response_text</code> stores one row per text or context field; q0/q1 context persists even when full text storage is reduced.</li>
+          <li><code>score</code> stores one row per canonical ASC factor score with <code>scale_id</code> and <code>score_value</code>.</li>
+          <li><code>peer_plot_submission_cache</code> stores one row per submission with raw plus canonical induction/dose context and completeness flags.</li>
         </ul>
       </article>
 
       <aside class="callout">
         <strong>Important distinction</strong>
-        <p>The raw database is the source of truth for collection. The export bundles are the source of truth for distribution.</p>
+        <p>The raw database is the source of truth for collection. The export bundles are the source of truth for distribution. The examples page shows both shapes side by side with mock files.</p>
       </aside>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">What feedback uses</h2>
-        <p>The immediate results view uses the current submission’s computed scores already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
+        <h2 class="section-title">What the feedback plot actually draws</h2>
+        <p>The immediate results view uses the current submission’s ASC factor score rows already in memory. Peer comparison values are loaded separately and only when the feedback step is active.</p>
         <ul class="plain-list">
-          <li>Self-scores do not require rereading the just-written submission rows.</li>
-          <li>Peer comparison starts from <code>peer_plot_submission_cache</code> and uses canonical induction and dose buckets rather than raw free text.</li>
-          <li>If too few peers exist in the selected bucket, the system omits peer dots rather than fabricating comparison data.</li>
+          <li>The participant’s own 11 ASC factor scores become the purple self polygon and points.</li>
+          <li>Peer comparison starts from <code>peer_plot_submission_cache</code>, then queries <code>score</code> rows only for the selected canonical induction and dose bucket.</li>
+          <li>Each returned peer factor score becomes an axis-aligned peer ring or density mark on the matching ASC axis, and the matching peers also contribute a median comparison polygon.</li>
+          <li>If too few peers exist in the selected bucket, the system omits the peer layer rather than fabricating comparison data.</li>
         </ul>
       </div>
     </section>
@@ -125,18 +131,19 @@
       <div class="diagram-grid">
         <article class="diagram-card">
           <h3>Value lifecycle</h3>
-          <p>From questionnaire source to runtime, score rows, peer comparison, and export bundles.</p>
+          <p>From questionnaire source to runtime, ASC factor score rows, durable MariaDB tables, peer plotting inputs, and export bundles.</p>
           <div class="figure-shell">
             <pre data-mermaid-source="diagrams/value-lifecycle.mmd"></pre>
           </div>
           <div class="figure-actions">
             <a class="button-link primary" href="diagrams/viewer.html#value-lifecycle">Open viewer</a>
+            <a class="button-link" href="data-examples.html">Open mock files</a>
             <a class="button-link" href="diagrams/value-lifecycle.mmd">Open source</a>
           </div>
         </article>
         <article class="diagram-card">
           <h3>What happens after submit</h3>
-          <p>The most useful public distinction is between immediate feedback, durable persistence, and later publication outputs.</p>
+          <p>The clearest public distinction is between transient in-memory objects, normalized MariaDB tables, and the later public/private export files.</p>
           <div class="table-wrap">
             <table>
               <thead>
@@ -148,24 +155,39 @@
               <tbody>
                 <tr>
                   <td>Validation passes</td>
-                  <td>Responses are assembled into a common in-memory shape.</td>
+                  <td>Responses are assembled into <code>responses_df</code>, then split into numeric and text/context rows.</td>
                 </tr>
                 <tr>
-                  <td>Scoring runs</td>
-                  <td>Per-factor values become available for the current participant.</td>
+                  <td>ASC scoring runs</td>
+                  <td>Canonical factor score rows become available for the current participant and later feed the self polygon.</td>
                 </tr>
                 <tr>
                   <td>DB write succeeds</td>
-                  <td>Submission, response, score, and cache rows become durable.</td>
+                  <td><code>submission</code>, <code>response_numeric</code>, <code>response_text</code>, <code>score</code>, and cache rows become durable.</td>
+                </tr>
+                <tr>
+                  <td>Feedback peer query runs</td>
+                  <td>The app loads only the matching peer score rows for the chosen canonical induction/dose bucket.</td>
                 </tr>
                 <tr>
                   <td>Later export</td>
-                  <td>Rows are widened and split into public or private bundles.</td>
+                  <td>Normalized rows are widened and split into public or private CSV bundles plus codebooks.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Mock files for every stage</h2>
+        <p>The lifecycle diagram now links into a companion examples page with public-safe CSV and JSON files for each stage. Use it when you need the exact column names and datatypes instead of the abstract flow.</p>
+        <div class="figure-actions">
+          <a class="button-link primary" href="data-examples.html">Open data examples</a>
+          <a class="button-link" href="diagrams/viewer.html#value-lifecycle">Open clickable diagram</a>
+        </div>
       </div>
     </section>
   </main>

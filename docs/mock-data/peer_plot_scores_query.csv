@@ -1,0 +1,23 @@
+peer_id,scale_id,value,instrument_id,instrument_version,induction_method,dose_label
+peer-a-2026-03-18,Experience of Unity,76,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Spiritual Experience,70,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Blissful State,66,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Insightfulness,64,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Disembodiment,24,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Impaired Control and Cognition,34,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Anxiety,18,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Complex Imagery,62,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Elementary Imagery,60,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Audio-Visual Synesthesia,14,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-a-2026-03-18,Changed Meaning of Percepts,52,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Experience of Unity,84,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Spiritual Experience,78,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Blissful State,72,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Insightfulness,70,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Disembodiment,31,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Impaired Control and Cognition,39,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Anxiety,15,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Complex Imagery,68,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Elementary Imagery,63,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Audio-Visual Synesthesia,20,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium
+peer-b-2026-03-21,Changed Meaning of Percepts,55,axp_core_survey,questionnaire_09_03_26,Psilocybin,Medium

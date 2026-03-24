@@ -434,7 +434,13 @@ pre {
   margin-top: 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--surface-strong);
+  background-color: var(--background-key);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
+    url('circe-bg-mirror2x2-v2.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   padding: 14px;
   overflow: auto;
 }
@@ -486,9 +492,11 @@ pre {
   font-size: 0.95rem;
 }
 
-.mermaid svg {
+.mermaid svg,
+.viewer-stage svg {
   max-width: 100%;
   height: auto;
+  background: transparent !important;
 }
 
 .footer {
@@ -613,9 +621,13 @@ pre {
   min-height: 70vh;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(249, 249, 251, 0.94)),
-    linear-gradient(135deg, rgba(107, 61, 240, 0.04), rgba(68, 225, 216, 0.06));
+  background-color: var(--background-key);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
+    url('circe-bg-mirror2x2-v2.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   overflow: hidden;
 }
 
@@ -665,9 +677,7 @@ pre {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(135deg, rgba(107, 61, 240, 0.04), transparent 24%),
-    linear-gradient(315deg, rgba(68, 225, 216, 0.06), transparent 26%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.1));
   z-index: 0;
 }
 
@@ -770,11 +780,100 @@ pre {
   border: 0;
   background-color: var(--background-key);
   background-image:
-    linear-gradient(180deg, rgba(249, 249, 251, 0.58), rgba(249, 249, 251, 0.74)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
     url('circe-bg-mirror2x2-v2.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+
+.panel[id],
+.file-card[id] {
+  scroll-margin-top: 18px;
+}
+
+.detail-grid,
+.file-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.detail-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 16px;
+}
+
+.detail-card,
+.file-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.detail-card {
+  padding: 16px 18px;
+}
+
+.detail-card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.detail-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.file-stack {
+  margin-top: 18px;
+}
+
+.file-card {
+  padding: 18px;
+}
+
+.file-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.04rem;
+}
+
+.file-card p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.file-card .figure-shell {
+  margin-top: 10px;
+}
+
+.file-meta {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.jump-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.jump-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(107, 61, 240, 0.14);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--text);
+}
+
+.jump-links a:hover {
+  text-decoration: none;
+  border-color: rgba(107, 61, 240, 0.3);
+  background: rgba(240, 236, 255, 0.45);
 }
 
 .viewer-canvas-shell:fullscreen .viewer-overlay {

@@ -3,7 +3,7 @@
   "themeVariables": {
     "fontSize": "14px",
     "fontFamily": "Nunito, Segoe UI, sans-serif",
-    "background": "#FFFFFF",
+    "background": "transparent",
     "primaryColor": "#FFFFFF",
     "primaryTextColor": "#262632",
     "primaryBorderColor": "#6B3DF0",

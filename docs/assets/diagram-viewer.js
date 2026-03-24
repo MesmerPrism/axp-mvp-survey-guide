@@ -73,14 +73,14 @@ async function loadMermaidConfig() {
 
     return {
       startOnLoad: false,
-      securityLevel: 'strict',
+      securityLevel: 'loose',
       ...(await response.json())
     };
   } catch (error) {
     console.error(error);
     return {
       startOnLoad: false,
-      securityLevel: 'strict',
+      securityLevel: 'loose',
       theme: 'base'
     };
   }
@@ -259,11 +259,21 @@ async function selectDiagram(diagram) {
 function mountDiagram(svgMarkup) {
   cleanupPanzoom();
   dom.viewer.innerHTML = svgMarkup;
+  rewriteGuideLinks(dom.viewer);
 
   activeSvg = dom.viewer.querySelector('svg');
   if (!activeSvg) {
     showEmptyState('The Mermaid source did not produce SVG output.');
     return;
+  }
+
+  for (const link of activeSvg.querySelectorAll('a')) {
+    link.addEventListener('pointerdown', (event) => {
+      event.stopPropagation();
+    });
+    link.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
   }
 
   requestAnimationFrame(() => {
@@ -529,6 +539,30 @@ function showEmptyState(message) {
   dom.sourcePanel.hidden = true;
   dom.sourceToggle.textContent = 'Source';
   dom.viewer.innerHTML = `<div class="empty-state"><p>${escapeHtml(message)}</p></div>`;
+}
+
+function getGuideRootPath() {
+  const path = window.location.pathname.replace(/\/$/, '');
+  if (/\/diagrams\/[^/]+$/.test(path)) {
+    return path.replace(/\/diagrams\/[^/]+$/, '');
+  }
+  return path.replace(/\/[^/]+$/, '');
+}
+
+function rewriteGuideLinks(container) {
+  const guideRoot = getGuideRootPath();
+  for (const link of container.querySelectorAll('a')) {
+    for (const attr of ['href', 'xlink:href']) {
+      const current = link.getAttribute(attr);
+      if (!current || !current.startsWith('__GUIDE_ROOT__/')) {
+        continue;
+      }
+
+      link.setAttribute(attr, `${guideRoot}${current.slice('__GUIDE_ROOT__'.length)}`);
+      link.setAttribute('target', '_self');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  }
 }
 
 function slugify(value) {

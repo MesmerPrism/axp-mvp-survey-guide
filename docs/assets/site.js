@@ -13,12 +13,12 @@ const mermaidConfigPath = new URL('./../diagrams/mermaid.config.json', import.me
 
 const fallbackMermaidConfig = {
   startOnLoad: false,
-  securityLevel: 'strict',
+  securityLevel: 'loose',
   theme: 'base',
   themeVariables: {
     fontFamily: 'Nunito, Segoe UI, sans-serif',
     fontSize: '14px',
-    background: '#ffffff',
+    background: 'transparent',
     primaryColor: '#ffffff',
     primaryTextColor: '#262632',
     primaryBorderColor: '#6b3df0',
@@ -61,7 +61,7 @@ async function getMermaidConfig() {
 
     return {
       startOnLoad: false,
-      securityLevel: 'strict',
+      securityLevel: 'loose',
       ...(await response.json())
     };
   } catch (error) {
@@ -97,8 +97,54 @@ async function loadDiagrams() {
   await mermaid.run({
     querySelector: '.mermaid'
   });
+
+  for (const target of targets) {
+    rewriteGuideLinks(target);
+  }
 }
 
-loadDiagrams().catch((error) => {
+async function loadFileSamples() {
+  const targets = [...document.querySelectorAll('[data-file-source]')];
+  for (const target of targets) {
+    const sourcePath = target.getAttribute('data-file-source');
+    try {
+      const response = await fetch(sourcePath);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      target.textContent = await response.text();
+    } catch (error) {
+      target.outerHTML = `<p class="status-note">Unable to load example file from <code>${sourcePath}</code>.</p>`;
+      console.error(error);
+    }
+  }
+}
+
+function getGuideRootPath() {
+  const path = window.location.pathname.replace(/\/$/, '');
+  if (/\/diagrams\/[^/]+$/.test(path)) {
+    return path.replace(/\/diagrams\/[^/]+$/, '');
+  }
+  return path.replace(/\/[^/]+$/, '');
+}
+
+function rewriteGuideLinks(container) {
+  const guideRoot = getGuideRootPath();
+  for (const link of container.querySelectorAll('a')) {
+    for (const attr of ['href', 'xlink:href']) {
+      const current = link.getAttribute(attr);
+      if (!current || !current.startsWith('__GUIDE_ROOT__/')) {
+        continue;
+      }
+
+      link.setAttribute(attr, `${guideRoot}${current.slice('__GUIDE_ROOT__'.length)}`);
+      link.setAttribute('target', '_self');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  }
+}
+
+Promise.all([loadDiagrams(), loadFileSamples()]).catch((error) => {
   console.error(error);
 });

@@ -1,0 +1,27 @@
+{
+  "selected_bucket": {
+    "induction_method_canon": "psilocybin",
+    "dose_label_canon": "medium"
+  },
+  "self_polygon_source": "ASC factor scores from the current submission kept in memory",
+  "peer_overlay_source": "score rows returned for matching peers from peer_plot_scores_query.csv",
+  "rendered_layers": [
+    "purple self polygon and self points",
+    "peer rings or density layer positioned on each ASC axis",
+    "peer median polygon and peer median points"
+  ],
+  "matching_peer_count": 2,
+  "peer_median_scores": {
+    "Experience of Unity": 80,
+    "Spiritual Experience": 74,
+    "Blissful State": 69,
+    "Insightfulness": 67,
+    "Disembodiment": 27.5,
+    "Impaired Control and Cognition": 36.5,
+    "Anxiety": 16.5,
+    "Complex Imagery": 65,
+    "Elementary Imagery": 61.5,
+    "Audio-Visual Synesthesia": 17,
+    "Changed Meaning of Percepts": 53.5
+  }
+}
