@@ -2,27 +2,28 @@
 
 :root {
   --accent: #6b3df0;
-  --accent-soft: #f0ecff;
-  --accent-soft-strong: rgba(107, 61, 240, 0.14);
+  --accent-soft: rgba(240, 236, 255, 0.88);
+  --accent-soft-strong: rgba(107, 61, 240, 0.16);
   --text: #262632;
   --muted: #7b7f8c;
-  --border: #e6e7eb;
-  --border-strong: #d9d9e4;
+  --border: rgba(38, 38, 50, 0.1);
+  --border-strong: rgba(38, 38, 50, 0.16);
   --bg: #f9f9fb;
   --card: #ffffff;
-  --surface: rgba(255, 255, 255, 0.92);
+  --surface: rgba(255, 255, 255, 0.94);
   --surface-strong: rgba(255, 255, 255, 0.98);
   --page-tint: rgba(249, 249, 251, 0.88);
   --background-key: #44e1d8;
   --background-deep: #1ed3ca;
   --danger: #b00020;
-  --shadow: 0 10px 28px rgba(38, 38, 50, 0.08);
-  --shadow-soft: 0 4px 16px rgba(38, 38, 50, 0.06);
-  --focus: rgba(107, 61, 240, 0.24);
-  --radius-lg: 18px;
-  --radius-md: 14px;
-  --radius-sm: 10px;
-  --max-width: 1120px;
+  --shadow: 0 6px 18px rgba(38, 38, 50, 0.08);
+  --shadow-soft: 0 2px 10px rgba(38, 38, 50, 0.06);
+  --focus: rgba(107, 61, 240, 0.2);
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+  --max-width: 1180px;
+  --section-gap: 22px;
 }
 
 *,
@@ -63,10 +64,10 @@ body::before {
 
 body::after {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.12)),
-    radial-gradient(circle at 16% 16%, rgba(255, 255, 255, 0.12), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.08)),
+    radial-gradient(circle at 16% 16%, rgba(255, 255, 255, 0.08), transparent 18%),
     radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.08), transparent 16%),
-    radial-gradient(circle at 50% 58%, rgba(107, 61, 240, 0.04), transparent 20%);
+    radial-gradient(circle at 50% 58%, rgba(107, 61, 240, 0.03), transparent 20%);
   z-index: 0;
 }
 
@@ -102,16 +103,16 @@ svg {
 .page-shell,
 .site-shell,
 .footer-inner {
-  width: min(var(--max-width), calc(100% - 32px));
+  width: min(var(--max-width), calc(100% - 40px));
   margin: 0 auto;
 }
 
 .header-inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 28px 0 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 28px;
+  padding: 24px 0 16px;
 }
 
 .brand {
@@ -120,14 +121,14 @@ svg {
   min-width: 0;
   color: var(--text);
   text-decoration: none;
-  max-width: 440px;
+  max-width: 520px;
 }
 
 .brand-logo {
   display: block;
-  width: min(132px, 34vw);
+  width: min(118px, 28vw);
   height: auto;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 
 .brand-eyebrow {
@@ -141,40 +142,66 @@ svg {
 }
 
 .brand strong {
-  font-size: clamp(2.15rem, 4.6vw, 3.45rem);
-  line-height: 1.03;
+  font-size: clamp(1.95rem, 4vw, 2.95rem);
+  line-height: 1.04;
   font-weight: 700;
   letter-spacing: -0.04em;
 }
 
 .brand-subtitle {
   display: block;
-  margin-top: 8px;
+  margin-top: 10px;
   color: rgba(38, 38, 50, 0.82);
   font-size: 1rem;
-  line-height: 1.45;
+  line-height: 1.5;
+  max-width: 34rem;
+}
+
+.home-page .brand-logo {
+  width: min(132px, 34vw);
+}
+
+.home-page .brand strong {
+  font-size: clamp(2.2rem, 4.8vw, 3.4rem);
+}
+
+.site-page .header-inner {
+  padding-top: 20px;
+}
+
+.site-page .brand-logo {
+  width: min(106px, 24vw);
+}
+
+.site-page .brand strong {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+}
+
+.site-page .brand-subtitle {
+  font-size: 0.96rem;
 }
 
 .header-side {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 14px;
+  gap: 12px;
   margin-left: auto;
-  padding-top: 8px;
+  padding-top: 6px;
+  width: min(450px, 100%);
 }
 
 .app-links {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 4px;
 }
 
 .app-link {
   color: var(--accent);
-  font-size: clamp(1rem, 1.7vw, 1.22rem);
-  letter-spacing: 0.14em;
+  font-size: clamp(0.98rem, 1.5vw, 1.12rem);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -189,21 +216,26 @@ svg {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
+  width: min(450px, 100%);
 }
 
 .top-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
   color: var(--text);
-  border: 1px solid rgba(107, 61, 240, 0.14);
-  background: rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(107, 61, 240, 0.16);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-soft);
 }
 
 .top-nav a[aria-current="page"],
 .top-nav a.active {
   background: var(--accent-soft);
-  border-color: rgba(107, 61, 240, 0.16);
+  border-color: rgba(107, 61, 240, 0.2);
   color: var(--accent);
   text-decoration: none;
 }
@@ -212,7 +244,10 @@ svg {
 .site-shell {
   position: relative;
   z-index: 1;
-  padding: 12px 0 56px;
+  padding: 8px 0 52px;
+  display: grid;
+  gap: var(--section-gap);
+  align-content: start;
 }
 
 .hero,
@@ -224,28 +259,30 @@ svg {
 .quick-link {
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero {
-  padding: 30px;
+  padding: 28px;
   border-radius: var(--radius-lg);
-  margin-bottom: 26px;
+  margin-bottom: 0;
+  display: grid;
+  gap: 16px;
 }
 
 .hero h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3.1rem);
-  line-height: 1.04;
+  margin: 0;
+  font-size: clamp(1.95rem, 3.6vw, 3rem);
+  line-height: 1.06;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
 .hero p {
   margin: 0;
-  max-width: 760px;
+  max-width: 52rem;
   color: var(--muted);
-  font-size: 1.06rem;
+  font-size: 1.02rem;
 }
 
 .hero-actions,
@@ -257,17 +294,17 @@ svg {
 }
 
 .hero-actions {
-  margin-top: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 0;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 .card-grid,
 .diagram-grid {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .two-col {
-  grid-template-columns: 1.35fr 0.95fr;
+  grid-template-columns: 1.3fr 0.9fr;
   align-items: start;
 }
 
@@ -276,8 +313,9 @@ svg {
 .note-card,
 .diagram-card {
   display: block;
-  padding: 20px;
+  padding: 18px;
   border-radius: var(--radius-md);
+  background: var(--surface-strong);
 }
 
 .quick-link:hover,
@@ -290,8 +328,8 @@ svg {
 .step-card h3,
 .diagram-card h3,
 .note-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.08rem;
+  margin: 0 0 8px;
+  font-size: 1.02rem;
   line-height: 1.25;
 }
 
@@ -305,19 +343,19 @@ svg {
 }
 
 .section {
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 .section-title {
   margin: 0 0 12px;
-  font-size: 1.6rem;
+  font-size: 1.45rem;
   line-height: 1.15;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .panel {
-  padding: 24px;
+  padding: 22px 24px;
   border-radius: var(--radius-lg);
 }
 
@@ -330,8 +368,10 @@ svg {
 }
 
 .callout {
-  padding: 18px 20px;
+  padding: 22px 20px;
   border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
   border-left: 4px solid var(--accent);
 }
 
@@ -342,11 +382,11 @@ svg {
 }
 
 .kicker {
-  margin-bottom: 8px;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: var(--accent);
 }
 
@@ -355,19 +395,19 @@ svg {
   padding: 0;
   margin: 18px 0 0;
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .step-list li {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 14px;
+  grid-template-columns: 30px 1fr;
+  gap: 12px;
   align-items: start;
 }
 
 .step-num {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   display: inline-grid;
   place-items: center;
   border-radius: 50%;
@@ -375,6 +415,7 @@ svg {
   border: 1px solid rgba(107, 61, 240, 0.18);
   color: var(--accent);
   font-weight: 800;
+  font-size: 0.92rem;
 }
 
 .check-list,
@@ -431,18 +472,32 @@ pre {
 }
 
 .figure-shell {
+  position: relative;
   margin-top: 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background-color: var(--background-key);
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.2)),
     url('circe-bg-mirror2x2-v2.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  padding: 14px;
+  padding: 16px;
   overflow: auto;
+}
+
+.figure-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.figure-shell > * {
+  position: relative;
+  z-index: 1;
 }
 
 .figure-actions {
@@ -457,11 +512,11 @@ pre {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 0 14px;
+  min-height: 38px;
+  padding: 0 13px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.96);
   color: var(--text);
   font: inherit;
   cursor: pointer;
@@ -502,8 +557,8 @@ pre {
 .footer {
   position: relative;
   z-index: 1;
-  border-top: 1px solid rgba(230, 231, 235, 0.92);
-  background: rgba(249, 249, 251, 0.84);
+  border-top: 1px solid rgba(230, 231, 235, 0.9);
+  background: rgba(249, 249, 251, 0.86);
   backdrop-filter: blur(8px);
 }
 
@@ -525,17 +580,17 @@ pre {
 
 .viewer-shell {
   display: grid;
-  gap: 22px;
+  gap: 18px;
 }
 
 .viewer-intro {
-  padding: 26px;
+  padding: 24px;
   border-radius: var(--radius-lg);
 }
 
 .viewer-layout {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 248px minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -550,7 +605,7 @@ pre {
 .viewer-nav {
   padding: 18px;
   position: sticky;
-  top: 94px;
+  top: 24px;
   align-self: start;
 }
 
@@ -566,7 +621,7 @@ pre {
 }
 
 .viewer-main {
-  padding: 18px;
+  padding: 20px;
 }
 
 .viewer-toolbar {
@@ -575,6 +630,8 @@ pre {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .viewer-toolbar h2 {
@@ -583,17 +640,17 @@ pre {
 
 .viewer-meta,
 .viewer-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 12px;
 }
 
 .viewer-meta {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   margin-bottom: 14px;
 }
 
 .viewer-meta-item {
-  min-width: 140px;
+  min-width: 0;
 }
 
 .meta-key {
@@ -613,17 +670,18 @@ pre {
 }
 
 .viewer-actions {
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
   margin-bottom: 14px;
 }
 
 .viewer-canvas-shell {
   position: relative;
-  min-height: 70vh;
-  border: 1px solid var(--border);
+  min-height: 64vh;
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   background-color: var(--background-key);
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.18)),
     url('circe-bg-mirror2x2-v2.jpg');
   background-repeat: no-repeat;
   background-position: center center;
@@ -633,16 +691,16 @@ pre {
 
 .viewer-overlay {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 16px;
+  right: 16px;
   z-index: 4;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(8px);
 }
@@ -677,7 +735,7 @@ pre {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.08));
   z-index: 0;
 }
 
@@ -739,10 +797,10 @@ pre {
 .nav-item {
   width: 100%;
   text-align: left;
-  padding: 12px 14px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.86);
   color: var(--text);
   cursor: pointer;
   transition: border-color 140ms ease, background-color 140ms ease;
@@ -756,6 +814,7 @@ pre {
 .nav-item.active {
   border-color: rgba(107, 61, 240, 0.28);
   background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px rgba(107, 61, 240, 0.08);
 }
 
 .nav-item strong {
@@ -780,7 +839,7 @@ pre {
   border: 0;
   background-color: var(--background-key);
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.18)),
     url('circe-bg-mirror2x2-v2.jpg');
   background-repeat: no-repeat;
   background-position: center center;
@@ -807,7 +866,7 @@ pre {
 .file-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .detail-card {
@@ -870,7 +929,7 @@ pre {
 .file-viewer-shell {
   position: relative;
   min-height: 70vh;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.98);
   overflow: hidden;
@@ -945,7 +1004,7 @@ pre {
   padding: 0 12px;
   border: 1px solid rgba(107, 61, 240, 0.14);
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.86);
   color: var(--text);
 }
 
@@ -967,8 +1026,8 @@ pre {
 
 @media (max-width: 860px) {
   .header-inner {
-    flex-direction: column;
-    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 20px;
     padding: 20px 0 12px;
   }
 
@@ -980,6 +1039,11 @@ pre {
 
   .app-links {
     align-items: flex-start;
+  }
+
+  .top-nav {
+    justify-content: flex-start;
+    width: 100%;
   }
 
   .two-col,
@@ -1005,8 +1069,31 @@ pre {
 }
 
 @media (max-width: 640px) {
+  .header-inner,
+  .page-shell,
+  .site-shell,
+  .footer-inner {
+    width: min(var(--max-width), calc(100% - 24px));
+  }
+
+  .hero,
+  .panel,
+  .viewer-intro,
+  .viewer-main,
+  .viewer-nav,
+  .detail-card,
+  .file-card {
+    padding: 18px;
+  }
+
   .top-nav {
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .top-nav a {
+    width: 100%;
   }
 
   .viewer-overlay {
@@ -1037,5 +1124,18 @@ pre {
     top: 12px;
     left: 12px;
     right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions,
+  .card-grid,
+  .diagram-grid,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-nav a:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 }
