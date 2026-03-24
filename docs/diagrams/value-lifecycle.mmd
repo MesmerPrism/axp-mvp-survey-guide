@@ -1,5 +1,6 @@
 flowchart TD
   subgraph Definition["1. Definition and runtime"]
+    direction TB
     A["Google Sheets or fallback source"] --> B["Loaded and normalized<br/>questionnaire table"]
     B --> C["Runtime questionnaire state<br/>instrument + version<br/>language + definition hash"]
     C --> D["Participant completes the survey"]
@@ -7,6 +8,7 @@ flowchart TD
   end
 
   subgraph Derived["2. Derived in memory"]
+    direction TB
     E --> F["Numeric answers by item_id"]
     E --> G["Text and context answers"]
     F --> H["Scores from scale_id"]
@@ -15,11 +17,16 @@ flowchart TD
   end
 
   subgraph Store["3. Durable storage"]
-    K["submission"]
-    L["response_numeric"]
-    M["response_text or<br/>context-only rows"]
-    N["score"]
+    direction LR
+    subgraph Tables["Stored tables"]
+      direction TB
+      K["submission"]
+      L["response_numeric"]
+      M["response_text or<br/>context-only rows"]
+      N["score"]
+    end
     O["peer_plot_submission_cache"]
+    X["Rows available<br/>for export"]
 
     D --> K
     F --> L
@@ -28,9 +35,14 @@ flowchart TD
     K --> O
     M --> O
     N --> O
+    K --> X
+    L --> X
+    M --> X
+    N --> X
   end
 
   subgraph Peer["4. Peer comparison"]
+    direction TB
     P["Canonical induction<br/>and dose buckets"]
     Q["Peer comparison inputs"]
 
@@ -38,14 +50,14 @@ flowchart TD
   end
 
   subgraph Export["5. Distribution outputs"]
-    R["Export scripts<br/>widen and split stored rows"]
+    direction LR
+    R["Export scripts<br/>widen stored rows"]
+    U["Public packaging<br/>anonymize session id<br/>keep date, numeric answers,<br/>and scores"]
+    V["Private packaging<br/>keep submission id<br/>keep timestamp, numeric answers,<br/>text, and scores"]
     S["Public anonymized bundle"]
     T["Private full bundle"]
 
-    K --> R
-    L --> R
-    M --> R
-    N --> R
-    R --> S
-    R --> T
+    X --> R
+    R --> U --> S
+    R --> V --> T
   end
