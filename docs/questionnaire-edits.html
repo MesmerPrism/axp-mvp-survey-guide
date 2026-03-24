@@ -22,7 +22,7 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="value-lifecycle.html">App Access</a>
+          <a href="value-lifecycle.html">Live Survey</a>
           <a href="questionnaire-edits.html">Google Sheets</a>
           <a href="data-examples.html">Data Examples</a>
           <a href="diagrams.html">Diagrams</a>
@@ -35,7 +35,7 @@
     <section class="hero">
       <div class="kicker">Google Sheets Access</div>
       <h1>Review and update the questionnaire in the shared sheet.</h1>
-      <p>Use this page if your main access is the shared questionnaire sheet. The sheet is the editable questionnaire source. Valid edits there are what the app reads. App access is still needed when someone must confirm the running survey behavior or refresh an already open app session.</p>
+      <p>Use this page if your main access is the shared questionnaire sheet. The sheet is the editable questionnaire source. Valid edits there are what the running survey reads. Live survey access is still needed when someone must confirm the running survey behavior or refresh an already open survey session.</p>
     </section>
 
     <section class="two-col section">
@@ -46,25 +46,25 @@
           <li>Add or adjust translations in the shared table.</li>
           <li>Update answer options and context choices.</li>
           <li>Create a new dated version tab when a change should be tracked separately.</li>
-          <li>Prepare a clear handoff for someone who will verify the live app.</li>
+          <li>Prepare a clear handoff for someone who will verify the live survey page.</li>
         </ul>
       </article>
       <aside class="callout">
-        <strong>What app access is for</strong>
-        <p>App access is for live verification, not for making a valid sheet edit count. New or reopened app sessions read the sheet directly. Ask an app user only when someone needs to check the running questionnaire, the submit flow, the feedback page, or an already open session after a sheet change.</p>
+        <strong>What live survey access is for</strong>
+        <p>Live survey access here means being able to open the running web survey page, not code or repo access. It is for live verification, not for making a valid sheet edit count. New or reopened survey sessions read the sheet directly. Ask someone who can open the live survey only when the running questionnaire, submit flow, feedback page, or an already open session needs checking.</p>
       </aside>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Change types and when a live app check is helpful</h2>
+        <h2 class="section-title">Change types and when a live survey check is helpful</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Change type</th>
                 <th>Can start in Google Sheets?</th>
-                <th>Needs a live app check?</th>
+                <th>Needs a live survey check?</th>
                 <th>Typical next step</th>
               </tr>
             </thead>
@@ -73,25 +73,25 @@
                 <td>Wording or translation cleanup</td>
                 <td>Yes</td>
                 <td>Sometimes</td>
-                <td>Edit the sheet. New app loads pick it up. Ask an app user only if someone needs to confirm how the live wording actually renders in the survey.</td>
+                <td>Edit the sheet. New survey loads pick it up. Ask someone who can open the live survey only if the wording needs to be checked in the running questionnaire.</td>
               </tr>
               <tr>
                 <td>Required or active toggle</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Edit the sheet, then use app access to confirm the live navigation and completion flow.</td>
+                <td>Edit the sheet, then use live survey access to confirm the navigation and completion flow.</td>
               </tr>
               <tr>
                 <td>Substance or dose option changes</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Edit the sheet, then use app access to verify the live option set and the feedback-side comparison behavior.</td>
+                <td>Edit the sheet, then use live survey access to verify the option set and the feedback-side comparison behavior.</td>
               </tr>
               <tr>
                 <td>New scorable item or factor remapping</td>
                 <td>Yes</td>
                 <td>Yes</td>
-                <td>Create or update the dated version in the sheet, then use app access to verify the live questionnaire and feedback path.</td>
+                <td>Create or update the dated version in the sheet, then use live survey access to verify the questionnaire and feedback path.</td>
               </tr>
             </tbody>
           </table>
@@ -108,7 +108,7 @@
           <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable rows mapped through the intended <code>scale_id</code>.</p></div></li>
           <li><span class="step-num">4</span><div><strong>Let the sheet enforcer sync the tab.</strong><p>If the Google Sheets Apps Script is installed, it will auto-sort language blocks, keep the expected header shape, and apply the row formatting the questionnaire uses.</p></div></li>
           <li><span class="step-num">5</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Use app access only when a live check is needed.</strong><p>New or reopened app sessions already read the updated sheet. Use the app reload control only if someone needs to refresh an already open session or test a different sheet tab override.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Use live survey access only when a live check is needed.</strong><p>New or reopened survey sessions already read the updated sheet. Use the survey reload control only if someone needs to refresh an already open session or test a different sheet tab override.</p></div></li>
           <li><span class="step-num">7</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
         </ol>
       </div>
@@ -122,14 +122,14 @@
           <li>It keeps the questionnaire tab in the expected header order and auto-sorts each language block by the English row order.</li>
           <li>It colors and formats rows from the English structural metadata, including <code>active</code> state and <code>scale_id</code>.</li>
           <li>It checks that explicit <code>induction_method_N</code> and <code>dose_options_N</code> header pairs are complete before syncing.</li>
-          <li>It helps keep the sheet structurally valid and readable, but it is not a separate publish step. The app still reads the questionnaire from the sheet itself.</li>
+          <li>It helps keep the sheet structurally valid and readable, but it is not a separate publish step. The running survey still reads the questionnaire from the sheet itself.</li>
         </ul>
       </div>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">When to ask for app-level help</h2>
+        <h2 class="section-title">When to ask for a live survey check</h2>
         <ul class="check-list">
           <li>When the change must be checked in the live questionnaire UI.</li>
           <li>When the submit flow or required-step behavior might change.</li>
@@ -143,7 +143,7 @@
       <div class="diagram-grid">
         <article class="diagram-card">
           <h3>Questionnaire adaptation flow</h3>
-          <p>Use this when a sheet change needs a clean handoff into live app verification.</p>
+          <p>Use this when a sheet change needs a clean handoff into live survey verification.</p>
           <div class="figure-shell">
             <pre data-mermaid-source="diagrams/questionnaire-adaptation-flow.mmd"></pre>
           </div>
@@ -168,7 +168,7 @@
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Google Sheets editing and app-verification handoff.</div>
+    <div class="footer-inner">Google Sheets editing and live-survey verification handoff.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>

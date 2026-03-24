@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>App Access | AXP Access Guide</title>
+  <title>Live Survey Access | AXP Access Guide</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="site-page">
@@ -22,7 +22,7 @@
         </div>
         <nav class="top-nav" data-nav aria-label="Primary">
           <a href="index.html">Overview</a>
-          <a href="value-lifecycle.html">App Access</a>
+          <a href="value-lifecycle.html">Live Survey</a>
           <a href="questionnaire-edits.html">Google Sheets</a>
           <a href="data-examples.html">Data Examples</a>
           <a href="diagrams.html">Diagrams</a>
@@ -33,9 +33,9 @@
 
   <main class="page-shell">
     <section class="hero">
-      <div class="kicker">App Access</div>
-      <h1>Use the live app and verify the running experience.</h1>
-      <p>This page is for collaborators who can open the AXP app itself. Use app access whenever the task depends on the live questionnaire, a real submit flow, the feedback screen, or the running comparison controls.</p>
+      <div class="kicker">Live Survey Access</div>
+      <h1>Open the running survey and verify the live experience.</h1>
+      <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access. Use it whenever the task depends on the live questionnaire, a real submit flow, the feedback screen, or the running comparison controls.</p>
       <div class="jump-links">
         <a href="questionnaire-edits.html">Google Sheets workflow</a>
         <a href="data-examples.html">Data examples</a>
@@ -45,26 +45,26 @@
 
     <section class="two-col section">
       <article class="panel">
-        <h2 class="section-title">What app access lets you do</h2>
+        <h2 class="section-title">What live survey access lets you do</h2>
         <ul class="plain-list">
           <li>Open the current live questionnaire.</li>
           <li>Choose a language and walk the actual running flow.</li>
           <li>Submit a response and reach the feedback view.</li>
-          <li>Check how wording, options, and required behavior appear in the app.</li>
+          <li>Check how wording, options, and required behavior appear in the running survey.</li>
           <li>Use the feedback comparison controls after submission.</li>
           <li>Reload the running questionnaire when a sheet-backed version needs to be rechecked.</li>
         </ul>
       </article>
 
       <aside class="callout">
-        <strong>App-only work</strong>
-        <p>If a collaborator cannot open the live app, they cannot confirm the real questionnaire flow, the final submit path, or the feedback screen. Those checks stay with app users.</p>
+        <strong>Live-survey-only work</strong>
+        <p>If a collaborator cannot open the running survey page, they cannot confirm the real questionnaire flow, the final submit path, or the feedback screen. Those checks stay with people who can open the live survey.</p>
       </aside>
     </section>
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Live app workflow</h2>
+        <h2 class="section-title">Live survey workflow</h2>
         <ol class="step-list">
           <li><span class="step-num">1</span><div><strong>Open the app URL you were given.</strong><p>Start in the running survey rather than a local or static copy.</p></div></li>
           <li><span class="step-num">2</span><div><strong>Choose your language.</strong><p>Check the live wording in the language that matters for the current task.</p></div></li>
@@ -78,13 +78,13 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">Common app-only checks</h2>
+        <h2 class="section-title">Common live-survey-only checks</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Task</th>
-                <th>Why app access is required</th>
+                <th>Why live survey access is required</th>
                 <th>What to confirm</th>
               </tr>
             </thead>
@@ -92,11 +92,11 @@
               <tr>
                 <td>Live wording and translation check</td>
                 <td>The running questionnaire is the real user experience.</td>
-                <td>The text, ordering, and language selection look correct in the live app.</td>
+                <td>The text, ordering, and language selection look correct in the running survey.</td>
               </tr>
               <tr>
                 <td>Required-step and navigation check</td>
-                <td>Only the app shows the actual live step flow and validation behavior.</td>
+                <td>Only the running survey shows the actual live step flow and validation behavior.</td>
                 <td>The user can move through the intended path and cannot skip required inputs accidentally.</td>
               </tr>
               <tr>
@@ -111,8 +111,8 @@
               </tr>
               <tr>
                 <td>Questionnaire reload after a sheet change</td>
-                <td>The reload action refreshes an already open app session or lets an app user test a different sheet tab override.</td>
-                <td>The already open app session shows the updated questionnaire, or the requested override tab is loaded for checking.</td>
+                <td>The reload action refreshes an already open survey session or lets a live survey checker test a different sheet tab override.</td>
+                <td>The already open survey session shows the updated questionnaire, or the requested override tab is loaded for checking.</td>
               </tr>
             </tbody>
           </table>
@@ -122,7 +122,7 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">What app users hand back to other collaborators</h2>
+        <h2 class="section-title">What live survey checkers hand back to other collaborators</h2>
         <ul class="check-list">
           <li>Whether the live wording and ordering matched the sheet change.</li>
           <li>Whether the flow completed and submitted successfully.</li>
@@ -135,7 +135,7 @@
     <section class="section">
       <div class="panel">
         <h2 class="section-title">Need the big picture?</h2>
-        <p>Open the diagrams when you want to connect live app checks to upstream Google Sheets edits and downstream data examples and exports.</p>
+        <p>Open the diagrams when you want to connect live survey checks to upstream Google Sheets edits and downstream data examples and exports.</p>
         <div class="figure-actions">
           <a class="button-link primary" href="diagrams.html">Open diagrams</a>
           <a class="button-link" href="questionnaire-edits.html">Google Sheets</a>
@@ -146,7 +146,7 @@
   </main>
 
   <footer class="footer">
-    <div class="footer-inner">Live app usage and app-only verification.</div>
+    <div class="footer-inner">Live survey usage and live-only verification.</div>
   </footer>
 
   <script type="module" src="assets/site.js"></script>

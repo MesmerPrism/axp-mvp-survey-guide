@@ -5,7 +5,7 @@
       "title": "Questionnaire Adaptation Flow",
       "source": "questionnaire-adaptation-flow.mmd",
       "category": "editing",
-      "description": "How a Google Sheets change becomes the current questionnaire source and then gets checked in the live app.",
+      "description": "How a Google Sheets change becomes the current questionnaire source and then gets checked in the live survey.",
       "relatedDocs": [
         "../questionnaire-edits.html",
         "../index.html"
@@ -26,7 +26,7 @@
       "title": "Value Lifecycle",
       "source": "value-lifecycle.mmd",
       "category": "data-flow",
-      "description": "How live app results connect to feedback behavior and later OSF downloads.",
+      "description": "How live survey results connect to feedback behavior and later OSF downloads.",
       "relatedDocs": [
         "../value-lifecycle.html",
         "../data-examples.html",
