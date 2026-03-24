@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Viewer | AXP MVP Survey Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
+        <span class="brand-eyebrow">AXP survey</span>
+        <strong>AXP Survey Guide</strong>
+        <span class="brand-subtitle">Questionnaire editing, value flow, and public-safe diagrams.</span>
+      </a>
+      <div class="header-side">
+        <div class="app-links">
+          <a class="app-link" href="https://osf.io/c3zq5/overview" target="_blank" rel="noopener noreferrer">About AXP</a>
+          <a class="app-link" href="https://circe-science.com/" target="_blank" rel="noopener noreferrer">About Circe</a>
+        </div>
+        <nav class="top-nav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="questionnaire-edits.html">Questionnaire Edits</a>
+          <a href="value-lifecycle.html">Value Lifecycle</a>
+          <a class="active" href="data-examples.html">Data Examples</a>
+          <a href="diagrams.html">Diagrams</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell viewer-page">
+    <section class="viewer-shell">
+      <div class="panel viewer-intro">
+        <h1>Mock data file viewer</h1>
+        <p class="viewer-description">Use this viewer for wide CSVs and long JSON examples when the inline preview on the examples page is too small. The raw mock files stay public-safe and viewable directly in the browser.</p>
+      </div>
+
+      <div class="viewer-layout">
+        <aside class="viewer-nav">
+          <header>
+            <h2>Files</h2>
+            <p class="viewer-description">Choose a mock file, then use wrap or fullscreen without leaving the browser.</p>
+          </header>
+          <div id="file-nav-list" class="nav-list"></div>
+        </aside>
+
+        <section class="viewer-main">
+          <div class="viewer-toolbar">
+            <h2 id="file-title">Loading file...</h2>
+          </div>
+
+          <div class="viewer-meta">
+            <div class="viewer-meta-item">
+              <span class="meta-key">Stage</span>
+              <span id="file-category"></span>
+            </div>
+            <div class="viewer-meta-item">
+              <span class="meta-key">Datatype</span>
+              <span id="file-datatype"></span>
+            </div>
+            <div class="viewer-meta-item">
+              <span class="meta-key">Source</span>
+              <span id="file-source"></span>
+            </div>
+            <div class="viewer-meta-item">
+              <span class="meta-key">Size</span>
+              <span id="file-stats"></span>
+            </div>
+          </div>
+
+          <p id="file-description" class="viewer-description"></p>
+
+          <div class="viewer-actions">
+            <a id="link-file-related" class="button-link" href="data-examples.html">Open examples section</a>
+            <a id="link-file-raw" class="button-link" href="mock-data/">Open raw file</a>
+          </div>
+
+          <div id="file-viewer-shell" class="file-viewer-shell">
+            <div class="viewer-overlay">
+              <div class="viewer-controls">
+                <button id="btn-file-wrap" class="button" type="button">Wrap off</button>
+                <button id="btn-file-fullscreen" class="button" type="button">Fullscreen</button>
+                <button id="btn-file-copy-link" class="button" type="button">Copy link</button>
+              </div>
+            </div>
+            <div id="file-viewer-stage" class="file-viewer-stage">
+              <pre id="file-viewer-code" class="file-viewer-code"></pre>
+            </div>
+          </div>
+
+          <p class="file-viewer-note">Inline previews on the examples page are bounded. This page preserves the raw file layout and can expand to fullscreen for wide exports.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">This viewer renders plain text mock files directly in the browser. No downloads are required for inspection.</div>
+  </footer>
+
+  <script type="module" src="assets/file-viewer.js"></script>
+</body>
+</html>

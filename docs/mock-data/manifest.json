@@ -1,0 +1,148 @@
+{
+  "files": [
+    {
+      "id": "definition-source",
+      "title": "Questionnaire Definition Source",
+      "source": "questionnaire_definition.csv",
+      "category": "definition",
+      "dataType": "CSV source file",
+      "description": "Stacked multi-language questionnaire rows with English structure and embedded ASC scale mapping.",
+      "relatedDoc": "../data-examples.html#definition-source"
+    },
+    {
+      "id": "runtime-state",
+      "title": "Runtime State",
+      "source": "runtime_state.json",
+      "category": "definition",
+      "dataType": "JSON runtime metadata",
+      "description": "Loaded instrument metadata plus full-table and selected-language runtime shapes.",
+      "relatedDoc": "../data-examples.html#runtime-state"
+    },
+    {
+      "id": "responses-memory",
+      "title": "responses_df",
+      "source": "responses_df.csv",
+      "category": "memory",
+      "dataType": "R data.frame shown as CSV",
+      "description": "Common long in-memory response table before numeric and text/context rows are split.",
+      "relatedDoc": "../data-examples.html#responses-memory"
+    },
+    {
+      "id": "numeric-memory",
+      "title": "Numeric Memory Rows",
+      "source": "response_numeric_memory.csv",
+      "category": "memory",
+      "dataType": "R data.frame shown as CSV",
+      "description": "Numeric subset used for ASC scoring and later durable writes to response_numeric.",
+      "relatedDoc": "../data-examples.html#numeric-memory"
+    },
+    {
+      "id": "text-memory",
+      "title": "Text and Context Memory Rows",
+      "source": "response_text_memory.csv",
+      "category": "memory",
+      "dataType": "R data.frame shown as CSV",
+      "description": "Text and context subset including q0 and q1 values used for peer filter context.",
+      "relatedDoc": "../data-examples.html#text-memory"
+    },
+    {
+      "id": "factor-scores",
+      "title": "ASC Factor Scores",
+      "source": "asc_factor_scores.csv",
+      "category": "memory",
+      "dataType": "R data.frame shown as CSV",
+      "description": "Canonical ASC factor score rows keyed by scale_id and used for immediate self-feedback.",
+      "relatedDoc": "../data-examples.html#factor-scores"
+    },
+    {
+      "id": "submission-table",
+      "title": "submission Table",
+      "source": "submission_table.csv",
+      "category": "storage",
+      "dataType": "MariaDB table excerpt",
+      "description": "Submission-level metadata written once per survey session.",
+      "relatedDoc": "../data-examples.html#submission-table"
+    },
+    {
+      "id": "response-numeric-table",
+      "title": "response_numeric Table",
+      "source": "response_numeric_table.csv",
+      "category": "storage",
+      "dataType": "MariaDB table excerpt",
+      "description": "Durable numeric answer rows keyed by submission_id and item_id.",
+      "relatedDoc": "../data-examples.html#response-numeric-table"
+    },
+    {
+      "id": "response-text-table",
+      "title": "response_text Table",
+      "source": "response_text_table.csv",
+      "category": "storage",
+      "dataType": "MariaDB table excerpt",
+      "description": "Durable text and context rows that are excluded from public export.",
+      "relatedDoc": "../data-examples.html#response-text-table"
+    },
+    {
+      "id": "score-table",
+      "title": "score Table",
+      "source": "score_table.csv",
+      "category": "storage",
+      "dataType": "MariaDB table excerpt",
+      "description": "Durable ASC factor score rows with canonical scale_id and score_value.",
+      "relatedDoc": "../data-examples.html#score-table"
+    },
+    {
+      "id": "peer-cache",
+      "title": "peer_plot_submission_cache",
+      "source": "peer_plot_submission_cache.csv",
+      "category": "peer",
+      "dataType": "MariaDB table excerpt",
+      "description": "Submission-level peer plotting context with raw and canonical induction and dose values.",
+      "relatedDoc": "../data-examples.html#peer-cache"
+    },
+    {
+      "id": "peer-query",
+      "title": "Peer Plot Score Query",
+      "source": "peer_plot_scores_query.csv",
+      "category": "peer",
+      "dataType": "Query result shown as CSV",
+      "description": "One row per matching peer and ASC factor returned for the chosen canonical bucket.",
+      "relatedDoc": "../data-examples.html#peer-query"
+    },
+    {
+      "id": "peer-render",
+      "title": "Peer Plot Render Payload",
+      "source": "peer_plot_render_payload.json",
+      "category": "peer",
+      "dataType": "JSON render-state example",
+      "description": "Explicit summary of what becomes the self polygon, peer rings or density layer, and median overlay.",
+      "relatedDoc": "../data-examples.html#peer-render"
+    },
+    {
+      "id": "public-export",
+      "title": "Public Wide Export",
+      "source": "public_export.csv",
+      "category": "distribution",
+      "dataType": "Wide CSV export",
+      "description": "Public anonymized wide export with session_anon, item_* columns, and scale_* columns.",
+      "relatedDoc": "../data-examples.html#public-export"
+    },
+    {
+      "id": "public-factor-export",
+      "title": "Public Factor Export",
+      "source": "public_factor_scores.csv",
+      "category": "distribution",
+      "dataType": "Long CSV export",
+      "description": "Public factor-only export with one row per anonymized peer_id and scale_id.",
+      "relatedDoc": "../data-examples.html#public-export"
+    },
+    {
+      "id": "private-export",
+      "title": "Private Full Export",
+      "source": "private_full_export.csv",
+      "category": "distribution",
+      "dataType": "Wide CSV export",
+      "description": "Private full export that keeps submission_id, created_at, text_*, item_*, and scale_* columns.",
+      "relatedDoc": "../data-examples.html#private-export"
+    }
+  ]
+}

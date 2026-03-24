@@ -844,12 +844,91 @@ pre {
 
 .file-card .figure-shell {
   margin-top: 10px;
+  max-width: 100%;
+  max-height: 340px;
+  padding: 0;
+  overflow: auto;
+  background: rgba(255, 255, 255, 0.97);
+  background-image: none;
+}
+
+.file-card .figure-shell pre {
+  padding: 16px 18px;
+  width: max-content;
+  min-width: 100%;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 0.91rem;
+  line-height: 1.55;
+}
+
+.file-card .figure-shell .status-note {
+  padding: 16px 18px;
+}
+
+.file-viewer-shell {
+  position: relative;
+  min-height: 70vh;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.98);
+  overflow: hidden;
+}
+
+.file-viewer-stage {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.file-viewer-stage.is-wrapped .file-viewer-code {
+  width: 100%;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.file-viewer-code {
+  margin: 0;
+  padding: 72px 20px 20px;
+  width: max-content;
+  min-width: 100%;
+  min-height: 100%;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text);
+  background: transparent;
+}
+
+.file-viewer-shell:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  border: 0;
+  background: rgba(255, 255, 255, 0.99);
+}
+
+.file-viewer-shell:fullscreen .viewer-overlay {
+  top: 18px;
+  right: 18px;
 }
 
 .file-meta {
   color: var(--muted);
   font-size: 0.94rem;
   line-height: 1.5;
+}
+
+.file-viewer-note {
+  margin-top: 12px;
+  color: var(--muted);
 }
 
 .jump-links {
@@ -916,6 +995,10 @@ pre {
     min-height: 60vh;
   }
 
+  .file-viewer-shell {
+    min-height: 60vh;
+  }
+
   .viewer-intro {
     padding: 22px;
   }
@@ -945,6 +1028,12 @@ pre {
   }
 
   .viewer-canvas-shell:fullscreen .viewer-overlay {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .file-viewer-shell:fullscreen .viewer-overlay {
     top: 12px;
     left: 12px;
     right: 12px;
