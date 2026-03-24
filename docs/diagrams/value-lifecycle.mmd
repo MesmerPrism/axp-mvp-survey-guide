@@ -1,5 +1,5 @@
 flowchart TD
-  subgraph Definition[""]
+  subgraph Definition[" "]
     direction TB
     DefinitionTitle["1. Definition and runtime"]
     DefinitionTitle ~~~ A
@@ -9,7 +9,7 @@ flowchart TD
     D --> E["responses_df<br/>R data.frame with item_id, type, value"]
   end
 
-  subgraph Derived[""]
+  subgraph Derived[" "]
     direction TB
     DerivedTitle["2. In-memory split and ASC scoring"]
     DerivedTitle ~~~ E
@@ -19,7 +19,7 @@ flowchart TD
     H --> I["Current self-score set<br/>11 canonical ASC factors in memory"]
   end
 
-  subgraph Store[""]
+  subgraph Store[" "]
     direction LR
     StoreTitle["3. Durable MariaDB storage"]
     StoreTitle ~~~ K
@@ -43,7 +43,7 @@ flowchart TD
     N --> X
   end
 
-  subgraph Peer[""]
+  subgraph Peer[" "]
     direction TB
     PeerTitle["4. Peer selection, query and layers"]
     PeerTitle ~~~ P0
@@ -64,7 +64,7 @@ flowchart TD
     I --> J
   end
 
-  subgraph Export[""]
+  subgraph Export[" "]
     direction TB
     ExportTitle["5. Distribution outputs"]
     ExportTitle ~~~ S
