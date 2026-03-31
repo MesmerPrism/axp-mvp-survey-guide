@@ -179,7 +179,8 @@
   padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.68);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-soft);
 }
 
 .legend-mark {
@@ -236,12 +237,17 @@
 .guide-figure-shell {
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--surface-strong);
   overflow: hidden;
 }
 
 .plot-shell {
   padding: 12px;
+}
+
+.plot-panel {
+  display: grid;
+  gap: 14px;
 }
 
 #peer-plot-svg,
