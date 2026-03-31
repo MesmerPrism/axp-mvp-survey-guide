@@ -396,10 +396,19 @@ function renderGuidePlot(palette = paletteFromPeerColor(state.controls.peerColor
   const minx = guideX(whiskerLow) / 100;
   const maxx = guideX(whiskerHigh) / 100;
   const outx = guideX(outlier) / 100;
-  const directionNote = invert ? 'higher values near center' : 'lower values near center';
+  const directionNote = invert ? ['higher values', 'near center'] : ['lower values', 'near center'];
+  const bubbleX = invert ? 1.08 : -0.08;
+  const outlierLabelX = invert ? 0.18 : 0.92;
+  const outlierAnchor = invert ? 'end' : 'start';
+  const outlierLeaderStartX = invert ? 0.24 : 0.84;
+  const outlierLeaderEndX = outx + (invert ? 0.025 : -0.025);
+  const dataLabelX = invert ? 0.20 : 0.86;
+  const dataAnchor = invert ? 'end' : 'start';
+  const dataLeaderStartX = invert ? 0.26 : 0.78;
+  const dataLeaderEndX = invert ? 0.38 : 0.64;
 
   dom.guideSvg.innerHTML = `
-    <rect x="-0.08" y="-0.78" width="1.22" height="1.56" fill="#ffffff"></rect>
+    <rect x="-0.22" y="-0.82" width="1.46" height="1.64" fill="#ffffff"></rect>
     <path d="${violinPath}" fill="${withAlpha(palette.peerFill, 0.82)}" stroke="none"></path>
     <line x1="${formatNumber(minx)}" y1="0" x2="${formatNumber(maxx)}" y2="0" stroke="${palette.boxLine}" stroke-width="0.012"></line>
     <rect x="${formatNumber(Math.min(q1x, q3x))}" y="-0.10" width="${formatNumber(Math.abs(q3x - q1x))}" height="0.20"
@@ -409,33 +418,30 @@ function renderGuidePlot(palette = paletteFromPeerColor(state.controls.peerColor
     <circle cx="${formatNumber(maxx)}" cy="0" r="0.034" fill="${palette.boxLine}"></circle>
     <circle cx="${formatNumber(outx)}" cy="0" r="0.034" fill="${palette.outlier}"></circle>
 
-    ${annotationLine(minx, 0.08, minx, 0.55)}
-    ${annotationText(minx, 0.64, 'minimum')}
-    ${annotationLine(q2x, 0.12, q2x, 0.48)}
-    ${annotationText(q2x, 0.60, 'Q2 median')}
-    ${annotationLine(maxx, 0.08, maxx, 0.55)}
-    ${annotationText(maxx, 0.64, 'maximum')}
-    ${annotationLine(q1x, -0.12, q1x, -0.52)}
-    ${annotationText(q1x, -0.64, 'Q1 lower quartile', true)}
-    ${annotationLine(q3x, -0.12, q3x, -0.52)}
-    ${annotationText(q3x, -0.64, 'Q3 upper quartile', true)}
+    ${annotationLine(minx, -0.08, minx, -0.46)}
+    ${annotationText(minx, -0.60, 'minimum', { fontSize: 0.056 })}
+    ${annotationLine(q2x, -0.12, q2x, -0.42)}
+    ${annotationText(q2x, -0.60, ['Q2', 'median'], { fontSize: 0.056, lineHeight: 0.065 })}
+    ${annotationLine(maxx, -0.08, maxx, -0.46)}
+    ${annotationText(maxx, -0.60, 'maximum', { fontSize: 0.056 })}
+    ${annotationLine(q1x, 0.12, q1x, 0.46)}
+    ${annotationText(q1x, 0.58, ['Q1', 'lower quartile'], { fontSize: 0.052, lineHeight: 0.060 })}
+    ${annotationLine(q3x, 0.12, q3x, 0.46)}
+    ${annotationText(q3x, 0.58, ['Q3', 'upper quartile'], { fontSize: 0.052, lineHeight: 0.060 })}
 
-    <line x1="${formatNumber(invert ? 0.18 : 0.81)}" y1="${formatNumber(invert ? 0.46 : 0.06)}"
-          x2="${formatNumber(invert ? 0.30 : 0.68)}" y2="${formatNumber(invert ? 0.06 : 0.19)}"
+    <line x1="${formatNumber(outlierLeaderStartX)}" y1="0.10"
+          x2="${formatNumber(outlierLeaderEndX)}" y2="${formatNumber(0.02)}"
           stroke="${palette.label}" stroke-width="0.008" stroke-dasharray="0.025 0.02"></line>
-    <text x="${formatNumber(invert ? 0.12 : 0.86)}" y="${formatNumber(invert ? 0.52 : 0.08)}"
-          font-size="0.070" font-weight="700" fill="${palette.label}" text-anchor="${invert ? 'end' : 'start'}">outlier</text>
+    ${annotationText(outlierLabelX, 0.12, 'outlier', { anchor: outlierAnchor, fontSize: 0.058 })}
 
-    <line x1="${formatNumber(invert ? 0.22 : 0.78)}" y1="${formatNumber(invert ? -0.54 : -0.50)}"
-          x2="${formatNumber(invert ? 0.33 : 0.67)}" y2="-0.17"
+    <line x1="${formatNumber(dataLeaderStartX)}" y1="-0.30"
+          x2="${formatNumber(dataLeaderEndX)}" y2="-0.16"
           stroke="${palette.label}" stroke-width="0.008" stroke-dasharray="0.025 0.02"></line>
-    <text x="${formatNumber(invert ? 0.18 : 0.82)}" y="${formatNumber(invert ? -0.58 : -0.54)}"
-          font-size="0.070" font-weight="700" fill="${palette.label}" text-anchor="${invert ? 'end' : 'start'}">data distribution</text>
+    ${annotationText(dataLabelX, -0.32, ['data', 'distribution'], { anchor: dataAnchor, fontSize: 0.056, lineHeight: 0.060 })}
 
-    <circle cx="${formatNumber(invert ? 1.01 : -0.02)}" cy="0" r="0.10" fill="#ffffff" stroke="#8e919d" stroke-width="0.008"></circle>
-    <text x="${formatNumber(invert ? 1.01 : -0.02)}" y="-0.02" font-size="0.060" font-weight="700" fill="${palette.label}" text-anchor="middle">toward</text>
-    <text x="${formatNumber(invert ? 1.01 : -0.02)}" y="0.06" font-size="0.060" font-weight="700" fill="${palette.label}" text-anchor="middle">chart center</text>
-    <text x="${formatNumber(invert ? 1.01 : -0.02)}" y="0.16" font-size="0.050" fill="${palette.textMuted}" text-anchor="middle">${escapeHtml(directionNote)}</text>
+    <circle cx="${formatNumber(bubbleX)}" cy="0" r="0.11" fill="#ffffff" stroke="#8e919d" stroke-width="0.008"></circle>
+    ${annotationText(bubbleX, -0.02, ['toward', 'chart center'], { fontSize: 0.054, lineHeight: 0.058 })}
+    ${annotationText(bubbleX, 0.18, directionNote, { fontSize: 0.040, lineHeight: 0.048, fill: palette.textMuted, fontWeight: 600 })}
   `;
 }
 
@@ -910,10 +916,21 @@ function annotationLine(x1, y1, x2, y2) {
   `;
 }
 
-function annotationText(x, y, text, below = false) {
+function annotationText(x, y, text, options = {}) {
+  const lines = Array.isArray(text) ? text : [text];
+  const {
+    anchor = 'middle',
+    fontSize = 0.070,
+    fontWeight = 700,
+    fill = '#171b24',
+    lineHeight = 0.068
+  } = options;
+  const startY = y - ((lines.length - 1) * lineHeight) / 2;
   return `
-    <text x="${formatNumber(x)}" y="${formatNumber(y)}" font-size="0.070" font-weight="700"
-          fill="#171b24" text-anchor="middle" dominant-baseline="${below ? 'hanging' : 'auto'}">${escapeHtml(text)}</text>
+    <text x="${formatNumber(x)}" y="${formatNumber(startY)}" font-size="${formatNumber(fontSize)}" font-weight="${fontWeight}"
+          fill="${fill}" text-anchor="${anchor}">
+      ${lines.map((line, index) => `<tspan x="${formatNumber(x)}" dy="${formatNumber(index === 0 ? 0 : lineHeight)}">${escapeHtml(line)}</tspan>`).join('')}
+    </text>
   `;
 }
 

@@ -245,6 +245,10 @@
   padding: 12px;
 }
 
+.guide-figure-shell {
+  padding: 12px 14px;
+}
+
 .plot-panel {
   display: grid;
   gap: 14px;
