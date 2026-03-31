@@ -246,7 +246,9 @@
 }
 
 .guide-figure-shell {
-  padding: 12px 14px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .plot-panel {
@@ -255,10 +257,14 @@
 }
 
 #peer-plot-svg,
-#guide-plot-svg {
+#guide-plot-image {
   display: block;
   width: 100%;
   height: auto;
+}
+
+#guide-plot-image {
+  max-width: 1100px;
 }
 
 .guide-shell {

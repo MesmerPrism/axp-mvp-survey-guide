@@ -1,4 +1,8 @@
 const MANIFEST_PATH = 'assets/peer-plot-data/manifest.json';
+const GUIDE_IMAGE_PATHS = {
+  standard: 'assets/peer-plot-guides/guide-preview.png',
+  invert: 'assets/peer-plot-guides/guide-invert.png'
+};
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
 const DENSITY_POINTS = 160;
@@ -60,7 +64,7 @@ const dom = {
   plotSvg: document.getElementById('peer-plot-svg'),
   toggleGuideButton: document.getElementById('toggle-guide-button'),
   guideShell: document.getElementById('reading-guide'),
-  guideSvg: document.getElementById('guide-plot-svg')
+  guideImage: document.getElementById('guide-plot-image')
 };
 
 initNav();
@@ -361,104 +365,12 @@ function renderPlot(context, palette) {
 }
 
 function renderGuidePlot(palette = paletteFromPeerColor(state.controls.peerColor)) {
+  void palette;
   const invert = state.controls.invert;
-  const demoValues = [
-    16, 19, 21, 24, 26, 27, 29, 31, 33, 35, 36, 38,
-    41, 44, 46, 48, 50, 52, 55, 58, 60, 62, 64, 67,
-    69, 72, 75, 80, 92
-  ];
-
-  const dens = computeDensity(demoValues, 8, 90, 180, 1.05);
-  const guideX = (value) => invert ? 100 - value : value;
-  const maxDensity = Math.max(...dens.y);
-  const densityScale = Number.isFinite(maxDensity) && maxDensity > 0 ? maxDensity : 1;
-  const topHalf = dens.x.map((value, index) => ({
-    x: guideX(value) / 100,
-    y: (dens.y[index] / densityScale) * 0.35
-  }));
-  const bottomHalf = [...topHalf].reverse().map((point) => ({ x: point.x, y: -point.y }));
-  const violinPath = polygonPath([...topHalf, ...bottomHalf]);
-
-  const sorted = [...demoValues].sort((a, b) => a - b);
-  const q1 = quantileSorted(sorted, 0.25);
-  const q2 = quantileSorted(sorted, 0.5);
-  const q3 = quantileSorted(sorted, 0.75);
-  const iqr = q3 - q1;
-  const lowFence = q1 - 1.5 * iqr;
-  const highFence = q3 + 1.5 * iqr;
-  const inliers = sorted.filter((value) => value >= lowFence && value <= highFence);
-  const whiskerLow = inliers[0];
-  const whiskerHigh = inliers[inliers.length - 1];
-  const outlier = sorted.find((value) => value < whiskerLow || value > whiskerHigh) ?? whiskerHigh + 8;
-
-  const q1x = guideX(q1) / 100;
-  const q2x = guideX(q2) / 100;
-  const q3x = guideX(q3) / 100;
-  const minx = guideX(whiskerLow) / 100;
-  const maxx = guideX(whiskerHigh) / 100;
-  const outx = guideX(outlier) / 100;
-  const directionNote = invert ? ['higher values', 'near center'] : ['lower values', 'near center'];
-  const centerLabel = invert
-    ? { x: 0.15, y: 0, width: 0.22, height: 0.32 }
-    : { x: 0.045, y: 0, width: 0.24, height: 0.32 };
-  const outlierLabelX = invert ? 0.02 : 1.08;
-  const outlierLabelY = invert ? -0.56 : -0.02;
-  const outlierAnchor = 'start';
-  const outlierLeaderStartX = invert ? 0.09 : 1.025;
-  const outlierLeaderStartY = invert ? -0.48 : -0.02;
-  const outlierLeaderEndX = outx + (invert ? 0.008 : 0.018);
-  const outlierLeaderEndY = invert ? -0.06 : -0.02;
-  const dataLabelX = invert ? 0.14 : 0.84;
-  const dataLabelY = 0.43;
-  const dataAnchor = invert ? 'end' : 'start';
-  const dataLeaderStartX = invert ? 0.20 : 0.80;
-  const dataLeaderStartY = 0.33;
-  const dataLeaderEndX = invert ? 0.31 : 0.69;
-  const dataLeaderEndY = 0.16;
-
-  dom.guideSvg.innerHTML = `
-    <defs>
-      <marker id="guide-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z" fill="${palette.label}"></path>
-      </marker>
-    </defs>
-    <rect x="-0.20" y="-0.90" width="1.60" height="1.80" fill="#ffffff"></rect>
-    <path d="${violinPath}" fill="${withAlpha(palette.peerFill, 0.82)}" stroke="none"></path>
-    <line x1="${formatNumber(minx)}" y1="0" x2="${formatNumber(maxx)}" y2="0" stroke="${palette.boxLine}" stroke-width="0.012"></line>
-    <rect x="${formatNumber(Math.min(q1x, q3x))}" y="-0.10" width="${formatNumber(Math.abs(q3x - q1x))}" height="0.20"
-          fill="${palette.boxFill}" stroke="${palette.boxLine}" stroke-width="0.01"></rect>
-    <line x1="${formatNumber(q2x)}" y1="-0.10" x2="${formatNumber(q2x)}" y2="0.10" stroke="${palette.median}" stroke-width="0.015"></line>
-    <circle cx="${formatNumber(minx)}" cy="0" r="0.034" fill="${palette.boxLine}"></circle>
-    <circle cx="${formatNumber(maxx)}" cy="0" r="0.034" fill="${palette.boxLine}"></circle>
-    <circle cx="${formatNumber(outx)}" cy="0" r="0.034" fill="${palette.outlier}"></circle>
-
-    ${annotationLine(minx, -0.58, minx, -0.08)}
-    ${annotationText(minx, -0.71, 'minimum', { fontSize: 0.056 })}
-    ${annotationLine(q2x, -0.62, q2x, -0.11)}
-    ${annotationText(q2x, -0.81, ['Q2', 'median'], { fontSize: 0.058, lineHeight: 0.066 })}
-    ${annotationLine(maxx, -0.58, maxx, -0.08)}
-    ${annotationText(maxx, -0.71, 'maximum', { fontSize: 0.056 })}
-    ${annotationLine(q1x, 0.48, q1x, 0.08)}
-    ${annotationText(q1x, 0.68, ['Q1', 'lower quartile'], { fontSize: 0.050, lineHeight: 0.058 })}
-    ${annotationLine(q3x, 0.48, q3x, 0.08)}
-    ${annotationText(q3x, 0.68, ['Q3', 'upper quartile'], { fontSize: 0.050, lineHeight: 0.058 })}
-
-    <line x1="${formatNumber(outlierLeaderStartX)}" y1="${formatNumber(outlierLeaderStartY)}"
-          x2="${formatNumber(outlierLeaderEndX)}" y2="${formatNumber(outlierLeaderEndY)}"
-          stroke="${palette.label}" stroke-width="0.008" stroke-dasharray="0.025 0.02" marker-end="url(#guide-arrow)"></line>
-    ${annotationText(outlierLabelX, outlierLabelY, 'outlier', { anchor: outlierAnchor, fontSize: 0.058 })}
-
-    <line x1="${formatNumber(dataLeaderStartX)}" y1="${formatNumber(dataLeaderStartY)}"
-          x2="${formatNumber(dataLeaderEndX)}" y2="${formatNumber(dataLeaderEndY)}"
-          stroke="${palette.label}" stroke-width="0.008" stroke-dasharray="0.025 0.02" marker-end="url(#guide-arrow)"></line>
-    ${annotationText(dataLabelX, dataLabelY, ['peer', 'distribution'], { anchor: dataAnchor, fontSize: 0.054, lineHeight: 0.058 })}
-
-    <rect x="${formatNumber(centerLabel.x - centerLabel.width / 2)}" y="${formatNumber(centerLabel.y - centerLabel.height / 2)}"
-          width="${formatNumber(centerLabel.width)}" height="${formatNumber(centerLabel.height)}"
-          rx="0.016" ry="0.016" fill="#ffffff" stroke="#8e919d" stroke-width="0.008"></rect>
-    ${annotationText(centerLabel.x, -0.05, ['toward', 'chart center'], { fontSize: 0.054, lineHeight: 0.060, anchor: 'middle' })}
-    ${annotationText(centerLabel.x, 0.16, directionNote, { fontSize: 0.040, lineHeight: 0.048, fill: palette.textMuted, fontWeight: 600, anchor: 'middle' })}
-  `;
+  dom.guideImage.src = invert ? GUIDE_IMAGE_PATHS.invert : GUIDE_IMAGE_PATHS.standard;
+  dom.guideImage.alt = invert
+    ? 'How to read the inverted violin plot'
+    : 'How to read the violin plot';
 }
 
 function buildViolinPolygons(context, geometry, controls) {
@@ -922,7 +834,7 @@ function showFatalError(message) {
   dom.plotLegend.innerHTML = '';
   dom.selectionSummary.innerHTML = '';
   dom.plotSvg.innerHTML = '';
-  dom.guideSvg.innerHTML = '';
+  dom.guideImage.removeAttribute('src');
 }
 
 function annotationLine(x1, y1, x2, y2) {
