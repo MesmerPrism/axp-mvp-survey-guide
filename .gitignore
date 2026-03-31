@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+_tmp/
+test-results/
+playwright-report/

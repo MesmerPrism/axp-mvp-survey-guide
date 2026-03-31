@@ -14,6 +14,7 @@ The site explains:
 - how to use the live survey
 - how to update the questionnaire in Google Sheets
 - how to use OSF downloads, codebooks, changelogs, and data examples
+- how to tune the public radial violin peer-plot prototype in the browser
 - how the running survey, sheet edits, and download-only workflows fit together
 
 ## Site
@@ -40,5 +41,16 @@ Then open:
 - `docs/value-lifecycle.html` using the running survey
 - `docs/questionnaire-edits.html` Google Sheets workflow and sheet enforcer usage
 - `docs/data-examples.html` data type, file structure, and export examples
+- `docs/peer-plot-lab.html` browser-hosted peer violin plot tuning page
 - `docs/diagrams.html` diagram pages with deep links into the examples
 - `docs/diagrams/*.mmd` Mermaid sources
+
+## Public plot lab data
+
+The plot lab reads static JSON bundles from `docs/assets/peer-plot-data/`.
+
+To rebuild those bundles from the public peer export:
+
+```powershell
+python scripts/build_peer_plot_lab_data.py
+```

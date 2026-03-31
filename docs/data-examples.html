@@ -25,6 +25,7 @@
           <a href="value-lifecycle.html">Live Survey</a>
           <a href="questionnaire-edits.html">Google Sheets</a>
           <a href="data-examples.html">Data Examples</a>
+          <a href="peer-plot-lab.html">Plot Lab</a>
           <a href="diagrams.html">Diagrams</a>
         </nav>
       </div>
@@ -224,6 +225,10 @@
       <div class="panel">
         <h2 class="section-title">4. Peer comparison selection and plotted values</h2>
         <p>The peer plot does not draw raw text rows directly. It first builds one cache row per submission from durable tables, resolves the participant&rsquo;s selected canonical comparison pair, then queries matching ASC factor score rows and renders those rows as peer rings and a peer median overlay.</p>
+        <p>If you want to adjust the new radial violin version directly in the browser, open the public plot lab.</p>
+        <div class="figure-actions">
+          <a class="button-link primary" href="peer-plot-lab.html">Open plot lab</a>
+        </div>
         <ul class="plain-list">
           <li>The raw source for the comparison context is <code>submission</code> plus the q0/q1 context rows in <code>response_text</code> plus ASC factor completeness from <code>score</code>.</li>
           <li><code>peer_plot_submission_cache</code> stores both the raw labels and the canonical induction/dose tokens used for comparison.</li>

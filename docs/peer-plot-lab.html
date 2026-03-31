@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peer Plot Lab | AXP Access Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+  <link rel="stylesheet" href="assets/peer-plot-lab.css" />
+</head>
+<body class="site-page plot-lab-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
+        <span class="brand-eyebrow">AXP survey</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
+      </a>
+      <div class="header-side">
+        <div class="app-links">
+          <a class="app-link" href="https://osf.io/c3zq5/overview" target="_blank" rel="noopener noreferrer">About AXP</a>
+          <a class="app-link" href="https://circe-science.com/" target="_blank" rel="noopener noreferrer">About Circe</a>
+        </div>
+        <nav class="top-nav" data-nav aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="value-lifecycle.html">Live Survey</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-examples.html">Data Examples</a>
+          <a href="peer-plot-lab.html">Plot Lab</a>
+          <a href="diagrams.html">Diagrams</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="hero">
+      <div class="kicker">Peer Plot Lab</div>
+      <h1>Adjust the public radial violin plot directly in the browser.</h1>
+      <p>This is the browser-hosted version of the local peer violin prototype. It uses the public AXP factor-score peer export, keeps the same main geometry controls, and lets collaborators tune the visual without needing the private app repo or a local Shiny runtime.</p>
+      <div class="jump-links">
+        <a href="#plot-lab">Open the lab</a>
+        <a href="#reading-guide">Reading guide</a>
+        <a href="data-examples.html#peer-cache">Peer plotting examples</a>
+        <a href="https://osf.io/c3zq5/overview" target="_blank" rel="noopener noreferrer">OSF project</a>
+      </div>
+    </section>
+
+    <section class="lab-layout" id="plot-lab">
+      <aside class="panel controls-panel">
+        <div class="lab-heading">
+          <h2 class="section-title">Controls</h2>
+          <p class="plot-note">All rendering is local in your browser. Nothing is written back to the survey app.</p>
+        </div>
+
+        <section class="control-block">
+          <h3>Context</h3>
+          <div class="field-grid">
+            <label class="field-row">
+              <span>Induction</span>
+              <select id="induction-select"></select>
+            </label>
+            <label class="field-row">
+              <span>Dose</span>
+              <select id="dose-select"></select>
+            </label>
+            <label class="field-row">
+              <span>User overlay</span>
+              <select id="user-mode-select">
+                <option value="sample_peer">Sample matching peer</option>
+                <option value="median">Median profile</option>
+                <option value="p75">75th percentile profile</option>
+                <option value="p25">25th percentile profile</option>
+              </select>
+            </label>
+          </div>
+          <div class="button-row">
+            <button id="resample-peer-button" type="button" class="button-link primary button-inline">Resample peer</button>
+            <button id="reset-defaults-button" type="button" class="button-link button-inline">Reset defaults</button>
+          </div>
+        </section>
+
+        <section class="control-block">
+          <h3>Geometry</h3>
+          <div class="field-grid">
+            <label class="range-row">
+              <span>Inner radius</span>
+              <output for="inner-radius-range" id="inner-radius-value"></output>
+              <input id="inner-radius-range" type="range" min="0.10" max="0.45" step="0.01" value="0.24" />
+            </label>
+            <label class="range-row">
+              <span>Outer radius</span>
+              <output for="outer-radius-range" id="outer-radius-value"></output>
+              <input id="outer-radius-range" type="range" min="0.72" max="0.96" step="0.01" value="0.90" />
+            </label>
+            <label class="range-row">
+              <span>Violin half-width</span>
+              <output for="violin-half-width-range" id="violin-half-width-value"></output>
+              <input id="violin-half-width-range" type="range" min="0.02" max="0.12" step="0.002" value="0.085" />
+            </label>
+            <label class="range-row">
+              <span>Box half-width</span>
+              <output for="box-half-width-range" id="box-half-width-value"></output>
+              <input id="box-half-width-range" type="range" min="0.008" max="0.035" step="0.001" value="0.012" />
+            </label>
+            <label class="range-row">
+              <span>Density smoothness</span>
+              <output for="density-adjust-range" id="density-adjust-value"></output>
+              <input id="density-adjust-range" type="range" min="0.35" max="2.00" step="0.05" value="1.15" />
+            </label>
+            <label class="field-row">
+              <span>Peer color</span>
+              <input id="peer-color-input" type="color" value="#c8b17a" />
+            </label>
+            <label class="field-row">
+              <span>Width scaling</span>
+              <select id="width-mode-select">
+                <option value="per_scale">Per-scale shape</option>
+                <option value="robust_global">Robust shared</option>
+                <option value="global_raw">Raw shared</option>
+              </select>
+            </label>
+            <label class="range-row">
+              <span>Density emphasis</span>
+              <output for="density-exponent-range" id="density-exponent-value"></output>
+              <input id="density-exponent-range" type="range" min="0.35" max="1.00" step="0.05" value="0.60" />
+            </label>
+          </div>
+          <div class="toggle-grid">
+            <label><input id="invert-scale-checkbox" type="checkbox" /> Invert scale direction</label>
+            <label><input id="show-user-fill-checkbox" type="checkbox" /> Fill user polygon</label>
+            <label><input id="show-peer-median-checkbox" type="checkbox" /> Connect peer medians</label>
+            <label><input id="show-quartiles-checkbox" type="checkbox" checked /> Show quartiles and whiskers</label>
+            <label><input id="show-outliers-checkbox" type="checkbox" /> Show outliers</label>
+          </div>
+        </section>
+
+        <section class="control-block">
+          <h3>Selection</h3>
+          <dl class="selection-list" id="selection-summary"></dl>
+        </section>
+      </aside>
+
+      <section class="panel plot-panel">
+        <div class="lab-heading">
+          <h2 class="section-title">Radial peer violin</h2>
+          <p class="plot-note">Matched peer distributions are drawn as spoke-local violins. The purple path is the selected participant reference profile.</p>
+        </div>
+
+        <div class="legend-grid" id="plot-legend"></div>
+        <div class="meta-list" id="plot-meta"></div>
+
+        <div class="plot-shell">
+          <svg id="peer-plot-svg" viewBox="-1.38 -1.38 2.76 2.76" role="img" aria-label="Radial violin plot"></svg>
+        </div>
+
+        <div class="button-row button-row-tight">
+          <button id="toggle-guide-button" type="button" class="button-link button-inline">How to read the graph in detail</button>
+        </div>
+
+        <section class="guide-shell" id="reading-guide" hidden>
+          <div class="guide-copy">
+            <h3>Reading guide</h3>
+            <p>The explainer below shows one spoke in isolation. In the full chart, that same structure repeats around the circle once for each ASC factor.</p>
+            <ul class="plain-list guide-list">
+              <li>The warm violin shape shows where matching peers are concentrated for one factor.</li>
+              <li>The box marks the interquartile range from Q1 to Q3, and the short darker line marks the median.</li>
+              <li>The purple profile is a reference overlay: either one sampled peer, the median profile, or one of the percentile profiles.</li>
+              <li>When <strong>Invert scale direction</strong> is enabled, higher values move closer to the center instead of farther away.</li>
+            </ul>
+          </div>
+          <div class="guide-figure-shell">
+            <svg id="guide-plot-svg" viewBox="-0.08 -0.78 1.22 1.56" role="img" aria-label="How to read the violin plot"></svg>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Source and scope</h2>
+        <ul class="plain-list">
+          <li>This page uses the public AXP legacy 2022 factor-score peer export, grouped into the canonical induction and dose buckets used by the feedback plot.</li>
+          <li>The hosted lab is for visual tuning and collaborator discussion. It does not replace the production survey app or the final in-app implementation work.</li>
+          <li>The geometry and summaries mirror the local Shiny prototype closely, but the renderer here is plain browser JavaScript so it can run on GitHub Pages.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Public peer violin tuning lab for collaborators.</div>
+  </footer>
+
+  <script type="module" src="assets/peer-plot-lab.js"></script>
+</body>
+</html>
