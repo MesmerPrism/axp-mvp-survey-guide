@@ -8,17 +8,17 @@ const MAX_VALUE = 100;
 const DENSITY_POINTS = 160;
 
 const DEFAULTS = {
-  innerRadius: 0.24,
-  outerRadius: 0.9,
-  violinHalfWidth: 0.085,
-  boxHalfWidth: 0.012,
-  densityAdjust: 1.15,
-  widthMode: 'per_scale',
-  densityExponent: 0.6,
-  peerColor: '#c8b17a',
+  innerRadius: 0.38,
+  outerRadius: 0.96,
+  violinHalfWidth: 0.12,
+  boxHalfWidth: 0.015,
+  densityAdjust: 0.75,
+  widthMode: 'robust_global',
+  densityExponent: 0.65,
+  peerColor: '#4fe351',
   invert: false,
   showUserFill: false,
-  showPeerMedian: false,
+  showPeerMedian: true,
   showQuartiles: true,
   showOutliers: false,
   userMode: 'sample_peer'

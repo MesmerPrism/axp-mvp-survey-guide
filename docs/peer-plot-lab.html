@@ -120,50 +120,50 @@
             <label class="range-row">
               <span>Inner radius</span>
               <output for="inner-radius-range" id="inner-radius-value"></output>
-              <input id="inner-radius-range" type="range" min="0.10" max="0.45" step="0.01" value="0.24" />
+              <input id="inner-radius-range" type="range" min="0.10" max="0.45" step="0.01" value="0.38" />
             </label>
             <label class="range-row">
               <span>Outer radius</span>
               <output for="outer-radius-range" id="outer-radius-value"></output>
-              <input id="outer-radius-range" type="range" min="0.72" max="0.96" step="0.01" value="0.90" />
+              <input id="outer-radius-range" type="range" min="0.72" max="0.96" step="0.01" value="0.96" />
             </label>
             <label class="range-row">
               <span>Violin half-width</span>
               <output for="violin-half-width-range" id="violin-half-width-value"></output>
-              <input id="violin-half-width-range" type="range" min="0.02" max="0.12" step="0.002" value="0.085" />
+              <input id="violin-half-width-range" type="range" min="0.02" max="0.12" step="0.002" value="0.12" />
             </label>
             <label class="range-row">
               <span>Box half-width</span>
               <output for="box-half-width-range" id="box-half-width-value"></output>
-              <input id="box-half-width-range" type="range" min="0.008" max="0.035" step="0.001" value="0.012" />
+              <input id="box-half-width-range" type="range" min="0.008" max="0.035" step="0.001" value="0.015" />
             </label>
             <label class="range-row">
               <span>Density smoothness</span>
               <output for="density-adjust-range" id="density-adjust-value"></output>
-              <input id="density-adjust-range" type="range" min="0.35" max="2.00" step="0.05" value="1.15" />
+              <input id="density-adjust-range" type="range" min="0.35" max="2.00" step="0.05" value="0.75" />
             </label>
             <label class="field-row">
               <span>Peer color</span>
-              <input id="peer-color-input" type="color" value="#c8b17a" />
+              <input id="peer-color-input" type="color" value="#4fe351" />
             </label>
             <label class="field-row">
               <span>Width scaling</span>
               <select id="width-mode-select">
                 <option value="per_scale">Per-scale shape</option>
-                <option value="robust_global">Robust shared</option>
+                <option value="robust_global" selected>Robust shared</option>
                 <option value="global_raw">Raw shared</option>
               </select>
             </label>
             <label class="range-row">
               <span>Density emphasis</span>
               <output for="density-exponent-range" id="density-exponent-value"></output>
-              <input id="density-exponent-range" type="range" min="0.35" max="1.00" step="0.05" value="0.60" />
+              <input id="density-exponent-range" type="range" min="0.35" max="1.00" step="0.05" value="0.65" />
             </label>
           </div>
           <div class="toggle-grid">
             <label><input id="invert-scale-checkbox" type="checkbox" /> Invert scale direction</label>
             <label><input id="show-user-fill-checkbox" type="checkbox" /> Fill user polygon</label>
-            <label><input id="show-peer-median-checkbox" type="checkbox" /> Connect peer medians</label>
+            <label><input id="show-peer-median-checkbox" type="checkbox" checked /> Connect peer medians</label>
             <label><input id="show-quartiles-checkbox" type="checkbox" checked /> Show quartiles and whiskers</label>
             <label><input id="show-outliers-checkbox" type="checkbox" /> Show outliers</label>
           </div>
@@ -178,7 +178,7 @@
       <section class="panel plot-panel">
         <div class="lab-heading">
           <h2 class="section-title">Radial peer violin</h2>
-          <p class="plot-note">Matched peer distributions are drawn as spoke-local violins. The purple path is the selected participant reference profile.</p>
+          <p class="plot-note">Matched peer distributions are drawn as spoke-local violins using the same default tuning now used in the app. The purple path is the selected participant reference profile.</p>
         </div>
 
         <div class="legend-grid" id="plot-legend"></div>
@@ -197,7 +197,7 @@
             <h3>Reading guide</h3>
             <p>The explainer below shows one spoke in isolation. In the full chart, that same structure repeats around the circle once for each ASC factor.</p>
             <ul class="plain-list guide-list">
-              <li>The warm violin shape shows where matching peers are concentrated for one factor.</li>
+              <li>The colored violin shape shows where matching peers are concentrated for one factor.</li>
               <li>The box marks the interquartile range from Q1 to Q3, and the short darker line marks the median.</li>
               <li>The purple profile is a reference overlay: either one sampled peer, the median profile, or one of the percentile profiles.</li>
               <li>When <strong>Invert scale direction</strong> is enabled, higher values move closer to the center instead of farther away.</li>
@@ -216,7 +216,7 @@
         <ul class="plain-list">
           <li>This page uses the public AXP legacy 2022 factor-score peer export, grouped into the canonical induction and dose buckets used by the feedback plot.</li>
           <li>The hosted lab is for visual tuning and collaborator discussion. It does not replace the production survey app or the final in-app implementation work.</li>
-          <li>The geometry and summaries mirror the local Shiny prototype closely, but the renderer here is plain browser JavaScript so it can run on GitHub Pages.</li>
+          <li>The geometry and summaries mirror the current in-app defaults closely, but the renderer here is plain browser JavaScript so it can run on GitHub Pages.</li>
         </ul>
       </div>
     </section>
