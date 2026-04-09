@@ -132,7 +132,7 @@
       "source": "peer_plot_render_payload.json",
       "category": "peer",
       "dataType": "JSON render-state example",
-      "description": "Explicit summary of what becomes the self polygon, peer rings or density layer, and median overlay.",
+      "description": "Explicit summary of the current feedback render: self profile, peer violin layer, quartile summary, legend note, and share metadata.",
       "relatedDoc": "../data-examples.html#peer-render"
     },
     {

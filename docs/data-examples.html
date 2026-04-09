@@ -223,8 +223,8 @@
 
     <section class="section">
       <div class="panel">
-        <h2 class="section-title">4. Peer comparison selection and plotted values</h2>
-        <p>The peer plot does not draw raw text rows directly. It first builds one cache row per submission from durable tables, resolves the participant&rsquo;s selected canonical comparison pair, then queries matching ASC factor score rows and renders those rows as peer rings and a peer median overlay.</p>
+        <h2 class="section-title">4. Peer comparison selection and feedback render</h2>
+        <p>The peer plot does not draw raw text rows directly. It first builds one cache row per submission from durable tables, resolves the participant&rsquo;s selected canonical comparison pair, then queries all complete matching ASC factor score rows for that bucket and renders them as spoke-local violins with quartile summaries and the current submission overlay.</p>
         <p>If you want to adjust the new radial violin version directly in the browser, open the public plot lab.</p>
         <div class="figure-actions">
           <a class="button-link primary" href="peer-plot-lab.html">Open plot lab</a>
@@ -234,6 +234,8 @@
           <li><code>peer_plot_submission_cache</code> stores both the raw labels and the canonical induction/dose tokens used for comparison.</li>
           <li>The controls only expose canonical buckets back to the participant, even if raw free text or translated labels were stored.</li>
           <li>The selected canonical pair then drives a filtered join from <code>peer_plot_submission_cache</code> to <code>score</code>, excluding the current submission and incomplete peer rows.</li>
+          <li>All complete peers in the selected canonical bucket are used for plotting; the feedback view does not apply a second plot-only curation layer.</li>
+          <li>The legend, reading guide, and share or download image actions reuse this same selected pair and peer count. They do not create extra stored tables or export files.</li>
         </ul>
         <div class="file-stack">
           <article class="file-card" id="peer-cache-build">
@@ -290,7 +292,7 @@
 
           <article class="file-card" id="peer-render">
             <h3><code>mock-data/peer_plot_render_payload.json</code></h3>
-            <p>This mock payload makes the rendered outcome explicit: it records the selected canonical pair, names which cache rows were excluded, and shows how matching peer score rows become peer rings or a density layer plus the peer median polygon.</p>
+            <p>This mock render summary makes the current feedback UI explicit: it records the selected canonical pair, names which cache rows were excluded, and shows how matching peer score rows become the violin layer, quartile marks, the purple self profile, and the legend or share metadata shown around the plot.</p>
             <p class="file-meta"><strong>Datatype:</strong> JSON render-state example. <strong>Shape:</strong> one object describing filters and rendered layers.</p>
             <div class="figure-shell">
               <pre data-file-source="mock-data/peer_plot_render_payload.json"></pre>

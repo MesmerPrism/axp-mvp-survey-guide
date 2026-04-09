@@ -19,9 +19,9 @@ The site explains:
 
 ## Site
 
-Planned public URL:
+Current public URL:
 
-- `https://zivilkannibale.github.io/axp-mvp-survey-guide/`
+- `https://mesmerprism.com/axp-mvp-survey-guide/`
 
 ## Local preview
 

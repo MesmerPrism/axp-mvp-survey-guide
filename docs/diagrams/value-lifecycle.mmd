@@ -45,15 +45,15 @@ flowchart TD
 
   subgraph Peer[" "]
     direction TB
-    PeerTitle["4. Peer selection, query and layers"]
+    PeerTitle["4. Peer selection, query and feedback view"]
     PeerTitle ~~~ P0
     P0["Current submission defaults<br/>selected_drug + selected_dose<br/>canonicalized to peer tokens"]
     P1["Comparison controls<br/>UI only shows canonical buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
     P2["Selected canonical pair<br/>example: psilocybin + medium"]
     P3["Eligible peer context<br/>peer_plot_submission_cache rows<br/>keep has_complete_scales = 1"]
     Q["Selected peer score query<br/>score JOIN cache by submission_id<br/>filter by selected canonical pair<br/>exclude current submission"]
-    R["Peer render layers<br/>peer rings or density marks<br/>plus peer median polygon"]
-    J["Feedback plot<br/>self polygon plus peer overlay"]
+    R["Peer render layers<br/>spoke-local violin density<br/>quartiles and optional median path"]
+    J["Feedback view<br/>purple self profile, legend,<br/>reading guide and share actions"]
 
     G --> P0 --> P2
     P1 --> P2
