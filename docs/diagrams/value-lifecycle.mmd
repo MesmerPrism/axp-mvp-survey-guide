@@ -1,84 +1,146 @@
+%%{init: {"flowchart": {"curve": "natural", "nodeSpacing": 64, "rankSpacing": 104, "padding": 34}}}%%
 flowchart TD
-  subgraph Definition[" "]
+  subgraph RuntimeRow[" "]
     direction TB
-    DefinitionTitle["1. Definition and runtime"]
-    DefinitionTitle ~~~ A
-    A["Questionnaire definition source<br/>Google Sheet or CSV file"] --> B["Loaded questionnaire_all_df<br/>R data.frame, long rows, all languages"]
-    B --> C["Runtime questionnaire_df plus metadata<br/>R state with instrument_id, instrument_version,<br/>language, definition_hash"]
-    C --> D["Participant answers current version"]
-    D --> E["responses_df<br/>R data.frame with item_id, type, value"]
+    subgraph Definition[" "]
+      direction TB
+      DefinitionTitle["1. Definition<br/>and runtime"]
+      DefinitionTitle ~~~ A
+      A["Questionnaire definition source<br/>Google Sheet or CSV file<br/>used to define the active survey"] --> B["Loaded questionnaire definition<br/>questionnaire_all_df<br/>long-format R data frame<br/>covering all languages"]
+      B --> C["Runtime questionnaire state<br/>questionnaire_df plus metadata<br/>instrument_id, instrument_version,<br/>language, and definition_hash"]
+      C --> D["Current participant answers<br/>for the active survey version"]
+      D --> E["responses_df in memory<br/>shared answer table<br/>with item_id, type, and value"]
+    end
   end
 
-  subgraph Derived[" "]
-    direction TB
-    DerivedTitle["2. In-memory split and ASC scoring"]
-    DerivedTitle ~~~ E
-    E --> F["Numeric answer rows<br/>R data.frame with item_id, value, created_at"]
-    E --> G["Text and context rows<br/>R data.frame with field_id, text, created_at"]
-    F --> H["ASC factor score rows<br/>R data.frame with canonical scale_id, score_value"]
-    H --> I["Current self-score set<br/>11 canonical ASC factors in memory"]
-  end
-
-  subgraph Store[" "]
+  subgraph ProcessingRow[" "]
     direction LR
-    StoreTitle["3. Durable MariaDB storage"]
-    StoreTitle ~~~ K
-    K["submission<br/>MariaDB table<br/>1 row per submission"]
-    L["response_numeric<br/>MariaDB table<br/>1 row per numeric item"]
-    M["response_text<br/>MariaDB table<br/>1 row per text or context field"]
-    N["score<br/>MariaDB table<br/>1 row per ASC factor"]
-    O["peer_plot_submission_cache<br/>MariaDB table<br/>built from submission + q0/q1 context + score completeness<br/>1 row per submission"]
-    X["Export-ready normalized rows<br/>submission plus numeric plus text plus score"]
+    subgraph Derived[" "]
+      direction TB
+      DerivedTitle["2. In-memory split<br/>and ASC scoring"]
+      DerivedTitle ~~~ F
+      F["Numeric answer rows<br/>split out from responses_df<br/>item_id, value, and created_at"]
+      G["Text and context rows<br/>split out from responses_df<br/>field_id, text or context value,<br/>and created_at"]
+      H["ASC factor score rows<br/>computed from numeric answers<br/>canonical scale_id + score_value"]
+      I["Current self-score profile<br/>11 canonical ASC factor scores<br/>kept in runtime memory"]
 
-    D --> K
-    F --> L
-    G --> M
-    H --> N
-    K --> O
-    M --> O
-    N --> O
-    K --> X
-    L --> X
-    M --> X
-    N --> X
+      F --> H --> I
+    end
+
+    subgraph Store[" "]
+      direction TB
+      StoreTitle["3. Durable MariaDB<br/>storage"]
+      StoreTitle ~~~ K
+
+      subgraph StoreSources[" "]
+        direction TB
+        subgraph PeerInputs[" "]
+          direction LR
+          K["submission<br/>MariaDB table<br/>one durable row<br/>per survey submission"]
+          M["response_text<br/>MariaDB table<br/>one durable row<br/>per text or context field"]
+          N["score<br/>MariaDB table<br/>one durable row<br/>per ASC factor score"]
+        end
+
+        subgraph ExportInputs[" "]
+          direction LR
+          K2["submission<br/>MariaDB table<br/>one durable row<br/>per survey submission"]
+          M2["response_text<br/>MariaDB table<br/>one durable row<br/>per text or context field"]
+          N2["score<br/>MariaDB table<br/>one durable row<br/>per ASC factor score"]
+          L["response_numeric<br/>MariaDB table<br/>one durable row<br/>per numeric answer"]
+        end
+      end
+
+      subgraph StoreBuilds[" "]
+        direction LR
+        O1["Peer cache build<br/>combine submission context,<br/>q0/q1-derived fields,<br/>and score completeness flags"]
+        X1["Export row assembly<br/>combine submission, numeric,<br/>text, and score data<br/>into normalized export rows"]
+      end
+
+      subgraph StoreOutputs[" "]
+        direction LR
+        O["peer_plot_submission_cache<br/>MariaDB table<br/>one cached peer-context row<br/>per submission"]
+        X["Export-ready normalized rows<br/>submission + numeric + text + score<br/>prepared for export builders"]
+      end
+
+      K --> O1
+      M --> O1
+      N --> O1
+      O1 --> O
+      K2 --> X1
+      M2 --> X1
+      N2 --> X1
+      L --> X1
+      X1 --> X
+    end
   end
 
-  subgraph Peer[" "]
-    direction TB
-    PeerTitle["4. Peer selection, query and feedback view"]
-    PeerTitle ~~~ P0
-    P0["Current submission defaults<br/>selected_drug + selected_dose<br/>canonicalized to peer tokens"]
-    P1["Comparison controls<br/>UI only shows canonical buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
-    P2["Selected canonical pair<br/>example: psilocybin + medium"]
-    P3["Eligible peer context<br/>peer_plot_submission_cache rows<br/>keep has_complete_scales = 1"]
-    Q["Selected peer score query<br/>score JOIN cache by submission_id<br/>filter by selected canonical pair<br/>exclude current submission"]
-    R["Peer render layers<br/>spoke-local violin density<br/>quartiles and optional median path"]
-    J["Feedback view<br/>purple self profile, legend,<br/>reading guide and share actions"]
+  subgraph OutcomeRow[" "]
+    direction LR
+    subgraph Peer[" "]
+      direction TB
+      PeerTitle["4. Peer selection,<br/>peer query,<br/>and feedback view"]
+      PeerTitle ~~~ P0
+      P0["Current submission defaults<br/>selected_drug + selected_dose<br/>mapped to canonical peer tokens"]
+      P1["Comparison controls<br/>UI only shows canonical buckets<br/>induction: cannabis / psilocybin / alcohol / mdma<br/>dose: low / medium / high"]
+      P2["Selected comparison bucket<br/>example:<br/>psilocybin + medium"]
+      P3["Eligible peer context<br/>peer_plot_submission_cache rows<br/>with has_complete_scales = 1"]
+      Q["Selected peer score query<br/>join score rows back to eligible peers<br/>then filter to the chosen bucket"]
+      R["Rendered peer layers<br/>violin density, quartiles,<br/>and optional peer median path"]
+      J["Feedback screen<br/>self-profile overlay,<br/>legend, reading guide,<br/>and share actions"]
 
-    G --> P0 --> P2
-    P1 --> P2
-    O --> P3 --> Q
-    P2 --> Q
-    N --> Q
-    Q --> R --> J
-    I --> J
+      P0 --> P2
+      P1 --> P2
+      P3 --> Q
+      P2 --> Q
+      Q --> R --> J
+    end
+
+    subgraph Export[" "]
+      direction TB
+      ExportTitle["5. Distribution<br/>outputs"]
+      ExportTitle ~~~ S
+      S["Public export builder<br/>creates a wide CSV<br/>and a factor-only CSV"]
+      T["Private export builder<br/>creates a wide CSV<br/>with text columns included"]
+      U["Public anonymized bundle<br/>session_anon, created_date,<br/>item_* and scale_* columns"]
+      V["Private full bundle<br/>submission_id, created_at,<br/>item_*, text_*, and scale_* columns"]
+
+      S --> U
+      T --> V
+    end
   end
 
-  subgraph Export[" "]
-    direction TB
-    ExportTitle["5. Distribution outputs"]
-    ExportTitle ~~~ S
-    S["Public export builder<br/>wide CSV plus factor-only CSV"]
-    T["Private export builder<br/>wide CSV with text columns"]
-    U["Public anonymized bundle<br/>session_anon, created_date,<br/>item_* and scale_* columns"]
-    V["Private full bundle<br/>submission_id, created_at,<br/>item_*, text_*, scale_* columns"]
-
-    X --> S --> U
-    X --> T --> V
-  end
+  Definition --> Derived
+  Definition --> Store
+  Derived --> Store
+  Derived --> Peer
+  Store --> Peer
+  Store --> Export
+  Peer ~~~ Export
+  Derived ~~~ Store
 
   classDef stageTitle fill:#FFFFFF,stroke:#262632,stroke-width:1.8px,color:#262632,font-size:16px,font-weight:800;
+  classDef memoryNode fill:#F4EEFF,stroke:#8F74EF,stroke-width:1.6px,color:#262632;
+  classDef dbTable fill:#EEF7FF,stroke:#4D9AE6,stroke-width:1.6px,color:#262632;
+  classDef dbProcess fill:#F3FFF6,stroke:#43B36B,stroke-width:1.6px,color:#262632;
+  classDef dbOutput fill:#F0FFFB,stroke:#33B89F,stroke-width:1.6px,color:#262632;
+  classDef uiNode fill:#FFF7EA,stroke:#E59A2E,stroke-width:1.6px,color:#262632;
+  classDef exportNode fill:#FFFBE8,stroke:#D4A017,stroke-width:1.6px,color:#262632;
   class DefinitionTitle,DerivedTitle,StoreTitle,PeerTitle,ExportTitle stageTitle;
+  class A,B,C,D,E,F,G,H,I memoryNode;
+  class K,K2,L,M,M2,N,N2 dbTable;
+  class O1,X1 dbProcess;
+  class O,X dbOutput;
+  class P0,P1,P2,P3,Q,R,J uiNode;
+  class S,T,U,V exportNode;
+
+  style RuntimeRow fill:transparent,stroke:transparent
+  style ProcessingRow fill:transparent,stroke:transparent
+  style OutcomeRow fill:transparent,stroke:transparent
+  style StoreSources fill:transparent,stroke:transparent
+  style PeerInputs fill:transparent,stroke:transparent
+  style ExportInputs fill:transparent,stroke:transparent
+  style StoreBuilds fill:transparent,stroke:transparent
+  style StoreOutputs fill:transparent,stroke:transparent
 
   click A href "__GUIDE_ROOT__/data-examples.html#definition-source" "Open definition source example"
   click B href "__GUIDE_ROOT__/data-examples.html#definition-source" "Open loaded questionnaire example"
@@ -89,10 +151,16 @@ flowchart TD
   click H href "__GUIDE_ROOT__/data-examples.html#factor-scores" "Open ASC factor score example"
   click I href "__GUIDE_ROOT__/data-examples.html#factor-scores" "Open current self-score example"
   click K href "__GUIDE_ROOT__/data-examples.html#submission-table" "Open submission table example"
+  click K2 href "__GUIDE_ROOT__/data-examples.html#submission-table" "Open submission table example"
   click L href "__GUIDE_ROOT__/data-examples.html#response-numeric-table" "Open response_numeric example"
   click M href "__GUIDE_ROOT__/data-examples.html#response-text-table" "Open response_text example"
+  click M2 href "__GUIDE_ROOT__/data-examples.html#response-text-table" "Open response_text example"
   click N href "__GUIDE_ROOT__/data-examples.html#score-table" "Open score table example"
-  click O href "__GUIDE_ROOT__/data-examples.html#peer-cache-build" "Open peer cache build example"
+  click N2 href "__GUIDE_ROOT__/data-examples.html#score-table" "Open score table example"
+  click O1 href "__GUIDE_ROOT__/data-examples.html#peer-cache-build" "Open peer cache build example"
+  click X1 href "__GUIDE_ROOT__/data-examples.html#public-export" "Open export-ready row example"
+  click O href "__GUIDE_ROOT__/data-examples.html#peer-cache" "Open peer cache table example"
+  click X href "__GUIDE_ROOT__/data-examples.html#public-export" "Open export-ready row example"
   click P0 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"
   click P1 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"
   click P2 href "__GUIDE_ROOT__/data-examples.html#peer-selection" "Open peer selection example"

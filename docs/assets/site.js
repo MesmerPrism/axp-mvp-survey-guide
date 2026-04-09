@@ -1,4 +1,5 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+import { renderFilePreview } from './file-renderer.js';
 
 const pagePath = window.location.pathname.split('/').pop() || 'index.html';
 
@@ -16,7 +17,7 @@ const fallbackMermaidConfig = {
   securityLevel: 'loose',
   theme: 'base',
   themeVariables: {
-    fontFamily: 'Nunito, Segoe UI, sans-serif',
+    fontFamily: 'Nunito, sans-serif',
     fontSize: '14px',
     background: 'transparent',
     primaryColor: '#ffffff',
@@ -113,7 +114,14 @@ async function loadFileSamples() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      target.textContent = await response.text();
+      renderFilePreview(target, {
+        file: {
+          source: sourcePath
+        },
+        text: await response.text(),
+        view: 'layout',
+        context: 'inline'
+      });
     } catch (error) {
       target.outerHTML = `<p class="status-note">Unable to load example file from <code>${sourcePath}</code>.</p>`;
       console.error(error);

@@ -36,22 +36,47 @@
     <section class="viewer-shell">
       <div class="panel viewer-intro">
         <h1>Data example file viewer</h1>
-        <p class="viewer-description">Use this viewer when the inline preview on the data examples page is too small. It preserves the raw file layout and supports wrap, fullscreen, and deep links without leaving the browser.</p>
+        <p class="viewer-description">Use this viewer when the inline preview on the data examples page is too small. CSV files are rendered as sheet-like tables, JSON files are rendered as structured code, and raw text mode remains available when you need the file exactly as stored.</p>
       </div>
 
       <div class="viewer-layout">
         <aside class="viewer-nav">
           <header>
             <h2>Files</h2>
-            <p class="viewer-description">Choose a mock file, then use wrap or fullscreen when you need more room.</p>
+            <p class="viewer-description">Choose a mock file, then switch between layout and raw modes when you need a closer representation of the source.</p>
           </header>
           <div id="file-nav-list" class="nav-list"></div>
         </aside>
 
         <section class="viewer-main">
           <div class="viewer-toolbar">
-            <h2 id="file-title">Loading file...</h2>
+            <div class="viewer-toolbar-copy">
+              <h2 id="file-title">Loading file...</h2>
+              <p id="file-description" class="viewer-description"></p>
+            </div>
+            <div class="viewer-controls viewer-controls--toolbar">
+              <button id="btn-file-layout" class="button" type="button">Layout</button>
+              <button id="btn-file-raw" class="button" type="button">Raw</button>
+              <button id="btn-file-wrap" class="button" type="button">Wrap off</button>
+              <button id="btn-file-fullscreen" class="button" type="button">Fullscreen</button>
+              <button id="btn-file-copy-link" class="button" type="button">Copy link</button>
+            </div>
           </div>
+
+          <section class="viewer-briefs" aria-label="File explanation">
+            <article class="viewer-brief">
+              <h3>What this file shows</h3>
+              <p id="file-what"></p>
+            </article>
+            <article class="viewer-brief">
+              <h3>Why it matters</h3>
+              <p id="file-why"></p>
+            </article>
+            <article class="viewer-brief">
+              <h3>What to inspect</h3>
+              <p id="file-inspect"></p>
+            </article>
+          </section>
 
           <div class="viewer-meta">
             <div class="viewer-meta-item">
@@ -72,27 +97,16 @@
             </div>
           </div>
 
-          <p id="file-description" class="viewer-description"></p>
-
           <div class="viewer-actions">
             <a id="link-file-related" class="button-link" href="data-examples.html">Open examples section</a>
             <a id="link-file-raw" class="button-link" href="mock-data/">Open raw file</a>
           </div>
 
           <div id="file-viewer-shell" class="file-viewer-shell">
-            <div class="viewer-overlay">
-              <div class="viewer-controls">
-                <button id="btn-file-wrap" class="button" type="button">Wrap off</button>
-                <button id="btn-file-fullscreen" class="button" type="button">Fullscreen</button>
-                <button id="btn-file-copy-link" class="button" type="button">Copy link</button>
-              </div>
-            </div>
-            <div id="file-viewer-stage" class="file-viewer-stage">
-              <pre id="file-viewer-code" class="file-viewer-code"></pre>
-            </div>
+            <div id="file-viewer-stage" class="file-viewer-stage"></div>
           </div>
 
-          <p class="file-viewer-note">Inline previews on the examples page are bounded. This page preserves the raw file layout and can expand to fullscreen for wide exports.</p>
+          <p class="file-viewer-note">Layout mode is intended to feel closer to the original source when the file is tabular or structured. Raw mode stays available for exact text inspection and copyable output.</p>
         </section>
       </div>
     </section>

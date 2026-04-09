@@ -1,16 +1,26 @@
+import {
+  describeText,
+  renderFilePreview,
+  supportsLayoutMode
+} from './file-renderer.js';
+
 const manifestUrl = new URL('../mock-data/manifest.json', import.meta.url);
 
 const dom = {
   navList: document.getElementById('file-nav-list'),
   shell: document.getElementById('file-viewer-shell'),
   stage: document.getElementById('file-viewer-stage'),
-  code: document.getElementById('file-viewer-code'),
   title: document.getElementById('file-title'),
   description: document.getElementById('file-description'),
+  what: document.getElementById('file-what'),
+  why: document.getElementById('file-why'),
+  inspect: document.getElementById('file-inspect'),
   category: document.getElementById('file-category'),
   dataType: document.getElementById('file-datatype'),
   source: document.getElementById('file-source'),
   stats: document.getElementById('file-stats'),
+  layoutToggle: document.getElementById('btn-file-layout'),
+  rawToggle: document.getElementById('btn-file-raw'),
   wrapToggle: document.getElementById('btn-file-wrap'),
   fullscreen: document.getElementById('btn-file-fullscreen'),
   copyLink: document.getElementById('btn-file-copy-link'),
@@ -20,11 +30,13 @@ const dom = {
 
 let manifest = null;
 let activeFile = null;
+let activeText = '';
 let wrapEnabled = false;
+let currentView = 'layout';
 
 init().catch((error) => {
   console.error(error);
-  dom.code.textContent = 'Unable to initialize the file viewer.';
+  dom.stage.innerHTML = '<p class="status-note">Unable to initialize the file viewer.</p>';
 });
 
 async function init() {
@@ -50,6 +62,7 @@ async function loadManifest() {
 
 function renderNavigation() {
   const groups = new Map();
+
   for (const file of manifest.files) {
     const category = file.category || 'other';
     if (!groups.has(category)) {
@@ -59,11 +72,18 @@ function renderNavigation() {
   }
 
   dom.navList.innerHTML = '';
+
   for (const [category, files] of groups) {
-    const label = document.createElement('div');
+    const section = document.createElement('section');
+    section.className = 'viewer-nav-group';
+
+    const label = document.createElement('h3');
     label.className = 'category-label';
     label.textContent = formatLabel(category);
-    dom.navList.appendChild(label);
+    section.appendChild(label);
+
+    const list = document.createElement('div');
+    list.className = 'nav-list';
 
     for (const file of files) {
       const item = document.createElement('button');
@@ -85,16 +105,31 @@ function renderNavigation() {
         void selectFile(file);
       });
 
-      dom.navList.appendChild(item);
+      list.appendChild(item);
     }
+
+    section.appendChild(list);
+    dom.navList.appendChild(section);
   }
 }
 
 function bindControls() {
+  dom.layoutToggle.addEventListener('click', () => {
+    if (!activeFile || !supportsLayoutMode(activeFile)) {
+      return;
+    }
+    currentView = 'layout';
+    renderActiveFile();
+  });
+
+  dom.rawToggle.addEventListener('click', () => {
+    currentView = 'raw';
+    renderActiveFile();
+  });
+
   dom.wrapToggle.addEventListener('click', () => {
     wrapEnabled = !wrapEnabled;
-    dom.stage.classList.toggle('is-wrapped', wrapEnabled);
-    dom.wrapToggle.textContent = wrapEnabled ? 'Wrap on' : 'Wrap off';
+    renderActiveFile();
   });
 
   dom.fullscreen.addEventListener('click', async () => {
@@ -144,6 +179,9 @@ function bindControls() {
 
 async function selectFile(file) {
   activeFile = file;
+  activeText = '';
+  wrapEnabled = false;
+  currentView = supportsLayoutMode(file) ? 'layout' : 'raw';
 
   dom.navList.querySelectorAll('.nav-item').forEach((item) => {
     item.classList.toggle('active', item.dataset.id === file.id);
@@ -151,6 +189,9 @@ async function selectFile(file) {
 
   dom.title.textContent = file.title;
   dom.description.textContent = file.description || 'No description available.';
+  dom.what.textContent = file.whatItShows || file.description || 'No explanation available.';
+  dom.why.textContent = file.whyItMatters || 'No explanation available.';
+  dom.inspect.textContent = file.lookFor || 'Use raw mode when you need the exact stored text.';
   dom.category.textContent = formatLabel(file.category || 'other');
   dom.dataType.textContent = file.dataType || 'Text file';
   dom.source.textContent = file.source;
@@ -161,12 +202,8 @@ async function selectFile(file) {
     throw new Error(`Unable to load ${file.source} (${response.status})`);
   }
 
-  const text = await response.text();
-  dom.code.textContent = text;
-  dom.stats.textContent = describeText(text);
-  dom.stage.scrollTop = 0;
-  dom.stage.scrollLeft = 0;
-
+  activeText = await response.text();
+  dom.stats.textContent = describeText(activeText);
   dom.rawLink.href = sourceUrl.href;
 
   if (file.relatedDoc) {
@@ -177,30 +214,46 @@ async function selectFile(file) {
     dom.relatedLink.removeAttribute('href');
   }
 
+  renderActiveFile();
+
   if (window.location.hash !== `#${file.id}`) {
     window.location.hash = file.id;
   }
+}
 
+function renderActiveFile() {
+  if (!activeFile) {
+    return;
+  }
+
+  renderFilePreview(dom.stage, {
+    file: activeFile,
+    text: activeText,
+    view: currentView,
+    wrap: wrapEnabled,
+    context: 'viewer'
+  });
+
+  dom.stage.scrollTop = 0;
+  dom.stage.scrollLeft = 0;
+  syncViewButtons();
+  syncWrapButton();
   syncFullscreenButton();
 }
 
-function describeText(text) {
-  const lines = text === '' ? 0 : text.split(/\r?\n/).length;
-  const bytes = new TextEncoder().encode(text).length;
-  return `${lines} lines • ${formatBytes(bytes)}`;
+function syncViewButtons() {
+  const canLayout = activeFile && supportsLayoutMode(activeFile);
+  dom.layoutToggle.disabled = !canLayout;
+  dom.layoutToggle.setAttribute('aria-pressed', String(canLayout && currentView === 'layout'));
+  dom.rawToggle.setAttribute('aria-pressed', String(currentView === 'raw'));
 }
 
-function formatBytes(bytes) {
-  if (bytes < 1024) {
-    return `${bytes} B`;
-  }
-
-  const kb = bytes / 1024;
-  if (kb < 1024) {
-    return `${kb.toFixed(1)} KB`;
-  }
-
-  return `${(kb / 1024).toFixed(1)} MB`;
+function syncWrapButton() {
+  const wrapAvailable = currentView === 'raw';
+  dom.wrapToggle.disabled = !wrapAvailable;
+  dom.wrapToggle.textContent = wrapAvailable
+    ? (wrapEnabled ? 'Wrap on' : 'Wrap off')
+    : 'Wrap n/a';
 }
 
 function syncFullscreenButton() {
