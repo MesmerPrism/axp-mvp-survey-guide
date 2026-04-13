@@ -3,6 +3,31 @@ const GUIDE_IMAGE_PATHS = {
   standard: 'assets/peer-plot-guides/guide-preview.png',
   invert: 'assets/peer-plot-guides/guide-invert.png'
 };
+const UI_STATE_STORAGE_KEY = 'axp-peer-plot-lab-state-v1';
+const DISPLAY_SCALE_ORDER = [
+  'Elementary Imagery',
+  'Anxiety',
+  'Impaired Control and Cognition',
+  'Disembodiment',
+  'Blissful State',
+  'Experience of Unity',
+  'Spiritual Experience',
+  'Insightfulness',
+  'Changed Meaning of Percepts',
+  'Audio-Visual Synesthesia',
+  'Complex Imagery'
+];
+const WIDTH_MODE_OPTIONS = new Set(['per_scale', 'robust_global', 'global_raw']);
+const USER_MODE_OPTIONS = new Set(['sample_peer', 'median', 'p75', 'p25']);
+const CONTROL_LIMITS = {
+  innerRadius: [0.1, 0.45],
+  outerRadius: [0.72, 0.96],
+  violinHalfWidth: [0.02, 0.12],
+  violinOutlineWidth: [0.001, 0.02],
+  boxHalfWidth: [0.008, 0.035],
+  densityAdjust: [0.35, 2],
+  densityExponent: [0.35, 1]
+};
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
 const DENSITY_POINTS = 160;
@@ -11,6 +36,7 @@ const DEFAULTS = {
   innerRadius: 0.38,
   outerRadius: 0.96,
   violinHalfWidth: 0.12,
+  violinOutlineWidth: 0.0045,
   boxHalfWidth: 0.015,
   densityAdjust: 0.75,
   widthMode: 'robust_global',
@@ -23,14 +49,19 @@ const DEFAULTS = {
   showOutliers: false,
   userMode: 'sample_peer'
 };
+const storedUiState = loadStoredUiState();
 
 const state = {
   manifest: null,
   contextCache: new Map(),
   currentContextKey: null,
-  sampledPeerId: null,
+  sampledPeerId: storedUiState?.sampledPeerId ?? null,
   renderQueued: false,
-  controls: { ...DEFAULTS }
+  guideOpen: storedUiState?.guideOpen ?? false,
+  restoredSelection: storedUiState
+    ? { induction: storedUiState.induction, dose: storedUiState.dose }
+    : null,
+  controls: mergeStoredControls(storedUiState?.controls)
 };
 
 const dom = {
@@ -42,6 +73,7 @@ const dom = {
   innerRadiusRange: document.getElementById('inner-radius-range'),
   outerRadiusRange: document.getElementById('outer-radius-range'),
   violinHalfWidthRange: document.getElementById('violin-half-width-range'),
+  violinOutlineWidthRange: document.getElementById('violin-outline-width-range'),
   boxHalfWidthRange: document.getElementById('box-half-width-range'),
   densityAdjustRange: document.getElementById('density-adjust-range'),
   densityExponentRange: document.getElementById('density-exponent-range'),
@@ -55,6 +87,7 @@ const dom = {
   innerRadiusValue: document.getElementById('inner-radius-value'),
   outerRadiusValue: document.getElementById('outer-radius-value'),
   violinHalfWidthValue: document.getElementById('violin-half-width-value'),
+  violinOutlineWidthValue: document.getElementById('violin-outline-width-value'),
   boxHalfWidthValue: document.getElementById('box-half-width-value'),
   densityAdjustValue: document.getElementById('density-adjust-value'),
   densityExponentValue: document.getElementById('density-exponent-value'),
@@ -89,6 +122,7 @@ function initControls() {
     [dom.innerRadiusRange, 'innerRadius', 'input'],
     [dom.outerRadiusRange, 'outerRadius', 'input'],
     [dom.violinHalfWidthRange, 'violinHalfWidth', 'input'],
+    [dom.violinOutlineWidthRange, 'violinOutlineWidth', 'input'],
     [dom.boxHalfWidthRange, 'boxHalfWidth', 'input'],
     [dom.densityAdjustRange, 'densityAdjust', 'input'],
     [dom.densityExponentRange, 'densityExponent', 'input'],
@@ -104,6 +138,7 @@ function initControls() {
       if (key === 'userMode' && state.controls.userMode !== 'sample_peer') {
         state.sampledPeerId = null;
       }
+      persistUiState();
       scheduleRender();
     });
   }
@@ -119,6 +154,7 @@ function initControls() {
   for (const [element, key] of toggleBindings) {
     element.addEventListener('change', () => {
       state.controls[key] = element.checked;
+      persistUiState();
       scheduleRender();
     });
   }
@@ -126,6 +162,7 @@ function initControls() {
   dom.inductionSelect.addEventListener('change', () => {
     syncDoseChoices();
     state.sampledPeerId = null;
+    persistUiState();
     loadSelectedContext().catch((error) => {
       console.error(error);
       showFatalError('Unable to load the selected induction and dose subset.');
@@ -134,6 +171,7 @@ function initControls() {
 
   dom.doseSelect.addEventListener('change', () => {
     state.sampledPeerId = null;
+    persistUiState();
     loadSelectedContext().catch((error) => {
       console.error(error);
       showFatalError('Unable to load the selected induction and dose subset.');
@@ -144,6 +182,7 @@ function initControls() {
     const context = getCurrentContext();
     if (!context) return;
     state.sampledPeerId = sampleRandomPeerId(context);
+    persistUiState();
     scheduleRender();
   });
 
@@ -152,22 +191,22 @@ function initControls() {
     state.sampledPeerId = null;
     applyControlState();
     syncOutputs();
+    persistUiState();
     scheduleRender();
   });
 
   dom.toggleGuideButton.addEventListener('click', () => {
-    const nextHidden = !dom.guideShell.hidden;
-    dom.guideShell.hidden = nextHidden;
-    dom.toggleGuideButton.textContent = nextHidden
-      ? 'How to read the graph in detail'
-      : 'Hide detailed reading guide';
-    if (!nextHidden) {
+    state.guideOpen = !state.guideOpen;
+    syncGuideVisibility();
+    persistUiState();
+    if (state.guideOpen) {
       renderGuidePlot();
     }
   });
 
   applyControlState();
   syncOutputs();
+  syncGuideVisibility();
 }
 
 async function boot() {
@@ -185,17 +224,24 @@ async function loadSelectedContext() {
     state.sampledPeerId = sampleRandomPeerId(context);
   }
   render();
+  persistUiState();
 }
 
 function populateContextControls(manifest) {
   const inductionChoices = [...new Set(manifest.contexts.map((item) => item.induction))];
-  const defaultContext = manifest.contexts.find((item) => item.key === manifest.defaultContext);
+  const defaultContext = manifest.contexts.find((item) => item.key === manifest.defaultContext) ?? manifest.contexts[0];
+  const restoredContext = state.restoredSelection
+    ? manifest.contexts.find((item) =>
+      item.induction === state.restoredSelection.induction
+      && item.dose === state.restoredSelection.dose)
+    : null;
+  const initialContext = restoredContext ?? defaultContext;
   setSelectOptions(
     dom.inductionSelect,
     inductionChoices,
-    defaultContext?.induction || inductionChoices[0]
+    initialContext?.induction || inductionChoices[0]
   );
-  syncDoseChoices(manifest.defaultContext);
+  syncDoseChoices(initialContext?.key ?? manifest.defaultContext);
 }
 
 function syncDoseChoices(preferredContextKey = null) {
@@ -232,10 +278,14 @@ async function ensureContext(contextKey) {
 }
 
 function normalizeContextPayload(payload) {
+  const sourceScaleOrder = Array.isArray(payload.scaleOrder) ? payload.scaleOrder : [];
+  const scaleOrder = reorderScaleOrder(sourceScaleOrder);
+  const indexMap = scaleOrder.map((label) => sourceScaleOrder.indexOf(label));
   const profileMap = new Map();
-  const valuesByScale = payload.scaleOrder.map(() => []);
+  const valuesByScale = scaleOrder.map(() => []);
   const profiles = payload.profiles.map((profile) => {
-    const values = profile.values.map((value) => Number(value));
+    const rawValues = profile.values.map((value) => Number(value));
+    const values = indexMap.map((index) => rawValues[index]);
     const entry = { peerId: profile.peerId, values };
     profileMap.set(profile.peerId, entry);
     values.forEach((value, index) => valuesByScale[index].push(value));
@@ -245,6 +295,7 @@ function normalizeContextPayload(payload) {
   valuesByScale.forEach((values) => values.sort((a, b) => a - b));
   return {
     ...payload,
+    scaleOrder,
     profiles,
     profileMap,
     valuesByScale
@@ -306,7 +357,7 @@ function renderPlot(context, palette) {
 
   const violinPolygons = buildViolinPolygons(context, geometry, controls).map((polygon) => {
     const path = polygonPath(polygon.points);
-    return `<path d="${path}" fill="${withAlpha(palette.peerFill, 0.56)}" stroke="${withAlpha(palette.peerLine, 0.72)}" stroke-width="0.0045"></path>`;
+    return `<path d="${path}" fill="${withAlpha(palette.peerFill, 0.56)}" stroke="${withAlpha(palette.peerLine, 0.72)}" stroke-width="${formatNumber(controls.violinOutlineWidth)}"></path>`;
   }).join('');
 
   const boxSummary = controls.showQuartiles
@@ -515,7 +566,7 @@ function buildRadialGeometry(scaleOrder, innerRadius, outerRadius) {
   const count = scaleOrder.length;
   return scaleOrder.map((scaleId, index) => {
     const angle = (index / count) * Math.PI * 2;
-    const theta = Math.PI / 2 - angle;
+    const theta = -Math.PI / 2 + angle;
     return {
       scaleId,
       angle,
@@ -790,6 +841,7 @@ function applyControlState() {
   dom.innerRadiusRange.value = state.controls.innerRadius;
   dom.outerRadiusRange.value = state.controls.outerRadius;
   dom.violinHalfWidthRange.value = state.controls.violinHalfWidth;
+  dom.violinOutlineWidthRange.value = state.controls.violinOutlineWidth;
   dom.boxHalfWidthRange.value = state.controls.boxHalfWidth;
   dom.densityAdjustRange.value = state.controls.densityAdjust;
   dom.densityExponentRange.value = state.controls.densityExponent;
@@ -807,6 +859,7 @@ function syncOutputs() {
   dom.innerRadiusValue.value = trimNumber(state.controls.innerRadius, 2);
   dom.outerRadiusValue.value = trimNumber(state.controls.outerRadius, 2);
   dom.violinHalfWidthValue.value = trimNumber(state.controls.violinHalfWidth, 3);
+  dom.violinOutlineWidthValue.value = trimNumber(state.controls.violinOutlineWidth, 4);
   dom.boxHalfWidthValue.value = trimNumber(state.controls.boxHalfWidth, 3);
   dom.densityAdjustValue.value = trimNumber(state.controls.densityAdjust, 2);
   dom.densityExponentValue.value = trimNumber(state.controls.densityExponent, 2);
@@ -835,6 +888,96 @@ function showFatalError(message) {
   dom.selectionSummary.innerHTML = '';
   dom.plotSvg.innerHTML = '';
   dom.guideImage.removeAttribute('src');
+}
+
+function reorderScaleOrder(scaleOrder) {
+  const preferred = DISPLAY_SCALE_ORDER.filter((label) => scaleOrder.includes(label));
+  const remaining = scaleOrder.filter((label) => !preferred.includes(label));
+  return [...preferred, ...remaining];
+}
+
+function mergeStoredControls(storedControls = {}) {
+  return { ...DEFAULTS, ...sanitizeControls(storedControls) };
+}
+
+function sanitizeControls(rawControls = {}) {
+  const sanitized = {};
+
+  for (const [key, fallback] of Object.entries(DEFAULTS)) {
+    const value = rawControls?.[key];
+
+    if (typeof fallback === 'number' && Number.isFinite(Number(value))) {
+      const numeric = Number(value);
+      const limits = CONTROL_LIMITS[key];
+      sanitized[key] = limits ? clamp(numeric, limits[0], limits[1]) : numeric;
+      continue;
+    }
+
+    if (typeof fallback === 'boolean' && typeof value === 'boolean') {
+      sanitized[key] = value;
+      continue;
+    }
+  }
+
+  if (typeof rawControls?.peerColor === 'string' && /^#[0-9a-f]{6}$/i.test(rawControls.peerColor.trim())) {
+    sanitized.peerColor = rawControls.peerColor.trim().toLowerCase();
+  }
+
+  if (typeof rawControls?.widthMode === 'string' && WIDTH_MODE_OPTIONS.has(rawControls.widthMode)) {
+    sanitized.widthMode = rawControls.widthMode;
+  }
+
+  if (typeof rawControls?.userMode === 'string' && USER_MODE_OPTIONS.has(rawControls.userMode)) {
+    sanitized.userMode = rawControls.userMode;
+  }
+
+  return sanitized;
+}
+
+function loadStoredUiState() {
+  try {
+    const raw = window.localStorage.getItem(UI_STATE_STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') {
+      return null;
+    }
+
+    return {
+      controls: sanitizeControls(parsed.controls),
+      induction: typeof parsed.induction === 'string' ? parsed.induction : null,
+      dose: typeof parsed.dose === 'string' ? parsed.dose : null,
+      guideOpen: parsed.guideOpen === true,
+      sampledPeerId: typeof parsed.sampledPeerId === 'string' ? parsed.sampledPeerId : null
+    };
+  } catch (error) {
+    console.warn('Unable to restore plot lab state.', error);
+    return null;
+  }
+}
+
+function persistUiState() {
+  try {
+    window.localStorage.setItem(UI_STATE_STORAGE_KEY, JSON.stringify({
+      controls: state.controls,
+      induction: dom.inductionSelect.value || null,
+      dose: dom.doseSelect.value || null,
+      guideOpen: state.guideOpen,
+      sampledPeerId: state.sampledPeerId
+    }));
+  } catch (error) {
+    console.warn('Unable to persist plot lab state.', error);
+  }
+}
+
+function syncGuideVisibility() {
+  dom.guideShell.hidden = !state.guideOpen;
+  dom.toggleGuideButton.textContent = state.guideOpen
+    ? 'Hide detailed reading guide'
+    : 'How to read the graph in detail';
 }
 
 function annotationLine(x1, y1, x2, y2) {
@@ -868,6 +1011,10 @@ function formatNumber(value) {
 
 function trimNumber(value, decimals) {
   return Number(value).toFixed(decimals).replace(/\.?0+$/, '');
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function titleCase(text) {
