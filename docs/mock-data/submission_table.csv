@@ -1,2 +1,2 @@
-submission_id,created_at,instrument_id,instrument_version,language,consent_version,definition_hash,duration_seconds
-6f9d0e2c-1234-4ad9-acde-8b9df7301f00,2026-03-24 09:18:45,axp_core_survey,questionnaire_09_03_26,en,2026-03,57bb8d59b2c64f3b3d7a4c1f0c9f87abf5f84ba4d94ea2ecf8fe5d4a1a90c7d6,412
+submission_id,created_at,instrument_id,instrument_version,language,consent_version,definition_hash,duration_seconds,question_order_randomized_enabled,presented_item_order_json
+6f9d0e2c-1234-4ad9-acde-8b9df7301f00,2026-03-24 09:18:45,axp_core_survey,questionnaire_09_03_26,en,2026-03,57bb8d59b2c64f3b3d7a4c1f0c9f87abf5f84ba4d94ea2ecf8fe5d4a1a90c7d6,412,1,"[""q0"",""q1"",""q_context"",""q3"",""q6"",""q10"",""q25"",""q_free""]"

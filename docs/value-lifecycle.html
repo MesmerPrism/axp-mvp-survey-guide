@@ -68,9 +68,9 @@
         <ol class="step-list">
           <li><span class="step-num">1</span><div><strong>Open the current app URL you were given.</strong><p>Start in the running survey rather than a local or static copy. The testing URL is shared separately from this Pages guide.</p></div></li>
           <li><span class="step-num">2</span><div><strong>Choose your language.</strong><p>Check the live wording in the language that matters for the current task.</p></div></li>
-          <li><span class="step-num">3</span><div><strong>Complete one experience path.</strong><p>Move through the questionnaire as a real user would.</p></div></li>
-          <li><span class="step-num">4</span><div><strong>Submit at the final reveal step.</strong><p>Do not stop before submit if the task depends on feedback or downstream behavior.</p></div></li>
-          <li><span class="step-num">5</span><div><strong>Review the feedback screen.</strong><p>Check the radial violin chart, comparison controls, legend, reading guide, and share or download behavior that matters for the task.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Complete the combined entry step.</strong><p>The live app shows substance, dose, optional context, and the app-side consent checkbox together before the slider pages.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Answer the slider pages and optional final free-text page.</strong><p>Slider order may be randomized by the current questionnaire definition. The optional <code>q_free</code> page, when present, is the last page before feedback.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Submit and review the feedback screen.</strong><p>Do not stop before submit if the task depends on feedback or downstream behavior. The stored duration is measured from the context/consent step display to submit.</p></div></li>
         </ol>
       </div>
     </section>
@@ -80,6 +80,7 @@
         <h2 class="section-title">What the feedback screen now includes</h2>
         <ul class="plain-list">
           <li>A radial violin comparison view that uses the selected canonical induction and dose bucket.</li>
+          <li>Comparison controls that only offer the recognized production buckets: cannabis, psilocybin, alcohol, MDMA, and low, medium, high.</li>
           <li>A purple self profile over the selected peer distribution, plus a legend that names the current submission and peer group.</li>
           <li>A peer count note showing how many complete comparison profiles were used for the selected bucket.</li>
           <li>A reading guide toggle that explains the violin, quartiles, whiskers, and median marks.</li>
@@ -92,10 +93,9 @@
       <div class="panel">
         <h2 class="section-title">What reload does</h2>
         <ul class="plain-list">
-          <li>Opening or refreshing the survey page in the browser starts a new survey session from the beginning.</li>
-          <li>The app does not currently restore in-progress answers after a full browser refresh.</li>
-          <li>The in-app questionnaire reload does not restart the whole page, but it also is not a full draft-restore feature.</li>
-          <li>If item ids and question structure stay the same, some current in-session values may still remain visible after an in-app questionnaire reload.</li>
+          <li>Opening or refreshing the survey page starts a new Shiny session, but the same browser tab can resume an in-progress questionnaire from session storage when the saved draft still matches the loaded definition.</li>
+          <li>The in-app questionnaire reload keeps the current session open and attempts a best-effort answer restore after the sheet definition refreshes.</li>
+          <li>If <code>item_id</code> values and input types stay stable, already entered values are the most likely to survive reload.</li>
           <li>If the questionnaire structure changes, affected fields can re-render or reset, so questionnaire reload is safest before someone starts answering.</li>
         </ul>
       </div>

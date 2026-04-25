@@ -1,15 +1,18 @@
 {
   "instrument_id": "axp_core_survey",
   "instrument_version": "questionnaire_09_03_26",
+  "questionnaire_source_name": "Google Sheets: questionnaire_09_03_26",
   "language": "en",
   "definition_hash": "57bb8d59b2c64f3b3d7a4c1f0c9f87abf5f84ba4d94ea2ecf8fe5d4a1a90c7d6",
+  "question_order_randomized_enabled": true,
+  "presented_item_order_ids": ["q0", "q1", "q_context", "q3", "q6", "q10", "q25", "q_free"],
   "questionnaire_all_df_shape": {
-    "rows": 8,
-    "columns": 12
+    "rows": 16,
+    "columns": 15
   },
   "questionnaire_df_shape": {
-    "rows": 6,
-    "columns": 12
+    "rows": 8,
+    "columns": 15
   },
   "authoritative_language": "en"
 }

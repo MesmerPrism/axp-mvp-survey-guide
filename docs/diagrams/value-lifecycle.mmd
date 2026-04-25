@@ -21,7 +21,7 @@ flowchart TD
       DerivedTitle ~~~ F
       F["Numeric answer rows<br/>split out from responses_df<br/>item_id, value, and created_at"]
       G["Text and context rows<br/>split out from responses_df<br/>field_id, text or context value,<br/>and created_at"]
-      H["ASC factor score rows<br/>computed from numeric answers<br/>canonical scale_id + score_value"]
+      H["ASC factor score rows<br/>computed from numeric answers<br/>must cover 11 canonical scale_id values"]
       I["Current self-score profile<br/>11 canonical ASC factor scores<br/>kept in runtime memory"]
 
       F --> H --> I
@@ -37,23 +37,24 @@ flowchart TD
         subgraph PeerInputs[" "]
           direction LR
           K["submission<br/>MariaDB table<br/>one durable row<br/>per survey submission"]
-          M["response_text<br/>MariaDB table<br/>one durable row<br/>per text or context field"]
-          N["score<br/>MariaDB table<br/>one durable row<br/>per ASC factor score"]
+          M["response_text<br/>MariaDB table<br/>unique submission_id + field_id"]
+          N["score<br/>MariaDB table<br/>unique submission_id + scale_id"]
         end
 
         subgraph ExportInputs[" "]
           direction LR
           K2["submission<br/>MariaDB table<br/>one durable row<br/>per survey submission"]
-          M2["response_text<br/>MariaDB table<br/>one durable row<br/>per text or context field"]
-          N2["score<br/>MariaDB table<br/>one durable row<br/>per ASC factor score"]
-          L["response_numeric<br/>MariaDB table<br/>one durable row<br/>per numeric answer"]
+          QD["questionnaire_definition<br/>MariaDB table<br/>one snapshot per definition_hash"]
+          M2["response_text<br/>MariaDB table<br/>unique submission_id + field_id"]
+          N2["score<br/>MariaDB table<br/>unique submission_id + scale_id"]
+          L["response_numeric<br/>MariaDB table<br/>unique submission_id + item_id"]
         end
       end
 
       subgraph StoreBuilds[" "]
         direction LR
         O1["Peer cache build<br/>combine submission context,<br/>q0/q1-derived fields,<br/>and score completeness flags"]
-        X1["Export row assembly<br/>combine submission, numeric,<br/>text, and score data<br/>into normalized export rows"]
+        X1["Quality-gated export row assembly<br/>check one fact per key<br/>and complete 11-factor scores"]
       end
 
       subgraph StoreOutputs[" "]
@@ -66,6 +67,7 @@ flowchart TD
       M --> O1
       N --> O1
       O1 --> O
+      C --> QD
       K2 --> X1
       M2 --> X1
       N2 --> X1
@@ -127,7 +129,7 @@ flowchart TD
   classDef exportNode fill:#FFFBE8,stroke:#D4A017,stroke-width:1.6px,color:#262632;
   class DefinitionTitle,DerivedTitle,StoreTitle,PeerTitle,ExportTitle stageTitle;
   class A,B,C,D,E,F,G,H,I memoryNode;
-  class K,K2,L,M,M2,N,N2 dbTable;
+  class K,K2,QD,L,M,M2,N,N2 dbTable;
   class O1,X1 dbProcess;
   class O,X dbOutput;
   class P0,P1,P2,P3,Q,R,J uiNode;
@@ -152,6 +154,7 @@ flowchart TD
   click I href "__GUIDE_ROOT__/data-examples.html#factor-scores" "Open current self-score example"
   click K href "__GUIDE_ROOT__/data-examples.html#submission-table" "Open submission table example"
   click K2 href "__GUIDE_ROOT__/data-examples.html#submission-table" "Open submission table example"
+  click QD href "__GUIDE_ROOT__/data-examples.html#questionnaire-definition-table" "Open questionnaire definition snapshot example"
   click L href "__GUIDE_ROOT__/data-examples.html#response-numeric-table" "Open response_numeric example"
   click M href "__GUIDE_ROOT__/data-examples.html#response-text-table" "Open response_text example"
   click M2 href "__GUIDE_ROOT__/data-examples.html#response-text-table" "Open response_text example"

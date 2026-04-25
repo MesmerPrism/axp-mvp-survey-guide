@@ -1,0 +1,2 @@
+definition_hash,first_seen_at,last_seen_at,instrument_id,instrument_version,source_name,row_count,language_count,item_count,scale_count,questionnaire_json
+57bb8d59b2c64f3b3d7a4c1f0c9f87abf5f84ba4d94ea2ecf8fe5d4a1a90c7d6,2026-03-24 09:18:40,2026-03-24 09:18:45,axp_core_survey,questionnaire_09_03_26,Google Sheets: questionnaire_09_03_26,16,2,8,4,"[{""language"":""en"",""item_id"":""q0"",""type"":""selectInput""},{""language"":""en"",""item_id"":""q1"",""type"":""radioButtons""},{""language"":""en"",""item_id"":""q3"",""scale_id"":""Spiritual Experience""}]"

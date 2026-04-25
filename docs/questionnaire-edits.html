@@ -52,8 +52,32 @@
       </article>
       <aside class="callout">
         <strong>One quick note</strong>
-        <p>After a sheet change, opening the running survey once is enough to see whether the latest version was picked up. A full browser refresh starts a new survey session from the beginning and does not restore in-progress answers. The in-app questionnaire reload is lighter than that, but it is still not a draft-save feature, so it is best used before someone starts filling out a response.</p>
+        <p>After a sheet change, opening the running survey once is enough to see whether the latest version was picked up. A full browser refresh starts a new Shiny session, and the same browser tab may resume a matching in-progress draft from session storage. The in-app questionnaire reload keeps the session open and attempts a best-effort restore, but it is still safest before someone starts filling out a response.</p>
       </aside>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Current questionnaire contract</h2>
+        <div class="detail-grid">
+          <div class="detail-card">
+            <strong>One tab per version.</strong>
+            <p>Keep all languages stacked in the same Google Sheet tab. English rows are authoritative for <code>type</code>, <code>required</code>, <code>active</code>, <code>order</code>, <code>scale_id</code>, and <code>randomize_question_order</code>.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Scoring must stay complete.</strong>
+            <p>Every scorable submission must produce exactly the 11 canonical ASC factor rows. A missing, duplicate, or non-canonical <code>scale_id</code> blocks capture or export instead of silently producing a partial dataset.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Context drives peer buckets.</strong>
+            <p><code>q0</code> and <code>q1</code> feed peer comparison context. Raw context can be stored for canonicalization, but participant dropdowns only expose cannabis, psilocybin, alcohol, MDMA, and low, medium, high.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Some flow pieces are app-side.</strong>
+            <p>The consent block and first-slider reminder are not sheet rows. <code>q_free</code>, when present, is the last questionnaire page before feedback. The parked <code>experience_tracer</code> is not part of the active sheet contract.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -61,11 +85,11 @@
         <h2 class="section-title">Google Sheets workflow</h2>
         <ol class="step-list">
           <li><span class="step-num">1</span><div><strong>Open the current shared questionnaire tab.</strong><p>Confirm you are working in the intended version before changing anything.</p></div></li>
-          <li><span class="step-num">2</span><div><strong>Make the content change.</strong><p>Update the wording, translation, options, or structural rows that need to change.</p></div></li>
-          <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable rows mapped through the intended <code>scale_id</code>.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Make the content change.</strong><p>Update wording, translations, options, or structural rows in the stacked table. Keep the same columns across language blocks.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable English rows mapped through canonical <code>scale_id</code> values.</p></div></li>
           <li><span class="step-num">4</span><div><strong>Let the sheet enforcer sync the tab.</strong><p>If the Google Sheets Apps Script is installed, it will auto-sort language blocks, keep the expected header shape, and apply the row formatting the questionnaire uses.</p></div></li>
           <li><span class="step-num">5</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Open the running survey once if you want confirmation.</strong><p>That is enough to see whether the latest sheet version was picked up. Reload is only for an already open session or a tab override.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Open the running survey once if you want confirmation.</strong><p>That is enough to see whether the latest sheet version was picked up. For response logic or scoring changes, complete one submit path and confirm that feedback renders.</p></div></li>
           <li><span class="step-num">7</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
         </ol>
       </div>
@@ -78,7 +102,7 @@
           <li>If installed, the Apps Script runs on edit and is also available from the <code>AXP Sheet</code> menu as <code>Sync questionnaire sheet</code>.</li>
           <li>It keeps the questionnaire tab in the expected header order and auto-sorts each language block by the English row order.</li>
           <li>It colors and formats rows from the English structural metadata, including <code>active</code> state and <code>scale_id</code>.</li>
-          <li>It checks that explicit <code>induction_method_N</code> and <code>dose_options_N</code> header pairs are complete before syncing.</li>
+          <li>It checks that explicit <code>induction_method_N</code>, <code>dose_options_N</code>, and <code>dose_label_override_N</code> triplets are structurally complete before syncing.</li>
           <li>It helps keep the sheet structurally valid and readable, but it is not a separate publish step. The running survey still reads the questionnaire from the sheet itself.</li>
         </ul>
       </div>

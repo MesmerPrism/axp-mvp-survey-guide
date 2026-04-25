@@ -9,8 +9,20 @@
       "description": "Stacked multi-language questionnaire rows with English structure and embedded ASC scale mapping.",
       "whatItShows": "This is the questionnaire master file before the app loads anything into memory. Each row represents one item in one language, so repeated item ids across languages are expected.",
       "whyItMatters": "If wording, item order, ASC factor mapping, or induction and dose option sets are wrong, the rest of the workflow inherits that mistake from here.",
-      "lookFor": "Start with language, item_id, label, type, order, scale_id, and the induction or dose option columns.",
+      "lookFor": "Start with language, item_id, label, type, order, scale_id, randomize_question_order, and the induction/dose/label-override triplets.",
       "relatedDoc": "../data-examples.html#definition-source"
+    },
+    {
+      "id": "questionnaire-definition-table",
+      "title": "questionnaire_definition Table",
+      "source": "questionnaire_definition_table.csv",
+      "category": "definition",
+      "dataType": "MariaDB table excerpt",
+      "description": "Durable snapshot of the normalized questionnaire definition keyed by definition_hash.",
+      "whatItShows": "This is the DB-backed copy of the exact loaded questionnaire definition used for a submission, including counts and compact JSON for the normalized rows.",
+      "whyItMatters": "It lets later analysis recover the definition behind a submission even if the Google Sheet tab changes or is renamed.",
+      "lookFor": "Check definition_hash, instrument_version, row and language counts, scale_count, and questionnaire_json.",
+      "relatedDoc": "../data-examples.html#questionnaire-definition-table"
     },
     {
       "id": "runtime-state",
@@ -55,9 +67,9 @@
       "category": "memory",
       "dataType": "R data.frame shown as CSV",
       "description": "Text and context subset including q0 and q1 values used for peer filter context.",
-      "whatItShows": "This is the text and context slice, including the q0 and q1 fields that later determine the peer comparison bucket.",
-      "whyItMatters": "These rows do not affect ASC scoring directly, but they do control what induction and dose labels are stored and how peer plotting context is resolved.",
-      "lookFor": "Check field_id and text, especially the q0 and q1 rows, because those are the values that later become raw and canonical peer context.",
+      "whatItShows": "This is the text and context slice, including q0 and q1 fields for peer comparison plus any free-text fields still present in memory.",
+      "whyItMatters": "These rows do not affect ASC scoring directly. q0 and q1 control peer context, while full free-text persistence depends on server configuration.",
+      "lookFor": "Check field_id and text, especially q0 and q1. Fields like q_context persist only when full text storage is enabled.",
       "relatedDoc": "../data-examples.html#text-memory"
     },
     {
@@ -92,8 +104,8 @@
       "dataType": "MariaDB table excerpt",
       "description": "Durable numeric answer rows keyed by submission_id and item_id.",
       "whatItShows": "This is the durable numeric answer table after the in-memory numeric subset has been written to MariaDB.",
-      "whyItMatters": "If the submission exists but scoring or exports look incomplete, this table shows whether the numeric rows actually landed in storage.",
-      "lookFor": "Check submission_id, item_id, and value to confirm that every scoreable answer now exists as its own durable row.",
+      "whyItMatters": "The live schema enforces one row per submission_id and item_id, so retries update the same fact instead of adding duplicate numeric answers.",
+      "lookFor": "Check submission_id, item_id, and value to confirm that every scoreable answer now exists once as its own durable row.",
       "relatedDoc": "../data-examples.html#response-numeric-table"
     },
     {
@@ -103,7 +115,7 @@
       "category": "storage",
       "dataType": "MariaDB table excerpt",
       "description": "Durable text and context rows that are excluded from public export.",
-      "whatItShows": "This is the durable text and context table, storing free-text fields plus context answers such as induction and dose.",
+      "whatItShows": "This is the durable text and context table. Full text rows are written only when STORE_TEXT_RESPONSES is enabled; q0 and q1 context can be kept separately through STORE_CONTEXT_TEXT.",
       "whyItMatters": "It preserves the raw context needed for peer canonicalization and private analysis, while also showing what must stay out of the public export.",
       "lookFor": "Check field_id and text to distinguish peer-filter context rows like q0 and q1 from other text fields that remain private.",
       "relatedDoc": "../data-examples.html#response-text-table"
@@ -116,8 +128,8 @@
       "dataType": "MariaDB table excerpt",
       "description": "Durable ASC factor score rows with canonical scale_id and score_value.",
       "whatItShows": "This is the durable ASC score table, storing one canonical factor score row per submission and scale.",
-      "whyItMatters": "Peer plotting and exports both depend on these rows, so they are the durable form of the participant profile shown in feedback.",
-      "lookFor": "Check submission_id, scale_id, and score_value to verify the stored factor profile matches the in-memory scoring result.",
+      "whyItMatters": "Peer plotting and exports both depend on these rows. The live app now rejects partial or duplicate canonical score coverage for scorable submissions.",
+      "lookFor": "Check submission_id, scale_id, and score_value to verify all 11 canonical factors appear exactly once.",
       "relatedDoc": "../data-examples.html#score-table"
     },
     {
@@ -186,10 +198,10 @@
       "source": "public_export.csv",
       "category": "distribution",
       "dataType": "Wide CSV export",
-      "description": "Public anonymized wide export with session_anon, item_* columns, and scale_* columns.",
+      "description": "Public anonymized wide export with session_anon, metadata, item_* columns, and scale_* columns.",
       "whatItShows": "This is the publishable wide export, with one anonymized row per session and separate columns for item answers and scale scores.",
-      "whyItMatters": "It is the main public data shape collaborators receive when they need a shareable bundle without raw identifiers or free-text content.",
-      "lookFor": "Check session_anon, item_* columns, and scale_* columns to see how normalized tables are widened into one public row per session.",
+      "whyItMatters": "It is the main public data shape collaborators receive when they need a shareable bundle without raw identifiers or free-text content. Export now fails before writing if duplicate facts or incomplete score coverage exist.",
+      "lookFor": "Check session_anon, duration_seconds, presented_item_order_json, item_* columns, and scale_* columns to see how normalized tables are widened into one public row per session.",
       "relatedDoc": "../data-examples.html#public-export"
     },
     {
@@ -210,10 +222,10 @@
       "source": "private_full_export.csv",
       "category": "distribution",
       "dataType": "Wide CSV export",
-      "description": "Private full export that keeps submission_id, created_at, text_*, item_*, and scale_* columns.",
-      "whatItShows": "This is the private wide export, keeping the full joined row with raw submission identity, timestamps, text fields, items, and scale scores.",
-      "whyItMatters": "It represents the highest-context export shape used for internal work where the public anonymization and text stripping would be too limiting.",
-      "lookFor": "Check submission_id, created_at, text_* columns, item_* columns, and scale_* columns to understand what is retained only in the private bundle.",
+      "description": "Private full export that keeps submission_id, created_at, any stored text_*, item_*, and scale_* columns.",
+      "whatItShows": "This is the private wide export, keeping the full joined row with raw submission identity, timestamps, stored text fields, items, and scale scores.",
+      "whyItMatters": "It represents the highest-context export shape used for internal work where the public anonymization and text stripping would be too limiting. It uses the same duplicate and score-completeness gates as the public export.",
+      "lookFor": "Check submission_id, created_at, duration_seconds, presented_item_order_json, text_* columns, item_* columns, and scale_* columns to understand what is retained only in the private bundle.",
       "relatedDoc": "../data-examples.html#private-export"
     }
   ]

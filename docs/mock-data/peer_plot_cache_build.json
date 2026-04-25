@@ -1,6 +1,11 @@
 {
   "builder": "db_sync_peer_plot_submission_cache()",
   "submission_id": "6f9d0e2c-1234-4ad9-acde-8b9df7301f00",
+  "storage_controls": {
+    "STORE_TEXT_RESPONSES": false,
+    "STORE_CONTEXT_TEXT": true,
+    "note": "With this configuration, only q0 and q1 context rows are kept for peer comparability."
+  },
   "source_tables": {
     "submission": {
       "instrument_id": "axp_core_survey",

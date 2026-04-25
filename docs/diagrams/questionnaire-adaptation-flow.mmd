@@ -1,8 +1,8 @@
 flowchart TD
   A[Plan a questionnaire change] --> B{What kind of change is it?}
   B -->|Wording or translation| C[Keep the same item_id]
-  B -->|Response logic or options| D[Review required fields and ordering]
-  B -->|Scorable item or factor change| E[Review scale_id and create a new dated version]
+  B -->|Response logic or options| D[Review required fields, q0/q1 dose triplets, and ordering]
+  B -->|Scorable item or factor change| E[Review canonical scale_id coverage and create a new dated version]
 
   C --> F[Edit one stacked multi-language questionnaire table]
   D --> F
@@ -10,10 +10,11 @@ flowchart TD
 
   G[English rows define structure] --> F
   H[Translation rows focus on wording] --> F
+  O[randomize_question_order lives on the English q0 row] --> F
 
   F --> I[Create or update the dated Google Sheets tab]
   I --> J[Loader trims separators and validates the table]
   J --> K[Definition hash is computed from the loaded version]
   K --> L[Participant language selects the runtime view]
-  L --> M[Validate the survey path locally]
+  L --> M[Validate one full submit path and feedback render]
   M --> N[Open the running survey once if you want to confirm the latest sheet version]

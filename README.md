@@ -11,11 +11,15 @@ This repo publishes the GitHub Pages guide for:
 
 The site explains:
 
+- how a new collaborator should decide which workflow applies to them
 - how to use the live survey
 - how to update the questionnaire in Google Sheets
 - how to use OSF downloads, codebooks, changelogs, and data examples
 - how to tune the public radial violin peer-plot prototype in the browser
 - how the running survey, sheet edits, and download-only workflows fit together
+- which current app contracts matter for safe edits: stable `item_id` values,
+  embedded `scale_id` mapping, canonical peer buckets, text-storage controls,
+  and complete 11-factor ASC scores
 
 ## Site
 

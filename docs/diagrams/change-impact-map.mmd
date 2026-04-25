@@ -1,7 +1,7 @@
 flowchart TD
   A[Questionnaire change] --> B{Does the analytical meaning change?}
   B -->|No| C[Keep item_id stable]
-  B -->|Maybe| D{Does scoring or factor mapping change?}
+  B -->|Maybe| D{Does scoring, dose logic, or factor mapping change?}
   B -->|Yes| E[Create a new dated version and review downstream impact]
 
   D -->|No| F[Validate navigation and response logic]
@@ -11,9 +11,11 @@ flowchart TD
   G -->|Yes| H[Usually no factor review]
   G -->|No| I[Check options, required status, and display order]
 
+  E --> Q[Confirm all 11 canonical ASC factors remain complete]
   F --> J[Walk through the survey locally]
   H --> J
   I --> J
-  E --> J
+  Q --> J
 
   J --> K[Reload the live questionnaire source only after validation]
+  K --> L[Submit once and confirm feedback renders]
