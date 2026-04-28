@@ -178,11 +178,11 @@
     <section class="section">
       <div class="panel">
         <h2 class="section-title">3. Durable MariaDB tables</h2>
-        <p>Once the write succeeds, the session is represented as normalized MariaDB tables. Numeric answers, text/context rows, and scores are one-fact-per-key tables: each submission can only have one row for a given <code>item_id</code>, <code>field_id</code>, or <code>scale_id</code>. Retry paths update the existing fact instead of appending duplicates.</p>
+        <p>Once the write succeeds, the session is represented as normalized MariaDB tables. Numeric answers, text/context rows, and scores are one-fact-per-key tables: each submission can only have one row for a given <code>item_id</code>, <code>field_id</code>, or <code>scale_id</code>. Retry paths update the existing fact instead of appending duplicates. The submission-level row also carries broad timing and operational quality metadata used for later review.</p>
         <div class="file-stack">
           <article class="file-card" id="submission-table">
             <h3><code>mock-data/submission_table.csv</code></h3>
-            <p>Submission-level metadata written once per survey session, including the duration measured from the context/consent step display to submit and the exact item order shown to the participant.</p>
+            <p>Submission-level metadata written once per survey session, including the duration measured from the context/consent step display to submit, the exact item order shown to the participant, and high-level data-quality review metadata. The exact review criteria are intentionally not documented in this public guide.</p>
             <p class="file-meta"><strong>Datatype:</strong> MariaDB table excerpt shown as CSV. <strong>Shape:</strong> one row per <code>submission_id</code>.</p>
             <div class="figure-shell">
               <div data-file-source="mock-data/submission_table.csv"></div>
@@ -323,7 +323,7 @@
     <section class="section">
       <div class="panel">
         <h2 class="section-title">5. Distribution outputs</h2>
-        <p>The distribution stage widens the normalized rows into publication-ready CSV files. Public output anonymizes identity and drops free text. Private output keeps the raw submission id, timestamp, and any stored text columns. Before writing files, both export paths now fail on duplicate fact rows, non-canonical score ids, or incomplete 11-factor ASC coverage.</p>
+        <p>The distribution stage widens the normalized rows into publication-ready CSV files. Public output anonymizes identity, drops free text, and omits responses excluded during data-quality review. Private output keeps the raw submission id, timestamp, any stored text columns, and restricted operational metadata. Before writing files, both export paths now fail on duplicate fact rows, non-canonical score ids, or incomplete 11-factor ASC coverage.</p>
         <div class="file-stack">
           <article class="file-card file-card--wide" id="public-export">
             <h3><code>mock-data/public_export.csv</code> and <code>mock-data/public_factor_scores.csv</code></h3>

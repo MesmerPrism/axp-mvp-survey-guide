@@ -77,6 +77,19 @@
 
     <section class="section">
       <div class="panel">
+        <h2 class="section-title">What a submitted response stores</h2>
+        <ul class="plain-list">
+          <li>The questionnaire answers needed for scoring and feedback.</li>
+          <li>The questionnaire version, language, definition hash, and presented item order needed to interpret the response later.</li>
+          <li>Context values used for peer comparison, while participant-facing comparison controls remain limited to canonical buckets.</li>
+          <li>Broad timing and operational quality metadata used to review whether the submitted response looks like a reasonable completed run.</li>
+        </ul>
+        <p>The public guide intentionally does not publish the exact review criteria. The goal is to document that this metadata exists and is stored without exposing implementation details that would make quality review less reliable.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
         <h2 class="section-title">What the feedback screen now includes</h2>
         <ul class="plain-list">
           <li>A radial violin comparison view that uses the selected canonical induction and dose bucket.</li>

@@ -19,7 +19,7 @@ The site explains:
 - how the running survey, sheet edits, and download-only workflows fit together
 - which current app contracts matter for safe edits: stable `item_id` values,
   embedded `scale_id` mapping, canonical peer buckets, text-storage controls,
-  and complete 11-factor ASC scores
+  complete 11-factor ASC scores, and high-level submission quality metadata
 
 ## Site
 
