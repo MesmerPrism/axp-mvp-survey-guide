@@ -13,6 +13,8 @@ The site explains:
 
 - how a new collaborator should decide which workflow applies to them
 - how to use the live survey
+- how to share custom survey links that prefill induction and the second
+  context field for collaborator groups
 - how to update the questionnaire in Google Sheets
 - how to use OSF downloads, codebooks, changelogs, and data examples
 - how to tune the public radial violin peer-plot prototype in the browser
@@ -42,7 +44,8 @@ Then open:
 ## Structure
 
 - `docs/index.html` overview of access types and common tasks
-- `docs/value-lifecycle.html` using the running survey
+- `docs/value-lifecycle.html` using the running survey, including custom
+  prefilled survey links
 - `docs/questionnaire-edits.html` Google Sheets workflow and sheet enforcer usage
 - `docs/data-examples.html` data type, file structure, and export examples
 - `docs/peer-plot-lab.html` browser-hosted peer violin plot tuning page
