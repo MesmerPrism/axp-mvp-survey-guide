@@ -29,6 +29,30 @@ Current public URL:
 
 - `https://mesmerprism.com/axp-mvp-survey-guide/`
 
+## Relationship To The App Repo
+
+This guide repo is the public GitHub Pages surface. The private Shiny app repo is a separate control layer:
+
+- app/runtime repo: `C:\Users\tillh\source\repos\axp-mvp-survey`
+- public guide repo: `C:\Users\tillh\source\repos\axp-mvp-survey-guide`
+- public guide URL: `https://mesmerprism.com/axp-mvp-survey-guide/`
+- Pages workflow: `.github/workflows/pages.yml`
+
+Use the app repo to verify live behavior, URL-prefill parsing, questionnaire loading, DB/export contracts, and deploy scripts. Use this guide repo for collaborator-facing copy, static examples, diagrams, data examples, and public onboarding pages.
+
+Do not update the private app repo and assume the public Pages site changed. Public guide changes require edits in this repo, a push to `main`, a successful `Deploy GitHub Pages` workflow run, and a live URL check.
+
+## Public Update Workflow
+
+For collaborator-facing documentation changes:
+
+1. Verify the underlying behavior in the app repo or live survey.
+2. Edit the relevant files under `docs/` in this repo.
+3. Preview locally with `python -m http.server 8000 --directory docs`.
+4. Commit and push `main`.
+5. Wait for the `Deploy GitHub Pages` workflow to complete.
+6. Verify the public URL on `https://mesmerprism.com/axp-mvp-survey-guide/`.
+
 ## Local preview
 
 From repo root:
