@@ -39,6 +39,7 @@
       <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access. The live app URL is currently distributed separately from this guide while the deployed survey is still being iterated.</p>
       <div class="jump-links">
         <a href="#custom-survey-links">Custom survey links</a>
+        <a href="questionnaire-edits.html#comparison-tokens">Comparison tokens</a>
         <a href="questionnaire-edits.html">Google Sheets workflow</a>
         <a href="data-examples.html">Data examples</a>
         <a href="diagrams.html">Diagrams</a>
@@ -97,6 +98,7 @@
           <li><strong>Dose:</strong> <code>low</code>, <code>medium</code>, <code>high</code></li>
         </ul>
         <p>Best practice: include <code>induction</code> whenever you include <code>dose</code>, because the available second-field options depend on the selected induction.</p>
+        <p>URL-prefill and feedback comparison are related but not identical. The questionnaire can accept options such as <code>Breathwork</code> and <code>Berlin Breathwork Days 2026</code>. The feedback comparison controls only show stable rows that are enabled in the <code>comparison_tokens</code> sheet tab.</p>
         <div class="figure-actions">
           <a class="button-link primary" href="https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open Berlin Breathwork Days link</a>
           <a class="button-link" href="index.html#custom-survey-links">Back to onboarding</a>
@@ -110,7 +112,7 @@
         <ul class="plain-list">
           <li>The questionnaire answers needed for scoring and feedback.</li>
           <li>The questionnaire version, language, definition hash, and presented item order needed to interpret the response later.</li>
-          <li>Context values used for peer comparison, while participant-facing comparison controls remain limited to canonical buckets.</li>
+          <li>Context values used for peer comparison, while participant-facing comparison controls remain limited to enabled stable rows from <code>comparison_tokens</code>.</li>
           <li>Broad timing and operational quality metadata used to review whether the submitted response looks like a reasonable completed run.</li>
         </ul>
         <p>The public guide intentionally does not publish the exact review criteria. The goal is to document that this metadata exists and is stored without exposing implementation details that would make quality review less reliable.</p>
@@ -122,7 +124,7 @@
         <h2 class="section-title">What the feedback screen now includes</h2>
         <ul class="plain-list">
           <li>A radial violin comparison view that uses the selected canonical induction and dose bucket.</li>
-          <li>Comparison controls that only offer the recognized production buckets: cannabis, psilocybin, alcohol, MDMA, and low, medium, high.</li>
+          <li>Comparison controls populated from enabled <code>comparison_tokens</code> rows. The current production-enabled buckets are cannabis, psilocybin, alcohol, MDMA, and low, medium, high.</li>
           <li>A purple self profile over the selected peer distribution, plus a legend that names the current submission and peer group.</li>
           <li>A peer count note showing how many complete comparison profiles were used for the selected bucket.</li>
           <li>A reading guide toggle that explains the violin, quartiles, whiskers, and median marks.</li>

@@ -20,8 +20,9 @@ The site explains:
 - how to tune the public radial violin peer-plot prototype in the browser
 - how the running survey, sheet edits, and download-only workflows fit together
 - which current app contracts matter for safe edits: stable `item_id` values,
-  embedded `scale_id` mapping, canonical peer buckets, text-storage controls,
-  complete 11-factor ASC scores, and high-level submission quality metadata
+  embedded `scale_id` mapping, the `comparison_tokens` stable registry,
+  text-storage controls, complete 11-factor ASC scores, and high-level
+  submission quality metadata
 
 ## Site
 
@@ -70,7 +71,8 @@ Then open:
 - `docs/index.html` overview of access types and common tasks
 - `docs/value-lifecycle.html` using the running survey, including custom
   prefilled survey links
-- `docs/questionnaire-edits.html` Google Sheets workflow and sheet enforcer usage
+- `docs/questionnaire-edits.html` Google Sheets workflow, sheet enforcer usage,
+  and stable comparison-token onboarding
 - `docs/data-examples.html` data type, file structure, and export examples
 - `docs/peer-plot-lab.html` browser-hosted peer violin plot tuning page
 - `docs/diagrams.html` diagram pages with deep links into the examples

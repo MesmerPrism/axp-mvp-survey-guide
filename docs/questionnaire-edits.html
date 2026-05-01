@@ -70,13 +70,71 @@
           </div>
           <div class="detail-card">
             <strong>Context drives peer buckets.</strong>
-            <p><code>q0</code> and <code>q1</code> feed peer comparison context. Raw context can be stored for canonicalization, but participant dropdowns only expose cannabis, psilocybin, alcohol, MDMA, and low, medium, high.</p>
+            <p><code>q0</code> and <code>q1</code> feed peer comparison context. Raw context can be stored for canonicalization, but participant comparison dropdowns only expose enabled rows from the <code>comparison_tokens</code> registry.</p>
           </div>
           <div class="detail-card">
             <strong>Some flow pieces are app-side.</strong>
             <p>The consent block and first-slider reminder are not sheet rows. <code>q_free</code>, when present, is the last questionnaire page before feedback. The parked <code>experience_tracer</code> is not part of the active sheet contract.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="comparison-tokens">
+      <div class="panel">
+        <div class="kicker">Stable comparison tokens</div>
+        <h2 class="section-title">Use <code>comparison_tokens</code> to promote stable peer buckets.</h2>
+        <p>The questionnaire tab and the comparison registry have different jobs. The questionnaire tab decides what participants can select and submit. The <code>comparison_tokens</code> tab decides which stable buckets can appear in the feedback comparison controls.</p>
+
+        <div class="detail-grid">
+          <div class="detail-card">
+            <strong>Questionnaire options collect data.</strong>
+            <p>Adding <code>Breathwork</code>, <code>Box Breathing</code>, or a new event-specific option to the questionnaire lets participants submit that value.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Stable tokens preserve history.</strong>
+            <p>A token such as <code>breathwork</code> or <code>berlin_breathwork_days_2026</code> should stay fixed even if the participant-facing label changes later.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Enabled rows drive the feedback UI.</strong>
+            <p>Only rows with <code>comparison_enabled=1</code> appear in the comparison dropdowns. If there is no peer data yet, the option can still appear, but the peer plot will show an empty comparison state.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Aliases protect old labels.</strong>
+            <p>Put old labels, spelling variants, and translated legacy labels in <code>aliases</code> so historical submissions still map to the same internal token.</p>
+          </div>
+        </div>
+
+        <h3>Columns to maintain</h3>
+        <ul class="plain-list">
+          <li><code>kind</code>: use <code>induction</code> or <code>dose</code>.</li>
+          <li><code>token</code>: stable internal value, for example <code>breathwork</code> or <code>berlin_breathwork_days_2026</code>.</li>
+          <li><code>label_en</code>, <code>label_de</code>, <code>label_es</code>: participant-facing labels for comparison controls.</li>
+          <li><code>induction_token</code>: optional for dose rows; use it when a dose belongs under one induction, for example <code>breathwork</code>.</li>
+          <li><code>aliases</code>: semicolon-separated old labels and alternate spellings that should map to the same token.</li>
+          <li><code>comparison_enabled</code>: set to <code>1</code> to show the row in comparison controls; set to <code>0</code> to keep it mapped but hidden.</li>
+          <li><code>sort_order</code>: stable display order.</li>
+        </ul>
+
+        <h3>Example rows</h3>
+        <pre><code>kind,token,label_en,induction_token,aliases,comparison_enabled,sort_order
+induction,cannabis,Cannabis,,weed;marijuana,1,10
+induction,breathwork,Breathwork,,breath work;breathing,0,50
+dose,low,Low,,low dose;microdose,1,10
+dose,berlin_breathwork_days_2026,Berlin Breathwork Days 2026,breathwork,Berlin Breathwork Days,0,120</code></pre>
+
+        <h3>Safe workflow</h3>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Add or rename the questionnaire option.</strong><p>This changes what participants can submit in the running survey.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Add or update the matching registry row.</strong><p>Choose a stable <code>token</code>. Do not change that token later just because the visible label changes.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Keep new buckets hidden until they are intended for comparison.</strong><p>Use <code>comparison_enabled=0</code> while collecting or testing. Switch to <code>1</code> only when collaborators agree it should appear publicly in the comparison controls.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Notify the app maintainer after token or alias changes.</strong><p>The peer-plot cache should be rebuilt after mapping changes so historical rows use the updated canonical tokens.</p></div></li>
+        </ol>
+
+        <aside class="callout">
+          <strong>Do not promote free text</strong>
+          <p><code>Other</code> and free-text context can be useful for review, but they should stay out of comparison controls unless the team deliberately creates a stable token for a specific, named bucket.</p>
+        </aside>
       </div>
     </section>
 
@@ -87,10 +145,11 @@
           <li><span class="step-num">1</span><div><strong>Open the current shared questionnaire tab.</strong><p>Confirm you are working in the intended version before changing anything.</p></div></li>
           <li><span class="step-num">2</span><div><strong>Make the content change.</strong><p>Update wording, translations, options, or structural rows in the stacked table. Keep the same columns across language blocks.</p></div></li>
           <li><span class="step-num">3</span><div><strong>Keep stable questions stable.</strong><p>Keep the same <code>item_id</code> when the question is still the same underlying question, and keep scorable English rows mapped through canonical <code>scale_id</code> values.</p></div></li>
-          <li><span class="step-num">4</span><div><strong>Let the sheet enforcer sync the tab.</strong><p>If the Google Sheets Apps Script is installed, it will auto-sort language blocks, keep the expected header shape, and apply the row formatting the questionnaire uses.</p></div></li>
-          <li><span class="step-num">5</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
-          <li><span class="step-num">6</span><div><strong>Open the running survey once if you want confirmation.</strong><p>That is enough to see whether the latest sheet version was picked up. For response logic or scoring changes, complete one submit path and confirm that feedback renders.</p></div></li>
-          <li><span class="step-num">7</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Update <code>comparison_tokens</code> when comparison eligibility changes.</strong><p>Do this only when an induction or dose should map to a stable peer bucket. New questionnaire options do not automatically become comparison options.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Let the sheet enforcer sync the tab.</strong><p>If the Google Sheets Apps Script is installed, it will auto-sort language blocks, keep the expected header shape, and apply the row formatting the questionnaire uses.</p></div></li>
+          <li><span class="step-num">6</span><div><strong>Create a new dated tab when the version truly changes.</strong><p>Use a new dated version when the questionnaire definition should be tracked separately.</p></div></li>
+          <li><span class="step-num">7</span><div><strong>Open the running survey once if you want confirmation.</strong><p>That is enough to see whether the latest sheet version was picked up. For response logic or scoring changes, complete one submit path and confirm that feedback renders.</p></div></li>
+          <li><span class="step-num">8</span><div><strong>Tell download users if files may change.</strong><p>If the change affects the meaning of later exports or codebooks, let OSF users know what to expect.</p></div></li>
         </ol>
       </div>
     </section>

@@ -44,7 +44,7 @@
         </a>
         <a class="quick-link" href="questionnaire-edits.html">
           <h2>Work in Google Sheets</h2>
-          <p>Review wording, translations, options, and version tabs in the shared questionnaire sheet.</p>
+          <p>Review wording, translations, options, version tabs, and the stable comparison-token registry in the shared questionnaire sheet.</p>
         </a>
         <a class="quick-link" href="data-examples.html">
           <h2>Inspect data examples</h2>
@@ -80,7 +80,11 @@
           </div>
           <div class="detail-card">
             <strong>Protect context and text.</strong>
-            <p>The live feedback controls only expose canonical buckets: cannabis, psilocybin, alcohol, MDMA, and low, medium, high. Raw text and Other-style context never belong in participant dropdowns.</p>
+            <p>The live feedback controls only expose enabled rows from the <code>comparison_tokens</code> registry. Raw text and Other-style context can be stored for context, but they never belong in participant comparison dropdowns.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Separate collection from comparison.</strong>
+            <p>Adding a new induction or dose option to the questionnaire collects that answer. It does not make a new peer-comparison option until a stable token row is added and enabled in <code>comparison_tokens</code>.</p>
           </div>
           <div class="detail-card">
             <strong>Expect quality review metadata.</strong>
@@ -105,7 +109,7 @@
         </ul>
         <p>General pattern:</p>
         <pre><code>https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
-        <p>For standard peer-comparison buckets, use canonical English tokens such as <code>induction=psilocybin</code> and <code>dose=high</code>. Include <code>induction</code> whenever you include <code>dose</code>, because the available second-field options depend on the selected induction.</p>
+        <p>For standard peer-comparison buckets, use canonical English tokens such as <code>induction=psilocybin</code> and <code>dose=high</code>. Include <code>induction</code> whenever you include <code>dose</code>, because the available second-field options depend on the selected induction. The current comparison dropdowns are controlled by the <code>comparison_tokens</code> sheet tab, not by every raw questionnaire option.</p>
         <div class="figure-actions">
           <a class="button-link primary" href="https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open Berlin Breathwork Days link</a>
           <a class="button-link" href="value-lifecycle.html#custom-survey-links">Read live survey link notes</a>
@@ -140,6 +144,10 @@
         <article class="step-card">
           <h3>I need to change wording or translations</h3>
           <p>Google Sheets access is usually enough for the edit itself. Keep one tab per version and keep translation rows aligned to the English structural rows.</p>
+        </article>
+        <article class="step-card">
+          <h3>I need a new comparison option</h3>
+          <p>Add or update the questionnaire option first, then add a stable row in <code>comparison_tokens</code>. Only rows with <code>comparison_enabled=1</code> appear in the feedback comparison controls.</p>
         </article>
         <article class="step-card">
           <h3>I need the latest files</h3>
