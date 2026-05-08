@@ -98,20 +98,26 @@
       <div class="panel">
         <div class="kicker">Custom survey links</div>
         <h2 class="section-title">Share a prefilled link for Berlin Breathwork Days</h2>
-        <p>Use this link when collaborators should start with <code>Breathwork</code> selected and <code>Berlin Breathwork Days 2026</code> selected in the second field:</p>
-        <pre><code>https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
+        <p>Use the public participant link when responses should count as ordinary survey submissions:</p>
+        <pre><code>https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
+        <p>Use the dev link for collaborator testing. It opens the same live app with the same prefill values, but submissions made through <code>/dev/</code> are marked as test submissions and excluded from analysis.</p>
+        <pre><code>https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
         <h3>How the link is put together</h3>
         <ul class="plain-list">
-          <li><code>lang=en</code> opens the English version directly.</li>
+          <li><code>lang=en</code> opens the English version directly. Other public language values are <code>de</code> and <code>es</code>.</li>
           <li><code>induction=breathwork</code> preselects <code>Breathwork</code> as the induction method.</li>
           <li><code>dose=Berlin+Breathwork+Days+2026</code> preselects <code>Berlin Breathwork Days 2026</code> in the second field.</li>
           <li>The <code>+</code> signs stand for spaces in the URL.</li>
+          <li><code>/dev/</code> is only for collaborator testing. Do not share it as a participant collection link.</li>
         </ul>
-        <p>General pattern:</p>
-        <pre><code>https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
+        <p>General participant pattern:</p>
+        <pre><code>https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
+        <p>General dev-test pattern:</p>
+        <pre><code>https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
         <p>For standard peer-comparison buckets, use canonical English tokens such as <code>induction=psilocybin</code> and <code>dose=high</code>. Include <code>induction</code> whenever you include <code>dose</code>, because the available second-field options depend on the selected induction. The current comparison dropdowns are controlled by the <code>comparison_tokens</code> sheet tab, not by every raw questionnaire option.</p>
         <div class="figure-actions">
-          <a class="button-link primary" href="https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open Berlin Breathwork Days link</a>
+          <a class="button-link primary" href="https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open participant link</a>
+          <a class="button-link" href="https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open dev-test link</a>
           <a class="button-link" href="value-lifecycle.html#custom-survey-links">Read live survey link notes</a>
         </div>
       </div>

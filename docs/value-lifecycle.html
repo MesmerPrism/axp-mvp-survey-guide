@@ -36,7 +36,7 @@
     <section class="hero">
       <div class="kicker">Live Survey Access</div>
       <h1>Open the running survey and use the live experience.</h1>
-      <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access. The live app URL is currently distributed separately from this guide while the deployed survey is still being iterated.</p>
+      <p>This page is for collaborators who can open the running AXP web survey. Here, live survey access means access to the public or deployed survey page, not code or repo access. The public participant entry point is <a href="https://alteredxproject.com/" target="_blank" rel="noopener noreferrer">alteredxproject.com</a>. Collaborators can use <a href="https://alteredxproject.com/dev/" target="_blank" rel="noopener noreferrer">alteredxproject.com/dev/</a> for test runs that should not count as ordinary participant data.</p>
       <div class="jump-links">
         <a href="#custom-survey-links">Custom survey links</a>
         <a href="questionnaire-edits.html#comparison-tokens">Comparison tokens</a>
@@ -68,7 +68,7 @@
       <div class="panel">
         <h2 class="section-title">Live survey workflow</h2>
         <ol class="step-list">
-          <li><span class="step-num">1</span><div><strong>Open the current app URL you were given.</strong><p>Start in the running survey rather than a local or static copy. The testing URL is shared separately from this Pages guide.</p></div></li>
+          <li><span class="step-num">1</span><div><strong>Open the current app URL.</strong><p>Use the public participant link for real collection, or the dev link for collaborator test runs. Start in the running survey rather than a local or static copy.</p></div></li>
           <li><span class="step-num">2</span><div><strong>Choose your language.</strong><p>Check the live wording in the language that matters for the current task.</p></div></li>
           <li><span class="step-num">3</span><div><strong>Complete the combined entry step.</strong><p>The live app shows substance, dose, optional context, and the app-side consent checkbox together before the slider pages.</p></div></li>
           <li><span class="step-num">4</span><div><strong>Answer the slider pages and optional final free-text page.</strong><p>Slider order may be randomized by the current questionnaire definition. The optional <code>q_free</code> page, when present, is the last page before feedback.</p></div></li>
@@ -81,17 +81,22 @@
       <div class="panel">
         <div class="kicker">Custom survey links</div>
         <h2 class="section-title">Prefill induction and the second context field</h2>
-        <p>You can share survey links that preselect the first two context fields. For Berlin Breathwork Days, use:</p>
-        <pre><code>https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
+        <p>You can share survey links that preselect the first two context fields. For Berlin Breathwork Days, use the participant link when responses should count as ordinary survey submissions:</p>
+        <pre><code>https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
+        <p>For collaborator testing, use the dev link. It opens the same live app with the same prefilled values, but submissions made through <code>/dev/</code> are marked as test submissions and excluded from analysis:</p>
+        <pre><code>https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026</code></pre>
         <h3>How the link is put together</h3>
         <ul class="plain-list">
-          <li><code>lang=en</code> opens the English version directly.</li>
+          <li><code>lang=en</code> opens the English version directly. Other public language values are <code>de</code> and <code>es</code>.</li>
           <li><code>induction=breathwork</code> preselects <code>Breathwork</code> as the induction method.</li>
           <li><code>dose=Berlin+Breathwork+Days+2026</code> preselects <code>Berlin Breathwork Days 2026</code> in the second field.</li>
           <li>The <code>+</code> signs stand for spaces in the URL.</li>
+          <li><code>/dev/</code> is only for collaborator testing. Do not share it as a participant collection link.</li>
         </ul>
-        <p>General pattern:</p>
-        <pre><code>https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
+        <p>General participant pattern:</p>
+        <pre><code>https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
+        <p>General dev-test pattern:</p>
+        <pre><code>https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Your+Option+Here</code></pre>
         <p>For standard peer-comparison buckets, use canonical English tokens:</p>
         <ul class="plain-list">
           <li><strong>Induction:</strong> <code>cannabis</code>, <code>psilocybin</code>, <code>alcohol</code>, <code>mdma</code></li>
@@ -100,7 +105,8 @@
         <p>Best practice: include <code>induction</code> whenever you include <code>dose</code>, because the available second-field options depend on the selected induction.</p>
         <p>URL-prefill and feedback comparison are related but not identical. The questionnaire can accept options such as <code>Breathwork</code> and <code>Berlin Breathwork Days 2026</code>. The feedback comparison controls only show stable rows that are enabled in the <code>comparison_tokens</code> sheet tab.</p>
         <div class="figure-actions">
-          <a class="button-link primary" href="https://alteredxproject.com/axp-mvp-survey/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open Berlin Breathwork Days link</a>
+          <a class="button-link primary" href="https://alteredxproject.com/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open participant link</a>
+          <a class="button-link" href="https://alteredxproject.com/dev/?lang=en&amp;induction=breathwork&amp;dose=Berlin+Breathwork+Days+2026" target="_blank" rel="noopener noreferrer">Open dev-test link</a>
           <a class="button-link" href="index.html#custom-survey-links">Back to onboarding</a>
         </div>
       </div>
