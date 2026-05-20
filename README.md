@@ -34,8 +34,8 @@ Current public URL:
 
 This guide repo is the public GitHub Pages surface. The private Shiny app repo is a separate control layer:
 
-- app/runtime repo: `C:\Users\tillh\source\repos\axp-mvp-survey`
-- public guide repo: `C:\Users\tillh\source\repos\axp-mvp-survey-guide`
+- app/runtime repo: `S:\Work\repos\active\axp-mvp-survey`
+- public guide repo: `S:\Work\repos\active\axp-mvp-survey-guide`
 - public guide URL: `https://mesmerprism.com/axp-mvp-survey-guide/`
 - Pages workflow: `.github/workflows/pages.yml`
 
