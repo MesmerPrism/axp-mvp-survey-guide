@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Google Sheets Access | AXP Access Guide</title>
-  <link rel="stylesheet" href="assets/site.css" />
+  <link rel="stylesheet" href="assets/site.css?v=20260617-layout2" />
 </head>
 <body class="site-page">
   <header class="site-header">
@@ -81,12 +81,12 @@
     </section>
 
     <section class="section" id="comparison-tokens">
-      <div class="panel">
+      <div class="panel comparison-panel">
         <div class="kicker">Stable comparison tokens</div>
         <h2 class="section-title">Use <code>comparison_tokens</code> to promote stable peer buckets.</h2>
         <p>The questionnaire tab and the comparison registry have different jobs. The questionnaire tab decides what participants can select and submit. The <code>comparison_tokens</code> tab decides which stable buckets can appear in the feedback comparison controls.</p>
 
-        <div class="detail-grid">
+        <div class="detail-grid detail-grid--compact">
           <div class="detail-card">
             <strong>Questionnaire options collect data.</strong>
             <p>Adding <code>Breathwork</code>, <code>Box Breathing</code>, or a new event-specific option to the questionnaire lets participants submit that value.</p>
@@ -116,12 +116,73 @@
           <li><code>sort_order</code>: stable display order.</li>
         </ul>
 
+        <h3>How q0 and q1 connect to comparison buckets</h3>
+        <p><code>q0</code> is the main induction field. <code>q1</code> is the second field whose meaning depends on the selected induction: for a substance it can be dose level, for Floatation it can be session duration, and for Auto-induced Cognitive Trance it can be the method or institute. The questionnaire tab can collect all of those labels, but the feedback comparison controls only understand labels that can be mapped to enabled stable tokens.</p>
+        <p>For the current wide q1 format, each induction has a triplet in the questionnaire tab: the induction label, the q1 option list, and the q1 prompt. If a q1 option should be used as a peer-comparison bucket, add a matching <code>dose</code> row in <code>comparison_tokens</code> and set <code>induction_token</code> to the parent induction token. This keeps induction-specific options separate from the global <code>low</code>, <code>medium</code>, and <code>high</code> dose buckets.</p>
+
+        <aside class="callout">
+          <strong>Fallback behavior to watch</strong>
+          <p>If an induction has no enabled scoped <code>dose</code> rows, the feedback dose dropdown falls back to the unscoped global dose rows. That is why a correctly submitted context such as <code>Floatation / 61 bis 90 Minuten</code> can still appear as <code>Floatation / Niedrig</code> in the comparison line: the collection option exists, but the comparison bucket was not promoted yet.</p>
+        </aside>
+
         <h3>Example rows</h3>
-        <pre><code>kind,token,label_en,induction_token,aliases,comparison_enabled,sort_order
-induction,cannabis,Cannabis,,weed;marijuana,1,10
-induction,breathwork,Breathwork,,breath work;breathing,0,50
-dose,low,Low,,low dose;microdose,1,10
-dose,berlin_breathwork_days_2026,Berlin Breathwork Days 2026,breathwork,Berlin Breathwork Days,0,120</code></pre>
+        <div class="registry-example-list" aria-label="comparison token example rows">
+          <div class="registry-example-row">
+            <strong>Induction</strong>
+            <code>floatation</code>
+            <span>Labels: Floatation / Floatation / Flotación</span>
+            <span>Aliases: floating; floatation-REST</span>
+            <span>Enabled: 1 · Sort: 70</span>
+          </div>
+          <div class="registry-example-row">
+            <strong>Scoped dose</strong>
+            <code>minutes_61_to_90</code>
+            <span>Parent: <code>floatation</code></span>
+            <span>Labels: 61 to 90 minutes / 61 bis 90 Minuten / De 61 a 90 minutos</span>
+            <span>Enabled: 1 · Sort: 110</span>
+          </div>
+          <div class="registry-example-row">
+            <strong>Induction</strong>
+            <code>auto-induced_cognitive_trance</code>
+            <span>Labels: Auto-induced Cognitive Trance</span>
+            <span>Aliases: auto-induced cognitive trance</span>
+            <span>Enabled: 1 · Sort: 100</span>
+          </div>
+          <div class="registry-example-row">
+            <strong>Scoped dose</strong>
+            <code>trance_science_research_institute</code>
+            <span>Parent: <code>auto-induced_cognitive_trance</code></span>
+            <span>Labels: Trance Science Research Institute</span>
+            <span>Enabled: 1 · Sort: 100</span>
+          </div>
+          <div class="registry-example-row registry-example-row--global">
+            <strong>Global dose</strong>
+            <code>low</code>
+            <span>Parent: blank</span>
+            <span>Labels: Low / Niedrig / Baja</span>
+            <span>Use only when the induction has no scoped dose rows.</span>
+          </div>
+        </div>
+
+        <h3>Checklist for induction-specific q1 options</h3>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Confirm the questionnaire triplet.</strong><p>In the current questionnaire tab, check that the q0 induction label, q1 option list, and q1 prompt are aligned in each language block.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Create the induction token if it does not exist.</strong><p>Add a <code>kind=induction</code> row with a stable <code>token</code>, translated labels, useful aliases, and the intended enabled state.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Create scoped dose rows for q1 options that should compare peers.</strong><p>Use <code>kind=dose</code>, set <code>induction_token</code> to the parent token, and put the exact current labels plus old spellings in <code>aliases</code>.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Verify the feedback dropdowns on <code>/dev/</code>.</strong><p>Open a dev-test link with the intended <code>induction</code> and <code>dose</code>, jump or complete the questionnaire, and confirm the comparison line and share image use the same scoped q1 label.</p></div></li>
+        </ol>
+
+        <aside class="callout">
+          <strong>Recent examples</strong>
+          <p>Floatation duration options and <code>Trance Science Research Institute</code> for Auto-induced Cognitive Trance needed scoped <code>dose</code> rows. The questionnaire options were valid, but without those registry rows the feedback comparison could default to global <code>Low</code>/<code>Niedrig</code>.</p>
+        </aside>
+
+        <h3>URL checks</h3>
+        <p>Use direct dev-test links when checking whether a q0/q1 pair maps correctly. The top line reflects the current submission context; the comparison controls and the share image reflect the stable comparison-token mapping. Those should match unless you are deliberately comparing against a different peer bucket.</p>
+        <div class="code-list" aria-label="dev-test URL examples">
+          <code>https://alteredxproject.com/dev/?lang=de&amp;induction=Floatation&amp;dose=61+bis+90+Minuten</code>
+          <code>https://alteredxproject.com/dev/?lang=en&amp;induction=Auto-Induced+Cognitive+Trance&amp;dose=Trance+Science+Research+Institute</code>
+        </div>
 
         <h3>Safe workflow</h3>
         <ol class="step-list">

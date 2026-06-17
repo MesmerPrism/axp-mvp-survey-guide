@@ -484,11 +484,31 @@ code {
   border-radius: 6px;
   background: rgba(240, 236, 255, 0.72);
   color: var(--text);
+  overflow-wrap: anywhere;
 }
 
 pre {
-  margin: 0;
-  white-space: pre-wrap;
+  margin: 14px 0 0;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+pre code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow-wrap: normal;
 }
 
 .figure-shell {
@@ -918,6 +938,75 @@ pre {
   color: var(--muted);
 }
 
+.detail-grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.comparison-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.comparison-panel > h3 {
+  margin: 8px 0 0;
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+
+.comparison-panel > p {
+  margin: 0;
+  max-width: 76rem;
+}
+
+.comparison-panel > .plain-list,
+.comparison-panel > .step-list {
+  margin-top: 0;
+}
+
+.registry-example-list,
+.code-list {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.registry-example-list {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.registry-example-row {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.registry-example-row strong {
+  color: var(--text);
+}
+
+.registry-example-row span {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.registry-example-row--global {
+  background: rgba(240, 236, 255, 0.42);
+}
+
+.code-list code {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94);
+  line-height: 1.45;
+}
+
 .file-stack {
   margin-top: 18px;
 }
@@ -1296,6 +1385,15 @@ pre {
     padding-left: 14px;
     padding-right: 14px;
   }
+
+  .registry-example-list {
+    grid-template-columns: 1fr;
+  }
+
+  .registry-example-row,
+  .code-list code {
+    padding: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1315,6 +1413,10 @@ pre {
 @media (min-width: 1080px) {
   .detail-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .detail-grid.detail-grid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .file-stack {
