@@ -1184,6 +1184,138 @@ pre code {
   background: #eef0f5;
 }
 
+.json-visual-shell {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.json-visual-section {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(249, 249, 251, 0.62);
+}
+
+.json-visual-section--overview {
+  background: rgba(240, 236, 255, 0.34);
+}
+
+.json-visual-section h3,
+.json-visual-section h4,
+.json-nested-item h5 {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.json-visual-section h3 {
+  font-size: 1.05rem;
+}
+
+.json-visual-section h4,
+.json-nested-item h5 {
+  font-size: 0.98rem;
+}
+
+.json-section-note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.json-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.json-fact {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.json-fact dt {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
+
+.json-fact dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.json-nested-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.json-nested-item {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.json-table-shell {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.json-object-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.json-object-table th,
+.json-object-table td {
+  padding: 9px 10px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.json-object-table th {
+  background: #f5f6fa;
+  font-weight: 700;
+}
+
+.json-object-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.json-value-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+  color: var(--text);
+}
+
 .file-code-shell {
   padding: 10px 0;
   background: #ffffff;
