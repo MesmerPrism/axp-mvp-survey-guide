@@ -16,6 +16,7 @@ The site explains:
 - how to share participant and dev-test survey links that prefill induction and
   the second context field for collaborator groups
 - how to update the questionnaire in Google Sheets
+- how the current MariaDB, OSF, and Google Sheets data stack works
 - how to use OSF downloads, codebooks, changelogs, and data examples
 - how to tune the public radial violin peer-plot prototype in the browser
 - how the running survey, sheet edits, and download-only workflows fit together
@@ -73,6 +74,8 @@ Then open:
   participant and dev-test prefilled survey links
 - `docs/questionnaire-edits.html` Google Sheets workflow, sheet enforcer usage,
   and stable comparison-token onboarding
+- `docs/data-stack.html` current MariaDB storage, append-only OSF upload
+  workflow, public/private export split, and q0/q1 comparison-token handling
 - `docs/data-examples.html` data type, file structure, and export examples
 - `docs/peer-plot-lab.html` browser-hosted peer violin plot tuning page
 - `docs/diagrams.html` diagram pages with deep links into the examples

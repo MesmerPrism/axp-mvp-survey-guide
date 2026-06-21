@@ -198,10 +198,10 @@
       "source": "public_export.csv",
       "category": "distribution",
       "dataType": "Wide CSV export",
-      "description": "Public anonymized wide export with session_anon, metadata, item_* columns, and scale_* columns.",
+      "description": "Public anonymized wide export with session_anon, public-safe condition tokens, metadata, item_* columns, and scale_* columns.",
       "whatItShows": "This is the publishable wide export, with one anonymized row per session and separate columns for item answers and scale scores.",
       "whyItMatters": "It is the main public data shape collaborators receive when they need a shareable bundle without raw identifiers or free-text content. Export now fails before writing if duplicate facts or incomplete score coverage exist.",
-      "lookFor": "Check session_anon, duration_seconds, presented_item_order_json, item_* columns, and scale_* columns to see how normalized tables are widened into one public row per session.",
+      "lookFor": "Check session_anon, induction_method, dose_label, duration_seconds, presented_item_order_json, item_* columns, and scale_* columns to see how normalized tables are widened into one public row per session.",
       "relatedDoc": "../data-examples.html#public-export"
     },
     {
@@ -210,10 +210,10 @@
       "source": "public_factor_scores.csv",
       "category": "distribution",
       "dataType": "Long CSV export",
-      "description": "Public factor-only export with one row per anonymized peer_id and scale_id.",
-      "whatItShows": "This is the long public factor-only export, keeping just anonymized ids plus one row per scale score.",
+      "description": "Public factor-only export with one row per anonymized peer_id, public-safe condition token pair, and scale_id.",
+      "whatItShows": "This is the long public factor-only export, keeping anonymized ids, public-safe induction/dose tokens, and one row per scale score.",
       "whyItMatters": "It is the simplest public analysis shape when a collaborator only needs ASC factor scores and does not need the full wide questionnaire table.",
-      "lookFor": "Check peer_id, scale_id, and score_value to see the long-format public score table used for factor-level analysis.",
+      "lookFor": "Check peer_id, induction_method, dose_label, scale_id, and score_value to see the long-format public score table used for factor-level analysis.",
       "relatedDoc": "../data-examples.html#public-export"
     },
     {

@@ -24,6 +24,7 @@
           <a href="index.html">Overview</a>
           <a href="value-lifecycle.html">Live Survey</a>
           <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-stack.html">Data Stack</a>
           <a href="data-examples.html">Data Examples</a>
           <a href="peer-plot-lab.html">Plot Lab</a>
           <a href="diagrams.html">Diagrams</a>
@@ -323,12 +324,12 @@
     <section class="section">
       <div class="panel">
         <h2 class="section-title">5. Distribution outputs</h2>
-        <p>The distribution stage widens the normalized rows into publication-ready CSV files. Public output anonymizes identity, drops free text, and omits responses excluded during data-quality review. Private output keeps the raw submission id, timestamp, any stored text columns, and restricted operational metadata. Before writing files, both export paths now fail on duplicate fact rows, non-canonical score ids, or incomplete 11-factor ASC coverage.</p>
+        <p>The distribution stage widens the normalized rows into publication-ready CSV files. Public output anonymizes identity, drops free text, keeps only public-safe canonical condition tokens, and omits responses excluded during data-quality review. Private output keeps the raw submission id, timestamp, any stored text columns, and restricted operational metadata. Before writing files, both export paths now fail on duplicate fact rows, non-canonical score ids, or incomplete 11-factor ASC coverage.</p>
         <div class="file-stack">
           <article class="file-card file-card--wide" id="public-export">
             <h3><code>mock-data/public_export.csv</code> and <code>mock-data/public_factor_scores.csv</code></h3>
-            <p>The public wide bundle plus the public factor-only long export. These are the publishable shapes.</p>
-            <p class="file-meta"><strong>Datatype:</strong> Wide and long CSV export files. <strong>Shape:</strong> one wide row per anonymized session plus one long row per public factor score.</p>
+            <p>The public wide bundle plus the public factor-only long export. These are the publishable shapes, including public-safe <code>induction_method</code> and <code>dose_label</code> tokens when the raw context maps to enabled stable comparison buckets.</p>
+            <p class="file-meta"><strong>Datatype:</strong> Wide and long CSV export files. <strong>Shape:</strong> one wide row per anonymized session plus one long row per public factor score, both with safe condition-token columns.</p>
             <div class="figure-shell">
               <div data-file-source="mock-data/public_export.csv"></div>
             </div>

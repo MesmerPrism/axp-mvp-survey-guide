@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MariaDB and OSF Stack | AXP Access Guide</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="site-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/circe-logo.png" alt="Circe logo" />
+        <span class="brand-eyebrow">AXP survey</span>
+        <strong>AXP Access Guide</strong>
+        <span class="brand-subtitle">How to use the app, Google Sheets, and OSF with the access you have.</span>
+      </a>
+      <div class="header-side">
+        <div class="app-links">
+          <a class="app-link" href="https://osf.io/c3zq5/overview" target="_blank" rel="noopener noreferrer">About AXP</a>
+          <a class="app-link" href="https://circe-science.com/" target="_blank" rel="noopener noreferrer">About Circe</a>
+        </div>
+        <nav class="top-nav" data-nav aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="value-lifecycle.html">Live Survey</a>
+          <a href="questionnaire-edits.html">Google Sheets</a>
+          <a href="data-stack.html">Data Stack</a>
+          <a href="data-examples.html">Data Examples</a>
+          <a href="peer-plot-lab.html">Plot Lab</a>
+          <a href="diagrams.html">Diagrams</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="kicker">MariaDB and OSF stack</div>
+      <h1>Understand where AXP data lands and how sheet choices shape it.</h1>
+      <p>This page explains the current production stack for collaborators: Google Sheets defines the questionnaire and comparison registry, MariaDB stores submitted rows, and OSF receives append-only public and private export bundles.</p>
+      <div class="jump-links">
+        <a href="#current-contract">Current contract</a>
+        <a href="#where-data-lands">Where data lands</a>
+        <a href="#mariadb">MariaDB tables</a>
+        <a href="#osf">OSF uploads</a>
+        <a href="#formats">Export formats</a>
+        <a href="#sheets">Sheet impact</a>
+        <a href="#dose">Dose and q1</a>
+      </div>
+    </section>
+
+    <section class="section" id="current-contract">
+      <div class="panel">
+        <h2 class="section-title">Current production contract</h2>
+        <div class="detail-grid">
+          <div class="detail-card">
+            <strong>MariaDB is the live source of submitted data.</strong>
+            <p>The survey writes normalized submission, response, score, and peer-cache rows to the server database. Collaborators normally do not need direct database access.</p>
+          </div>
+          <div class="detail-card">
+            <strong>OSF receives generated snapshots.</strong>
+            <p>Exports run daily, then upload to matching run folders in public and private OSF projects. Routine uploads are append-only and refuse overwrites.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Legacy archive rows stay out of routine snapshots.</strong>
+            <p>The imported legacy instrument <code>axp_legacy_11asc22</code> is excluded from regular public and private snapshots because it is already archived separately.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Google Sheets controls meaning, not storage location.</strong>
+            <p>Sheet tabs define questionnaire versions and q0/q1 choices. The separate <code>comparison_tokens</code> tab decides which canonical conditions can be shown or exported publicly.</p>
+          </div>
+        </div>
+        <aside class="callout">
+          <strong>Last verified production behavior</strong>
+          <p>On June 21, 2026, the append-only upload was verified with a production run folder named <code>export_20260621T093329Z</code>. The export omitted 10,031 legacy rows and uploaded 9 files to each OSF target.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="where-data-lands">
+      <div class="panel">
+        <h2 class="section-title">Where data lands</h2>
+        <div class="stack-map" aria-label="AXP data stack">
+          <div class="stack-node">
+            <strong>Google Sheets</strong>
+            <span>Questionnaire tabs plus <code>comparison_tokens</code></span>
+          </div>
+          <div class="stack-arrow" aria-hidden="true">to</div>
+          <div class="stack-node">
+            <strong>Running survey</strong>
+            <span>Loads the current sheet, collects answers, computes ASC scores</span>
+          </div>
+          <div class="stack-arrow" aria-hidden="true">to</div>
+          <div class="stack-node">
+            <strong>MariaDB</strong>
+            <span>Durable normalized rows and peer-cache context</span>
+          </div>
+          <div class="stack-arrow" aria-hidden="true">to</div>
+          <div class="stack-node">
+            <strong>Exports</strong>
+            <span>Public redacted bundle and private full bundle</span>
+          </div>
+          <div class="stack-arrow" aria-hidden="true">to</div>
+          <div class="stack-node">
+            <strong>OSF</strong>
+            <span>Append-only run folders in public/private projects</span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Place</th>
+                <th>Access</th>
+                <th>What it contains</th>
+                <th>What it does not contain</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MariaDB on the survey server</td>
+                <td>Server maintainers only</td>
+                <td>Raw normalized survey data, q0/q1 context, optional stored free text, scores, definition snapshots, peer-cache rows, and quality metadata.</td>
+                <td>It is not a collaborator download surface and is not publicly reachable.</td>
+              </tr>
+              <tr>
+                <td>Public OSF project</td>
+                <td>Public download</td>
+                <td>De-identified public CSVs, codebooks, README, changelog, and export manifest. Public condition fields use safe canonical tokens only.</td>
+                <td>No raw submission ids, full timestamps, raw free-text fields, IP/user-agent metadata, or unknown/Other free-input context.</td>
+              </tr>
+              <tr>
+                <td>Private OSF project</td>
+                <td>Invite-only collaborator access</td>
+                <td>Full restricted CSVs with raw submission ids, full timestamps, stored text/context columns, operational metadata, codebooks, README, changelog, and export manifest.</td>
+                <td>It is not a public publication target. Do not redistribute it as if it were the public bundle.</td>
+              </tr>
+              <tr>
+                <td>Legacy OSF/archive</td>
+                <td>Project-specific archive access</td>
+                <td>The imported legacy 2022 peer-data block that uses <code>instrument_id=axp_legacy_11asc22</code>.</td>
+                <td>Routine daily snapshots do not re-upload this 10k-row archive block.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mariadb">
+      <div class="panel">
+        <h2 class="section-title">MariaDB storage model</h2>
+        <p>MariaDB is the durable record of survey submissions. It stores normalized tables rather than one giant spreadsheet row. Export scripts join those tables later when building OSF files.</p>
+        <div class="detail-grid detail-grid--compact">
+          <div class="detail-card">
+            <strong><code>submission</code></strong>
+            <p>One row per submitted session: ids, timestamps, questionnaire version, language, duration, quality flags, and item-order metadata.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>questionnaire_definition</code></strong>
+            <p>One snapshot per <code>definition_hash</code>, so later analysis can recover which loaded sheet definition produced a submission.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>response_numeric</code></strong>
+            <p>One row per numeric answer, keyed by <code>submission_id</code> and <code>item_id</code>. These rows feed ASC scoring.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>response_text</code></strong>
+            <p>One row per text/context answer. q0/q1 context is kept for comparability; free text remains private when stored.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>score</code></strong>
+            <p>One row per ASC factor score. Complete scorable submissions must have all 11 canonical ASC factors.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>peer_plot_submission_cache</code></strong>
+            <p>One row per submission with raw and canonical induction/dose context plus score-completeness metadata for feedback queries.</p>
+          </div>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link primary" href="data-examples.html#submission-table">Open table examples</a>
+          <a class="button-link" href="file-viewer.html#peer-cache">Open peer-cache example</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="osf">
+      <div class="panel">
+        <h2 class="section-title">OSF upload workflow</h2>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Daily export at 03:00 Europe/Berlin.</strong><p>The server runs the public and private export scripts from MariaDB. Both export paths exclude <code>axp_legacy_11asc22</code> from routine snapshots.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Daily upload at 03:15 Europe/Berlin.</strong><p>The upload job creates one run folder such as <code>export_YYYYMMDDTHHMMSSZ</code> in both OSF targets. The timestamp is UTC.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Current files only.</strong><p>Routine uploads send the latest files, the current dated files, codebooks, README, changelog, and manifest. Historical dated exports are not re-uploaded every day.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Append-only guard.</strong><p>If a file already exists in the target run folder, upload fails instead of replacing it. This prevents silent stale-file retention or accidental overwrite.</p></div></li>
+        </ol>
+        <aside class="callout">
+          <strong>Folder naming</strong>
+          <p>The OSF folder name is now based on the upload run id, not the old questionnaire-tab date. That avoids confusing nests such as a new upload appearing under an older questionnaire folder.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="formats">
+      <div class="panel">
+        <h2 class="section-title">What each OSF bundle contains</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Bundle file</th>
+                <th>Visibility</th>
+                <th>Shape</th>
+                <th>Condition fields</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>axp_public_latest.csv</code> and <code>axp_public_YYYYMMDD.csv</code></td>
+                <td>Public</td>
+                <td>Wide CSV: one anonymized row per included session, with <code>item_*</code> numeric answers and <code>scale_*</code> ASC scores.</td>
+                <td><code>induction_method</code> and <code>dose_label</code> are public-safe canonical tokens or blank.</td>
+              </tr>
+              <tr>
+                <td><code>axp_factor_scores_public_latest.csv</code> and dated copy</td>
+                <td>Public</td>
+                <td>Long CSV: one row per anonymized peer id and ASC factor.</td>
+                <td>Includes the same public-safe <code>induction_method</code> and <code>dose_label</code> tokens.</td>
+              </tr>
+              <tr>
+                <td><code>axp_private_full_latest.csv</code> and <code>axp_private_full_YYYYMMDD.csv</code></td>
+                <td>Private</td>
+                <td>Wide CSV: one raw submission row with numeric answers, stored text/context columns, operational metadata, and scores.</td>
+                <td>Raw context appears as private <code>text_*</code> columns such as <code>text_q0</code>, <code>text_q1</code>, and any stored free text.</td>
+              </tr>
+              <tr>
+                <td><code>axp_factor_scores_full_latest.csv</code> and dated copy</td>
+                <td>Private</td>
+                <td>Long CSV: one row per raw submission id and ASC factor.</td>
+                <td>Used when collaborators need restricted factor-level analysis with raw ids.</td>
+              </tr>
+              <tr>
+                <td><code>codebook*.csv</code>, <code>README*.md</code>, <code>CHANGELOG*.md</code></td>
+                <td>Public or private target</td>
+                <td>Human-readable support files generated with the bundle.</td>
+                <td>Explain column meanings and export history for that target.</td>
+              </tr>
+              <tr>
+                <td><code>export_manifest_public.json</code> and <code>export_manifest_private_full.json</code></td>
+                <td>Public or private target</td>
+                <td>Audit JSON with generated time, git commit, row counts, omitted legacy count, file sizes, and SHA-256 hashes.</td>
+                <td>Confirms which filters and files were used for that run.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-actions">
+          <a class="button-link primary" href="data-examples.html#public-export">Open public examples</a>
+          <a class="button-link" href="data-examples.html#private-export">Open private example</a>
+          <a class="button-link" href="https://osf.io/xteks/files/" target="_blank" rel="noopener noreferrer">Open public OSF files</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sheets">
+      <div class="panel">
+        <h2 class="section-title">How Google Sheets entries affect data</h2>
+        <div class="detail-grid">
+          <div class="detail-card">
+            <strong>Version tabs become submission metadata.</strong>
+            <p>The loaded tab name becomes <code>instrument_version</code>. The normalized sheet creates a <code>definition_hash</code> stored with each submission.</p>
+          </div>
+          <div class="detail-card">
+            <strong>English structural rows carry scoring meaning.</strong>
+            <p>Stable <code>item_id</code>, <code>scale_id</code>, <code>type</code>, <code>required</code>, <code>active</code>, and order fields define how answers are collected and scored.</p>
+          </div>
+          <div class="detail-card">
+            <strong>q0 and q1 become context rows.</strong>
+            <p>q0 is the induction field. q1 is the second context field, whose label and options depend on the selected induction.</p>
+          </div>
+          <div class="detail-card">
+            <strong><code>comparison_tokens</code> controls canonical output.</strong>
+            <p>Only enabled stable tokens should appear in feedback controls and public condition columns. Raw labels and aliases map into these tokens.</p>
+          </div>
+        </div>
+        <p>A questionnaire option and a comparison bucket are not the same thing. Adding a q0/q1 option lets the survey collect that answer. Adding an enabled row in <code>comparison_tokens</code> makes that answer eligible for canonical comparison and public-safe export.</p>
+        <div class="figure-actions">
+          <a class="button-link primary" href="questionnaire-edits.html#comparison-tokens">Open comparison-token guide</a>
+          <a class="button-link" href="questionnaire-edits.html">Open Google Sheets workflow</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="dose">
+      <div class="panel">
+        <h2 class="section-title">Dose, q1, and scoped comparison rows</h2>
+        <p>In the code and exports, <code>dose_label</code> means the canonical token for the second context field. It is not always a pharmacological dose.</p>
+        <div class="detail-grid detail-grid--compact">
+          <div class="detail-card">
+            <strong>Substances can use global dose buckets.</strong>
+            <p>Classic dose labels such as <code>low</code>, <code>medium</code>, and <code>high</code> can be unscoped when they apply across several induction methods.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Non-substance contexts need scoped rows.</strong>
+            <p>Floatation durations, Flicker Light durations, breathwork methods, event labels, and institute names should use <code>kind=dose</code> rows scoped by <code>induction_token</code>.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Aliases keep old labels usable.</strong>
+            <p>Translated labels, old spellings, and old duration ranges belong in <code>aliases</code> so historical submissions still canonicalize to the intended token.</p>
+          </div>
+          <div class="detail-card">
+            <strong>Other and free input stay private.</strong>
+            <p>Other-style answers can be retained as raw private context, but they are blanked from public condition columns unless the team creates a specific stable token.</p>
+          </div>
+        </div>
+        <h3>Example decisions</h3>
+        <ul class="plain-list">
+          <li><code>Psilocybin / Medium</code> can map to induction <code>psilocybin</code> and global dose <code>medium</code>.</li>
+          <li><code>Floatation / 61 bis 90 Minuten</code> should map to induction <code>floatation</code> and a scoped duration token such as <code>minutes_61_to_90</code>.</li>
+          <li><code>Flicker Light / 20 minutes</code> should map to a scoped Flicker Light duration token, not a global pharmacological dose token.</li>
+          <li><code>Other: handwritten text</code> remains raw private context and should not become a public comparison option by default.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <h2 class="section-title">Collaborator checklist before changing q0/q1</h2>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Decide whether the change is collection-only or comparison-ready.</strong><p>If it only needs to collect raw context, the questionnaire tab may be enough. If it should show in feedback or public exports, update <code>comparison_tokens</code>.</p></div></li>
+          <li><span class="step-num">2</span><div><strong>Use stable tokens.</strong><p>Tokens should survive later wording changes. Labels can change; tokens should not.</p></div></li>
+          <li><span class="step-num">3</span><div><strong>Scope q1 rows when the meaning depends on q0.</strong><p>Set <code>induction_token</code> on dose rows for durations, methods, events, or other induction-specific q1 values.</p></div></li>
+          <li><span class="step-num">4</span><div><strong>Put old labels in aliases.</strong><p>Aliases are the bridge between older submitted raw labels and the current canonical token.</p></div></li>
+          <li><span class="step-num">5</span><div><strong>Check exports after the next run.</strong><p>Public OSF should show public-safe tokens or blanks. Private OSF should retain the raw context needed for restricted review.</p></div></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">Current MariaDB, Google Sheets, and OSF data-flow contract for collaborators.</div>
+  </footer>
+
+  <script type="module" src="assets/site.js"></script>
+</body>
+</html>

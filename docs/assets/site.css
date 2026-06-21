@@ -964,10 +964,44 @@ pre code {
 }
 
 .registry-example-list,
-.code-list {
+.code-list,
+.stack-map {
   display: grid;
   gap: 10px;
   min-width: 0;
+}
+
+.stack-map {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  margin-top: 14px;
+}
+
+.stack-node {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.stack-node strong {
+  color: var(--text);
+}
+
+.stack-node span {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.stack-arrow {
+  align-self: center;
+  justify-self: center;
+  padding: 0 2px;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .registry-example-list {
@@ -1301,6 +1335,15 @@ pre code {
 
   .viewer-controls--toolbar {
     justify-content: flex-start;
+  }
+
+  .stack-map {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-arrow {
+    justify-self: start;
+    padding-left: 16px;
   }
 }
 
